@@ -2,6 +2,48 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/ItemsBlock.js":
+/*!***************************!*\
+  !*** ./src/ItemsBlock.js ***!
+  \***************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+class ItemsBlock {
+    constructor() {
+
+    }
+    render() {
+        return (/*html*/`
+            <div class="item" id="item-1">
+                <img class="logo" src="i/Subway_logo.png" />
+                <img class="item-image" src="i/Burger1.jpg" />
+                <p class="item-name">Овощной</p>
+                <p class="item-composition">${this.V}</p>
+                <div class="item-price-block">
+                    <p class="price-text">Цена:</p>
+                    <p class="price-value" id="price-1">110</p>
+                    <p class="price-currency">руб.</p>
+                </div>
+                <p class="item-amount">Количество</p>
+                <div class="amount-block">
+                    <img class="minus-icon" src="i/minus.svg" id="minus-1" onclick="minusClick(event.target)">
+                    <input class="item-counter" type="text" id="counter-1" value="1">
+                    <img class="plus-icon" src="i/plus.svg" id="plus-1" onclick="plusClick(event.target)">
+                </div>
+                <button class="item-button" id="button-1" onclick="addToBasket(event.target)">В КОРЗИНУ</button>
+        </div> 
+      `)
+    }
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ItemsBlock);
+
+/***/ }),
+
 /***/ "./src/MainHeader.js":
 /*!***************************!*\
   !*** ./src/MainHeader.js ***!
@@ -34,11 +76,37 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _ItemsBlock__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ItemsBlock */ "./src/ItemsBlock.js");
+
+
 class MenuBlock {
+    constructor() {
+        this.array = [7, 8, 3]
+        this.array.map((elem, i) => (console.log(elem, i)))
+        this.x = [];
+        const getData = async () => {
+            await fetch("./src/data.json")
+            .then(response => response.json())
+            .then(data => {
+                this.x = data;
+                console.log(this.x);
+            })
+            console.log(this.x);
+        }
+        getData();
+        console.log(this.x);
+        // Додумать как использовать здесь fetch. Либо использовать async await, либо сначала
+        // отрендерить пустные значения, а потом через Прокси поймать изменения и тогда уже отобразить
+    }
     render() {
+        setTimeout(() => {
+            console.log(this.x);
+        }, 10000);
+        const itemsBlock = new _ItemsBlock__WEBPACK_IMPORTED_MODULE_0__["default"]();
         return (/*html*/`
         <div class="menu-block">
             <div class="items-block">
+            <button onclick="getData()">Кнопка</button>
             </div>
         </div>
       `)
