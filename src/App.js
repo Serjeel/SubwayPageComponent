@@ -1,14 +1,22 @@
+import Component from "./Component";
 import MainHeader from "./MainHeader";
 import MenuBlock from "./MenuBlock";
 import MenuCategories from "./MenuCategories";
 import Order from "./Order";
 
-class App {
+class App extends Component {
+    constructor() {
+        super()
+    }
     render() {
         const mainHeader = new MainHeader();
         const menuCategories = new MenuCategories();
         const order = new Order();
-        const menuBlock = new MenuBlock();
+        let data = [];
+       
+        const menuBlock = new MenuBlock({
+            data
+        });
 
         return (/*html*/`
         ${mainHeader.render()}

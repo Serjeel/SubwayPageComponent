@@ -1,4 +1,9 @@
-class MenuCategories {
+import Component from "./Component"
+
+class MenuCategories extends Component {
+    constructor() {
+        super();
+    }
     render() {
         return (/*html*/`
         <div class="menu-categories">

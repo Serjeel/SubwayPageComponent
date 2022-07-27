@@ -2,6 +2,39 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/Component.js":
+/*!**************************!*\
+  !*** ./src/Component.js ***!
+  \**************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+class Component {
+    constructor(data = {}) {
+        let handler = {
+            set: this.handleDataChange.bind(this)
+        }
+        this.data = new Proxy(data, handler)
+    }
+
+    handleDataChange(item, property, value) {
+        item[property] = value
+        this.callback(this.data)
+        return true
+    }
+
+    setRerender(callback) {
+        this.callback = callback;
+    }
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Component);
+
+/***/ }),
+
 /***/ "./src/ItemsBlock.js":
 /*!***************************!*\
   !*** ./src/ItemsBlock.js ***!
@@ -12,29 +45,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-class ItemsBlock {
-    constructor() {
+/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Component */ "./src/Component.js");
 
+
+class ItemsBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"]{
+    constructor() {
+        super();
     }
-    render() {
+    render(item, i, logo) {
         return (/*html*/`
-            <div class="item" id="item-1">
-                <img class="logo" src="i/Subway_logo.png" />
-                <img class="item-image" src="i/Burger1.jpg" />
-                <p class="item-name">Овощной</p>
-                <p class="item-composition">${this.V}</p>
+            <div class="item" id="item-${i}">
+                <img class="logo" src=${logo} />
+                <img class="item-image" src=${item.image} />
+                <p class="item-name">${item.name}</p>
+                <p class="item-composition">${item.description}</p>
                 <div class="item-price-block">
                     <p class="price-text">Цена:</p>
-                    <p class="price-value" id="price-1">110</p>
+                    <p class="price-value" id="price-${item}">110</p>
                     <p class="price-currency">руб.</p>
                 </div>
                 <p class="item-amount">Количество</p>
                 <div class="amount-block">
-                    <img class="minus-icon" src="i/minus.svg" id="minus-1" onclick="minusClick(event.target)">
-                    <input class="item-counter" type="text" id="counter-1" value="1">
-                    <img class="plus-icon" src="i/plus.svg" id="plus-1" onclick="plusClick(event.target)">
+                    <img class="minus-icon" src="i/minus.svg" id="minus-${i}" onclick="minusClick(event.target)">
+                    <input class="item-counter" type="text" id="counter-${i}" value="1">
+                    <img class="plus-icon" src="i/plus.svg" id="plus-${i}" onclick="plusClick(event.target)">
                 </div>
-                <button class="item-button" id="button-1" onclick="addToBasket(event.target)">В КОРЗИНУ</button>
+                <button class="item-button" id="button-${i}" onclick="addToBasket(event.target)">В КОРЗИНУ</button>
         </div> 
       `)
     }
@@ -54,7 +90,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-class MainHeader {
+/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Component */ "./src/Component.js");
+
+
+class MainHeader extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"]{
+    constructor() {
+        super();
+    }
     render() {
         return (/*html*/`
             <h1 class="main-header">СДЕЛАЙТЕ ЗАКАЗ НАПРЯМУЮ ИЗ РЕСТОРАНА</h1>
@@ -76,37 +118,55 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _ItemsBlock__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ItemsBlock */ "./src/ItemsBlock.js");
+/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Component */ "./src/Component.js");
+/* harmony import */ var _ItemsBlock__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ItemsBlock */ "./src/ItemsBlock.js");
 
 
-class MenuBlock {
-    constructor() {
-        this.array = [7, 8, 3]
-        this.array.map((elem, i) => (console.log(elem, i)))
-        this.x = [];
+
+class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
+    constructor(props) {
+        const data = {
+            items: props.data.menu,
+        }
+        super(data)
+        super.setRerender(this.loadMenu)
+    }
+
+    // Далее что нужно сделать:
+    // 1. Фильтрация меню по категориям
+    // 2. Каунтеры(не забыть сделать так, чтобы они не менялись при переключении)
+    // 3. Разбить файл css и заимпортить по компонентам
+
+    loadMenu() {
+        console.log(this.data.items);
+        const itemsBlock = new _ItemsBlock__WEBPACK_IMPORTED_MODULE_1__["default"]();
+        let items = "";
+        let logo = "";
+        for (let i in this.data.items) {
+            if (this.data.items[i].market === "sfc") {
+                logo = "i/South_fried_chicken_logo.png";
+            } else if (this.data.items[i].market === "doner") {
+                logo = "i/Doner_logo.png";
+            } else {
+                logo = "i/Subway_logo.png";
+            }
+            items += itemsBlock.render(this.data.items[i], parseInt(i) + 1, logo);
+        }
+        document.getElementsByClassName("items-block")[0].innerHTML = items;
+    }
+
+    render() {
         const getData = async () => {
             await fetch("./src/data.json")
-            .then(response => response.json())
-            .then(data => {
-                this.x = data;
-                console.log(this.x);
-            })
-            console.log(this.x);
+                .then(response => response.json())
+                .then(data => {
+                    this.data.items = data.menu;
+                })
         }
         getData();
-        console.log(this.x);
-        // Додумать как использовать здесь fetch. Либо использовать async await, либо сначала
-        // отрендерить пустные значения, а потом через Прокси поймать изменения и тогда уже отобразить
-    }
-    render() {
-        setTimeout(() => {
-            console.log(this.x);
-        }, 10000);
-        const itemsBlock = new _ItemsBlock__WEBPACK_IMPORTED_MODULE_0__["default"]();
         return (/*html*/`
         <div class="menu-block">
             <div class="items-block">
-            <button onclick="getData()">Кнопка</button>
             </div>
         </div>
       `)
@@ -127,7 +187,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-class MenuCategories {
+/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Component */ "./src/Component.js");
+
+
+class MenuCategories extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
+    constructor() {
+        super();
+    }
     render() {
         return (/*html*/`
         <div class="menu-categories">
@@ -157,7 +223,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-class Order {
+/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Component */ "./src/Component.js");
+
+
+class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"]{
+    constructor() {
+        super();
+    }
      render() {
         return (/*html*/`
         <div class="order">
@@ -252,21 +324,30 @@ var __webpack_exports__ = {};
   !*** ./src/App.js ***!
   \********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _MainHeader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MainHeader */ "./src/MainHeader.js");
-/* harmony import */ var _MenuBlock__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MenuBlock */ "./src/MenuBlock.js");
-/* harmony import */ var _MenuCategories__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MenuCategories */ "./src/MenuCategories.js");
-/* harmony import */ var _Order__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Order */ "./src/Order.js");
+/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Component */ "./src/Component.js");
+/* harmony import */ var _MainHeader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MainHeader */ "./src/MainHeader.js");
+/* harmony import */ var _MenuBlock__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MenuBlock */ "./src/MenuBlock.js");
+/* harmony import */ var _MenuCategories__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MenuCategories */ "./src/MenuCategories.js");
+/* harmony import */ var _Order__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Order */ "./src/Order.js");
 
 
 
 
 
-class App {
+
+class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
+    constructor() {
+        super()
+    }
     render() {
-        const mainHeader = new _MainHeader__WEBPACK_IMPORTED_MODULE_0__["default"]();
-        const menuCategories = new _MenuCategories__WEBPACK_IMPORTED_MODULE_2__["default"]();
-        const order = new _Order__WEBPACK_IMPORTED_MODULE_3__["default"]();
-        const menuBlock = new _MenuBlock__WEBPACK_IMPORTED_MODULE_1__["default"]();
+        const mainHeader = new _MainHeader__WEBPACK_IMPORTED_MODULE_1__["default"]();
+        const menuCategories = new _MenuCategories__WEBPACK_IMPORTED_MODULE_3__["default"]();
+        const order = new _Order__WEBPACK_IMPORTED_MODULE_4__["default"]();
+        let data = [];
+       
+        const menuBlock = new _MenuBlock__WEBPACK_IMPORTED_MODULE_2__["default"]({
+            data
+        });
 
         return (/*html*/`
         ${mainHeader.render()}

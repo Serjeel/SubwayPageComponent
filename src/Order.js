@@ -1,4 +1,9 @@
-class Order {
+import Component from "./Component"
+
+class Order extends Component{
+    constructor() {
+        super();
+    }
      render() {
         return (/*html*/`
         <div class="order">
