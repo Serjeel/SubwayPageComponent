@@ -22,12 +22,12 @@ class Component {
 
     handleDataChange(item, property, value) {
         item[property] = value
-        this.callback(this.data)
+        this.rerender(this.data)
         return true
     }
 
     setRerender(callback) {
-        this.callback = callback;
+        this.rerender = callback;
     }
 }
 
@@ -61,7 +61,7 @@ class ItemsBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"]{
                 <p class="item-composition">${item.description}</p>
                 <div class="item-price-block">
                     <p class="price-text">Цена:</p>
-                    <p class="price-value" id="price-${item}">110</p>
+                    <p class="price-value" id="price-${item}">${item.price}</p>
                     <p class="price-currency">руб.</p>
                 </div>
                 <p class="item-amount">Количество</p>
@@ -127,15 +127,16 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(props) {
         const data = {
             items: props.data.menu,
+            selectedTab: props.selectedTab
         }
         super(data)
         super.setRerender(this.loadMenu)
     }
 
     // Далее что нужно сделать:
-    // 1. Фильтрация меню по категориям
+    // 1. Фильтрация меню по категориям(возможно надо перенести функцию в App и передвавать пропсами)
     // 2. Каунтеры(не забыть сделать так, чтобы они не менялись при переключении)
-    // 3. Разбить файл css и заимпортить по компонентам
+    // 3. Сделать рендеринг без getElement
 
     loadMenu() {
         console.log(this.data.items);
@@ -150,7 +151,9 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             } else {
                 logo = "i/Subway_logo.png";
             }
-            items += itemsBlock.render(this.data.items[i], parseInt(i) + 1, logo);
+            if (this.data.items[i].category === this.data.selectedTab) {
+                items += itemsBlock.render(this.data.items[i], parseInt(i) + 1, logo);
+            }
         }
         document.getElementsByClassName("items-block")[0].innerHTML = items;
     }
@@ -191,19 +194,47 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class MenuCategories extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
-    constructor() {
-        super();
+    constructor(props) {
+        const data = {
+            selectedTab: props.selectedTab
+        }
+        super(data)
+        super.setRerender(this.rerender)
+        this.tab = "";
     }
+
+    addListeners() { // Здесь вместо id взять по классу и пройтись циклом
+        document.getElementById('pancakes').addEventListener('click', this.categoryClick.bind(this));
+        document.getElementById('shaurma').addEventListener('click', this.categoryClick.bind(this));
+        document.getElementById('sandwiches').addEventListener('click', this.categoryClick.bind(this));
+        document.getElementById('burgers').addEventListener('click', this.categoryClick.bind(this));
+        document.getElementById('chicken').addEventListener('click', this.categoryClick.bind(this));
+        document.getElementById('salads').addEventListener('click', this.categoryClick.bind(this));
+        document.getElementById('drinks').addEventListener('click', this.categoryClick.bind(this));
+    }
+
+    categoryClick(target) {
+        console.log("Нажато");
+        console.log(this.data);
+        console.log(target.target.id);
+        this.tab = target.target.id;
+        this.data.selectedTab = this.tab;
+    }
+
+    rerender() {
+        console.log(this.data.selectedTab);
+    }
+
     render() {
         return (/*html*/`
         <div class="menu-categories">
-            <p class="category" id="category-1">Блины</p>
-            <p class="category" id="category-2">Шаурма</p>
-            <p class="category" id="category-3">Сэндвичи</p>
-            <p class="category" id="category-4">Бургеры</p>
-            <p class="category" id="category-5">Курица & Картофель</p>
-            <p class="category" id="category-6">Тортилья & Салаты</p>
-            <p class="category" id="category-7">Напитки & Десерты</p>
+            <p class="category" id="pancakes">Блины</p>
+            <p class="category" id="shaurma">Шаурма</p>
+            <p class="category" id="sandwiches">Сэндвичи</p>
+            <p class="category" id="burgers">Бургеры</p>
+            <p class="category" id="chicken">Курица & Картофель</p>
+            <p class="category" id="salads">Тортилья & Салаты</p>
+            <p class="category" id="drinks">Напитки & Десерты</p>
         </div>
       `)
     }
@@ -338,31 +369,39 @@ __webpack_require__.r(__webpack_exports__);
 class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor() {
         super()
-    }
-    render() {
-        const mainHeader = new _MainHeader__WEBPACK_IMPORTED_MODULE_1__["default"]();
-        const menuCategories = new _MenuCategories__WEBPACK_IMPORTED_MODULE_3__["default"]();
-        const order = new _Order__WEBPACK_IMPORTED_MODULE_4__["default"]();
-        let data = [];
-       
-        const menuBlock = new _MenuBlock__WEBPACK_IMPORTED_MODULE_2__["default"]({
-            data
-        });
+        let selectedTab = "sandwiches"
 
+        this.mainHeader = new _MainHeader__WEBPACK_IMPORTED_MODULE_1__["default"]();
+        this.menuCategories = new _MenuCategories__WEBPACK_IMPORTED_MODULE_3__["default"]({
+            selectedTab: selectedTab
+        });
+        this.order = new _Order__WEBPACK_IMPORTED_MODULE_4__["default"]();
+        this.menuBlock = new _MenuBlock__WEBPACK_IMPORTED_MODULE_2__["default"]({
+            data: [],
+            selectedTab: selectedTab
+        });
+    }
+
+    enable() {
+        this.menuCategories.addListeners();
+    }
+
+    render() {
         return (/*html*/`
-        ${mainHeader.render()}
+        ${this.mainHeader.render()}
         <div class="main-form">
             <div class="categories_and_orders-block">
-                ${menuCategories.render()}
-                ${order.render()}
+                ${this.menuCategories.render()}
+                ${this.order.render()}
             </div>
-            ${menuBlock.render()}
+            ${this.menuBlock.render()}
         </div>
         `)
     }
 }
 const app = new App();
 document.body.innerHTML = app.render();
+app.enable(); // Сюда засунуть все eventListeners
 })();
 
 /******/ })()

@@ -13,7 +13,7 @@ class ItemsBlock extends Component{
                 <p class="item-composition">${item.description}</p>
                 <div class="item-price-block">
                     <p class="price-text">Цена:</p>
-                    <p class="price-value" id="price-${item}">110</p>
+                    <p class="price-value" id="price-${item}">${item.price}</p>
                     <p class="price-currency">руб.</p>
                 </div>
                 <p class="item-amount">Количество</p>

@@ -8,12 +8,12 @@ class Component {
 
     handleDataChange(item, property, value) {
         item[property] = value
-        this.callback(this.data)
+        this.rerender(this.data)
         return true
     }
 
     setRerender(callback) {
-        this.callback = callback;
+        this.rerender = callback;
     }
 }
 
