@@ -127,10 +127,19 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(props) {
         const data = {
             items: props.data.menu,
-            selectedTab: props.selectedTab
+            selectedTab: props.selectedTab,
+            testMethod: props.testMethod
         }
+        const getData = async () => {
+            await fetch("./src/data.json")
+                .then(response => response.json())
+                .then(data => {
+                    this.data.items = data.menu;
+                })
+        }
+        getData();
         super(data)
-        super.setRerender(this.loadMenu)
+        super.setRerender(this.render)
     }
 
     // Далее что нужно сделать:
@@ -139,7 +148,8 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     // 3. Сделать рендеринг без getElement
 
     loadMenu() {
-        console.log(this.data.items);
+        //console.log(this.data.items);
+        //this.data.testMethod()
         const itemsBlock = new _ItemsBlock__WEBPACK_IMPORTED_MODULE_1__["default"]();
         let items = "";
         let logo = "";
@@ -155,21 +165,21 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                 items += itemsBlock.render(this.data.items[i], parseInt(i) + 1, logo);
             }
         }
-        document.getElementsByClassName("items-block")[0].innerHTML = items;
+        if (this.data.items === undefined) {
+            items = "Загрузка..."
+        }
+        console.log(this.data.items);
+
+        return items;
     }
 
     render() {
-        const getData = async () => {
-            await fetch("./src/data.json")
-                .then(response => response.json())
-                .then(data => {
-                    this.data.items = data.menu;
-                })
-        }
-        getData();
+        console.log("Рендер сработал");
+
         return (/*html*/`
         <div class="menu-block">
             <div class="items-block">
+            ${this.loadMenu()}
             </div>
         </div>
       `)
@@ -201,16 +211,14 @@ class MenuCategories extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] 
         super(data)
         super.setRerender(this.rerender)
         this.tab = "";
+
+        this.arrayId = ["pancakes", "shaurma", "sandwiches", "burgers", "chicken", "salads", "drinks"]
     }
 
-    addListeners() { // Здесь вместо id взять по классу и пройтись циклом
-        document.getElementById('pancakes').addEventListener('click', this.categoryClick.bind(this));
-        document.getElementById('shaurma').addEventListener('click', this.categoryClick.bind(this));
-        document.getElementById('sandwiches').addEventListener('click', this.categoryClick.bind(this));
-        document.getElementById('burgers').addEventListener('click', this.categoryClick.bind(this));
-        document.getElementById('chicken').addEventListener('click', this.categoryClick.bind(this));
-        document.getElementById('salads').addEventListener('click', this.categoryClick.bind(this));
-        document.getElementById('drinks').addEventListener('click', this.categoryClick.bind(this));
+    addListeners() {
+        for (let i in this.arrayId) {
+            document.getElementById(this.arrayId[i]).addEventListener('click', this.categoryClick.bind(this));
+        }
     }
 
     categoryClick(target) {
@@ -368,8 +376,18 @@ __webpack_require__.r(__webpack_exports__);
 
 class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor() {
-        super()
-        let selectedTab = "sandwiches"
+        const data = {
+            selectedTab: "sandwiches" // Сделать selectedTab как state в других компонентах и 
+                                        // по аналогии других компонентов сделать перерендер всего App
+                                        // Возможно для этого стоит перенести рендер Аппа в Component
+        }
+        super(data)
+        super.setRerender(this.render)
+        this.createChildren() // eslint + prettier
+    }
+
+    createChildren() {
+        const { selectedTab } = this.data
 
         this.mainHeader = new _MainHeader__WEBPACK_IMPORTED_MODULE_1__["default"]();
         this.menuCategories = new _MenuCategories__WEBPACK_IMPORTED_MODULE_3__["default"]({
@@ -378,7 +396,8 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         this.order = new _Order__WEBPACK_IMPORTED_MODULE_4__["default"]();
         this.menuBlock = new _MenuBlock__WEBPACK_IMPORTED_MODULE_2__["default"]({
             data: [],
-            selectedTab: selectedTab
+            selectedTab: selectedTab,
+            testMethod: this.testMethod
         });
     }
 
@@ -386,7 +405,13 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         this.menuCategories.addListeners();
     }
 
+    testMethod() {
+        console.log("Метод сработал");
+    }
+
     render() {
+        this.createChildren();
+
         return (/*html*/`
         ${this.mainHeader.render()}
         <div class="main-form">
@@ -399,9 +424,10 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         `)
     }
 }
+
 const app = new App();
 document.body.innerHTML = app.render();
-app.enable(); // Сюда засунуть все eventListeners
+app.enable();
 })();
 
 /******/ })()

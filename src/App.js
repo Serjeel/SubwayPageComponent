@@ -6,8 +6,18 @@ import Order from "./Order";
 
 class App extends Component {
     constructor() {
-        super()
-        let selectedTab = "sandwiches"
+        const data = {
+            selectedTab: "sandwiches" // Сделать selectedTab как state в других компонентах и 
+                                        // по аналогии других компонентов сделать перерендер всего App
+                                        // Возможно для этого стоит перенести рендер Аппа в Component
+        }
+        super(data)
+        super.setRerender(this.render)
+        this.createChildren() // eslint + prettier
+    }
+
+    createChildren() {
+        const { selectedTab } = this.data
 
         this.mainHeader = new MainHeader();
         this.menuCategories = new MenuCategories({
@@ -16,7 +26,8 @@ class App extends Component {
         this.order = new Order();
         this.menuBlock = new MenuBlock({
             data: [],
-            selectedTab: selectedTab
+            selectedTab: selectedTab,
+            testMethod: this.testMethod
         });
     }
 
@@ -24,7 +35,13 @@ class App extends Component {
         this.menuCategories.addListeners();
     }
 
+    testMethod() {
+        console.log("Метод сработал");
+    }
+
     render() {
+        this.createChildren();
+
         return (/*html*/`
         ${this.mainHeader.render()}
         <div class="main-form">
@@ -37,6 +54,7 @@ class App extends Component {
         `)
     }
 }
+
 const app = new App();
 document.body.innerHTML = app.render();
-app.enable(); // Сюда засунуть все eventListeners
+app.enable();

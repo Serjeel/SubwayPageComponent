@@ -8,16 +8,14 @@ class MenuCategories extends Component {
         super(data)
         super.setRerender(this.rerender)
         this.tab = "";
+
+        this.arrayId = ["pancakes", "shaurma", "sandwiches", "burgers", "chicken", "salads", "drinks"]
     }
 
-    addListeners() { // Здесь вместо id взять по классу и пройтись циклом
-        document.getElementById('pancakes').addEventListener('click', this.categoryClick.bind(this));
-        document.getElementById('shaurma').addEventListener('click', this.categoryClick.bind(this));
-        document.getElementById('sandwiches').addEventListener('click', this.categoryClick.bind(this));
-        document.getElementById('burgers').addEventListener('click', this.categoryClick.bind(this));
-        document.getElementById('chicken').addEventListener('click', this.categoryClick.bind(this));
-        document.getElementById('salads').addEventListener('click', this.categoryClick.bind(this));
-        document.getElementById('drinks').addEventListener('click', this.categoryClick.bind(this));
+    addListeners() {
+        for (let i in this.arrayId) {
+            document.getElementById(this.arrayId[i]).addEventListener('click', this.categoryClick.bind(this));
+        }
     }
 
     categoryClick(target) {

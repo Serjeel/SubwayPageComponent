@@ -5,10 +5,19 @@ class MenuBlock extends Component {
     constructor(props) {
         const data = {
             items: props.data.menu,
-            selectedTab: props.selectedTab
+            selectedTab: props.selectedTab,
+            testMethod: props.testMethod
         }
+        const getData = async () => {
+            await fetch("./src/data.json")
+                .then(response => response.json())
+                .then(data => {
+                    this.data.items = data.menu;
+                })
+        }
+        getData();
         super(data)
-        super.setRerender(this.loadMenu)
+        super.setRerender(this.render)
     }
 
     // Далее что нужно сделать:
@@ -17,7 +26,8 @@ class MenuBlock extends Component {
     // 3. Сделать рендеринг без getElement
 
     loadMenu() {
-        console.log(this.data.items);
+        //console.log(this.data.items);
+        //this.data.testMethod()
         const itemsBlock = new ItemsBlock();
         let items = "";
         let logo = "";
@@ -33,21 +43,21 @@ class MenuBlock extends Component {
                 items += itemsBlock.render(this.data.items[i], parseInt(i) + 1, logo);
             }
         }
-        document.getElementsByClassName("items-block")[0].innerHTML = items;
+        if (this.data.items === undefined) {
+            items = "Загрузка..."
+        }
+        console.log(this.data.items);
+
+        return items;
     }
 
     render() {
-        const getData = async () => {
-            await fetch("./src/data.json")
-                .then(response => response.json())
-                .then(data => {
-                    this.data.items = data.menu;
-                })
-        }
-        getData();
+        console.log("Рендер сработал");
+
         return (/*html*/`
         <div class="menu-block">
             <div class="items-block">
+            ${this.loadMenu()}
             </div>
         </div>
       `)
