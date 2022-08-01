@@ -22,12 +22,14 @@ class Component {
 
     handleDataChange(item, property, value) {
         item[property] = value
-        this.rerender(this.data)
+        this.rerender(this.data) //
+        console.log(this.data);
         return true
     }
 
     setRerender(callback) {
         this.rerender = callback;
+        console.log(this.data);  // Понять как правильно делать стейты в грёбаных классах
     }
 }
 
@@ -363,6 +365,9 @@ var __webpack_exports__ = {};
   !*** ./src/App.js ***!
   \********************/
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
 /* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Component */ "./src/Component.js");
 /* harmony import */ var _MainHeader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MainHeader */ "./src/MainHeader.js");
 /* harmony import */ var _MenuBlock__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MenuBlock */ "./src/MenuBlock.js");
@@ -375,28 +380,28 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
-    constructor() {
+    constructor(
+        onChange
+    ) {
         const data = {
-            selectedTab: "sandwiches" // Сделать selectedTab как state в других компонентах и 
-                                        // по аналогии других компонентов сделать перерендер всего App
-                                        // Возможно для этого стоит перенести рендер Аппа в Component
-        }
+            selectedTab: "sandwiches" // Сделать selectedTab как state в других компонентах
+        }                           // Повыполнять задачки с функциями на learnJs
         super(data)
-        super.setRerender(this.render)
+        super.setRerender(onChange)
+        console.log(onChange);
         this.createChildren() // eslint + prettier
     }
 
     createChildren() {
-        const { selectedTab } = this.data
-
+        
         this.mainHeader = new _MainHeader__WEBPACK_IMPORTED_MODULE_1__["default"]();
         this.menuCategories = new _MenuCategories__WEBPACK_IMPORTED_MODULE_3__["default"]({
-            selectedTab: selectedTab
+            selectedTab: this.data.selectedTab
         });
         this.order = new _Order__WEBPACK_IMPORTED_MODULE_4__["default"]();
         this.menuBlock = new _MenuBlock__WEBPACK_IMPORTED_MODULE_2__["default"]({
             data: [],
-            selectedTab: selectedTab,
+            selectedTab: this.data.selectedTab,
             testMethod: this.testMethod
         });
     }
@@ -411,7 +416,7 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
     render() {
         this.createChildren();
-
+        console.log(this.data.selectedTab);
         return (/*html*/`
         ${this.mainHeader.render()}
         <div class="main-form">
@@ -425,9 +430,17 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     }
 }
 
-const app = new App();
-document.body.innerHTML = app.render();
-app.enable();
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);
+
+const rerenderApp = () => {
+    document.body.innerHTML = app.render();
+    app.enable();
+}
+
+const app = new App(
+    rerenderApp
+);
+rerenderApp();
 })();
 
 /******/ })()

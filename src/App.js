@@ -5,28 +5,28 @@ import MenuCategories from "./MenuCategories";
 import Order from "./Order";
 
 class App extends Component {
-    constructor() {
+    constructor(
+        onChange
+    ) {
         const data = {
-            selectedTab: "sandwiches" // Сделать selectedTab как state в других компонентах и 
-                                        // по аналогии других компонентов сделать перерендер всего App
-                                        // Возможно для этого стоит перенести рендер Аппа в Component
-        }
+            selectedTab: "sandwiches" // Сделать selectedTab как state в других компонентах
+        }                           // Повыполнять задачки с функциями на learnJs
         super(data)
-        super.setRerender(this.render)
+        super.setRerender(onChange)
+        console.log(onChange);
         this.createChildren() // eslint + prettier
     }
 
     createChildren() {
-        const { selectedTab } = this.data
-
+        
         this.mainHeader = new MainHeader();
         this.menuCategories = new MenuCategories({
-            selectedTab: selectedTab
+            selectedTab: this.data.selectedTab
         });
         this.order = new Order();
         this.menuBlock = new MenuBlock({
             data: [],
-            selectedTab: selectedTab,
+            selectedTab: this.data.selectedTab,
             testMethod: this.testMethod
         });
     }
@@ -41,7 +41,7 @@ class App extends Component {
 
     render() {
         this.createChildren();
-
+        console.log(this.data.selectedTab);
         return (/*html*/`
         ${this.mainHeader.render()}
         <div class="main-form">
@@ -55,6 +55,14 @@ class App extends Component {
     }
 }
 
-const app = new App();
-document.body.innerHTML = app.render();
-app.enable();
+export default App;
+
+const rerenderApp = () => {
+    document.body.innerHTML = app.render();
+    app.enable();
+}
+
+const app = new App(
+    rerenderApp
+);
+rerenderApp();
