@@ -29,7 +29,7 @@ class Component {
 
     setRerender(callback) {
         this.rerender = callback;
-        console.log(this.data);  // Понять как правильно делать стейты в грёбаных классах
+        console.log(callback.name);
     }
 }
 
@@ -128,26 +128,23 @@ __webpack_require__.r(__webpack_exports__);
 class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(props) {
         const data = {
-            items: props.data.menu,
-            selectedTab: props.selectedTab,
-            testMethod: props.testMethod
+            items: [],
+            // selectedTab: props.selectedTab,
+            testMethod: props.testMethod,
+            //rerenderApp: props.rerenderApp
         }
-        const getData = async () => {
-            await fetch("./src/data.json")
-                .then(response => response.json())
-                .then(data => {
-                    this.data.items = data.menu;
-                })
-        }
-        getData();
+        
+        
+
         super(data)
         super.setRerender(this.render)
+        //super.setRerender(this.data.rerenderApp)
+        console.log(data.items.length);
     }
 
     // Далее что нужно сделать:
     // 1. Фильтрация меню по категориям(возможно надо перенести функцию в App и передвавать пропсами)
     // 2. Каунтеры(не забыть сделать так, чтобы они не менялись при переключении)
-    // 3. Сделать рендеринг без getElement
 
     loadMenu() {
         //console.log(this.data.items);
@@ -156,6 +153,10 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         let items = "";
         let logo = "";
         for (let i in this.data.items) {
+            if (this.data.items[i].category !== this.data.selectedTab) {
+                continue;
+            }
+            
             if (this.data.items[i].market === "sfc") {
                 logo = "i/South_fried_chicken_logo.png";
             } else if (this.data.items[i].market === "doner") {
@@ -163,14 +164,14 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             } else {
                 logo = "i/Subway_logo.png";
             }
-            if (this.data.items[i].category === this.data.selectedTab) {
-                items += itemsBlock.render(this.data.items[i], parseInt(i) + 1, logo);
-            }
+
+            items += itemsBlock.render(this.data.items[i], parseInt(i) + 1, logo);
         }
         if (this.data.items === undefined) {
             items = "Загрузка..."
         }
-        console.log(this.data.items);
+       // console.log(this.data.items);
+        //console.log(this.props.selectedTab);
 
         return items;
     }
@@ -185,6 +186,20 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             </div>
         </div>
       `)
+    }
+
+    enable() {
+        async function getData() {
+            await fetch("./src/data.json")
+                .then(response => response.json())
+                .then(data => {
+                    this.data.items = data.menu;
+                })
+        }
+
+        if(this.data.items !== 0) {
+            getData();
+        }
     }
 }
 
@@ -207,28 +222,27 @@ __webpack_require__.r(__webpack_exports__);
 
 class MenuCategories extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(props) {
-        const data = {
-            selectedTab: props.selectedTab
-        }
-        super(data)
-        super.setRerender(this.rerender)
+        super({})
+        //super.setRerender(this.rerender)
         this.tab = "";
+        this.handleChangeSelectedTabClick = props.handleChangeSelectedTabClick;
 
         this.arrayId = ["pancakes", "shaurma", "sandwiches", "burgers", "chicken", "salads", "drinks"]
     }
 
     addListeners() {
         for (let i in this.arrayId) {
-            document.getElementById(this.arrayId[i]).addEventListener('click', this.categoryClick.bind(this));
+            document.getElementById(this.arrayId[i]).addEventListener('click', this.handleClickCategory.bind(this));
         }
     }
 
-    categoryClick(target) {
+    handleClickCategory(target) {
         console.log("Нажато");
         console.log(this.data);
         console.log(target.target.id);
         this.tab = target.target.id;
-        this.data.selectedTab = this.tab;
+        this.handleChangeSelectedTabClick(this.tab);
+        // this.data.selectedTab = this.tab;
     }
 
     rerender() {
@@ -384,30 +398,37 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         onChange
     ) {
         const data = {
-            selectedTab: "sandwiches" // Сделать selectedTab как state в других компонентах
-        }                           // Повыполнять задачки с функциями на learnJs
+            selectedTab: "sandwiches" // Пройтись по первой главе learnJs и выполнить все задачки
+        }
         super(data)
         super.setRerender(onChange)
         console.log(onChange);
+        this.onChange = onChange
         this.createChildren() // eslint + prettier
+
+        // Переместить getData сюда, так как App объявляется один раз, а enable вызывается много раз
     }
 
     createChildren() {
-        
         this.mainHeader = new _MainHeader__WEBPACK_IMPORTED_MODULE_1__["default"]();
         this.menuCategories = new _MenuCategories__WEBPACK_IMPORTED_MODULE_3__["default"]({
-            selectedTab: this.data.selectedTab
+            selectedTab: this.data.selectedTab,
+            handleChangeSelectedTabClick: (x) => {this.data.selectedTab = x}
         });
         this.order = new _Order__WEBPACK_IMPORTED_MODULE_4__["default"]();
         this.menuBlock = new _MenuBlock__WEBPACK_IMPORTED_MODULE_2__["default"]({
             data: [],
             selectedTab: this.data.selectedTab,
-            testMethod: this.testMethod
+            testMethod: this.testMethod,
+            //rerenderApp: this.onChange
         });
     }
 
     enable() {
         this.menuCategories.addListeners();
+        console.log(this.data.selectedTab);
+        this.menuBlock.enable();
+        
     }
 
     testMethod() {

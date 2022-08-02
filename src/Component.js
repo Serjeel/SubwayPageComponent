@@ -15,7 +15,7 @@ class Component {
 
     setRerender(callback) {
         this.rerender = callback;
-        console.log(this.data);  // Понять как правильно делать стейты в грёбаных классах
+        console.log(callback.name);
     }
 }
 

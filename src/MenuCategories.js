@@ -2,28 +2,27 @@ import Component from "./Component"
 
 class MenuCategories extends Component {
     constructor(props) {
-        const data = {
-            selectedTab: props.selectedTab
-        }
-        super(data)
-        super.setRerender(this.rerender)
+        super({})
+        //super.setRerender(this.rerender)
         this.tab = "";
+        this.handleChangeSelectedTabClick = props.handleChangeSelectedTabClick;
 
         this.arrayId = ["pancakes", "shaurma", "sandwiches", "burgers", "chicken", "salads", "drinks"]
     }
 
     addListeners() {
         for (let i in this.arrayId) {
-            document.getElementById(this.arrayId[i]).addEventListener('click', this.categoryClick.bind(this));
+            document.getElementById(this.arrayId[i]).addEventListener('click', this.handleClickCategory.bind(this));
         }
     }
 
-    categoryClick(target) {
+    handleClickCategory(target) {
         console.log("Нажато");
         console.log(this.data);
         console.log(target.target.id);
         this.tab = target.target.id;
-        this.data.selectedTab = this.tab;
+        this.handleChangeSelectedTabClick(this.tab);
+        // this.data.selectedTab = this.tab;
     }
 
     rerender() {

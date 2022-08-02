@@ -9,30 +9,37 @@ class App extends Component {
         onChange
     ) {
         const data = {
-            selectedTab: "sandwiches" // Сделать selectedTab как state в других компонентах
-        }                           // Повыполнять задачки с функциями на learnJs
+            selectedTab: "sandwiches" // Пройтись по первой главе learnJs и выполнить все задачки
+        }
         super(data)
         super.setRerender(onChange)
         console.log(onChange);
+        this.onChange = onChange
         this.createChildren() // eslint + prettier
+
+        // Переместить getData сюда, так как App объявляется один раз, а enable вызывается много раз
     }
 
     createChildren() {
-        
         this.mainHeader = new MainHeader();
         this.menuCategories = new MenuCategories({
-            selectedTab: this.data.selectedTab
+            selectedTab: this.data.selectedTab,
+            handleChangeSelectedTabClick: (x) => {this.data.selectedTab = x}
         });
         this.order = new Order();
         this.menuBlock = new MenuBlock({
             data: [],
             selectedTab: this.data.selectedTab,
-            testMethod: this.testMethod
+            testMethod: this.testMethod,
+            //rerenderApp: this.onChange
         });
     }
 
     enable() {
         this.menuCategories.addListeners();
+        console.log(this.data.selectedTab);
+        this.menuBlock.enable();
+        
     }
 
     testMethod() {

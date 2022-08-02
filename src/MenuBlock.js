@@ -4,26 +4,23 @@ import ItemsBlock from "./ItemsBlock";
 class MenuBlock extends Component {
     constructor(props) {
         const data = {
-            items: props.data.menu,
-            selectedTab: props.selectedTab,
-            testMethod: props.testMethod
+            items: [],
+            // selectedTab: props.selectedTab,
+            testMethod: props.testMethod,
+            //rerenderApp: props.rerenderApp
         }
-        const getData = async () => {
-            await fetch("./src/data.json")
-                .then(response => response.json())
-                .then(data => {
-                    this.data.items = data.menu;
-                })
-        }
-        getData();
+        
+        
+
         super(data)
         super.setRerender(this.render)
+        //super.setRerender(this.data.rerenderApp)
+        console.log(data.items.length);
     }
 
     // Далее что нужно сделать:
     // 1. Фильтрация меню по категориям(возможно надо перенести функцию в App и передвавать пропсами)
     // 2. Каунтеры(не забыть сделать так, чтобы они не менялись при переключении)
-    // 3. Сделать рендеринг без getElement
 
     loadMenu() {
         //console.log(this.data.items);
@@ -32,6 +29,10 @@ class MenuBlock extends Component {
         let items = "";
         let logo = "";
         for (let i in this.data.items) {
+            if (this.data.items[i].category !== this.data.selectedTab) {
+                continue;
+            }
+            
             if (this.data.items[i].market === "sfc") {
                 logo = "i/South_fried_chicken_logo.png";
             } else if (this.data.items[i].market === "doner") {
@@ -39,14 +40,14 @@ class MenuBlock extends Component {
             } else {
                 logo = "i/Subway_logo.png";
             }
-            if (this.data.items[i].category === this.data.selectedTab) {
-                items += itemsBlock.render(this.data.items[i], parseInt(i) + 1, logo);
-            }
+
+            items += itemsBlock.render(this.data.items[i], parseInt(i) + 1, logo);
         }
         if (this.data.items === undefined) {
             items = "Загрузка..."
         }
-        console.log(this.data.items);
+       // console.log(this.data.items);
+        //console.log(this.props.selectedTab);
 
         return items;
     }
@@ -61,6 +62,20 @@ class MenuBlock extends Component {
             </div>
         </div>
       `)
+    }
+
+    enable() {
+        async function getData() {
+            await fetch("./src/data.json")
+                .then(response => response.json())
+                .then(data => {
+                    this.data.items = data.menu;
+                })
+        }
+
+        if(this.data.items !== 0) {
+            getData();
+        }
     }
 }
 
