@@ -5,19 +5,27 @@ import MenuCategories from "./MenuCategories";
 import Order from "./Order";
 
 class App extends Component {
-    constructor(
-        onChange
-    ) {
+    constructor(onChange) {
         const data = {
-            selectedTab: "sandwiches" // Пройтись по первой главе learnJs и выполнить все задачки
+            selectedTab: "sandwiches",
+            items: [] // Пройтись по первой главе learnJs и выполнить все задачки
         }
         super(data)
         super.setRerender(onChange)
-        console.log(onChange);
         this.onChange = onChange
         this.createChildren() // eslint + prettier
 
-        // Переместить getData сюда, так как App объявляется один раз, а enable вызывается много раз
+        const getData = async() => {
+            await fetch("./src/data.json")
+                .then(response => response.json())
+                .then(data => {
+                    this.data.items = data.menu;
+                })
+        }
+
+        if(this.data.items.length === 0) {
+            getData();
+        }
     }
 
     createChildren() {
@@ -28,7 +36,7 @@ class App extends Component {
         });
         this.order = new Order();
         this.menuBlock = new MenuBlock({
-            data: [],
+            items: this.data.items,
             selectedTab: this.data.selectedTab,
             testMethod: this.testMethod,
             //rerenderApp: this.onChange
@@ -36,10 +44,7 @@ class App extends Component {
     }
 
     enable() {
-        this.menuCategories.addListeners();
-        console.log(this.data.selectedTab);
-        this.menuBlock.enable();
-        
+        this.menuCategories.enable();     
     }
 
     testMethod() {
@@ -48,7 +53,6 @@ class App extends Component {
 
     render() {
         this.createChildren();
-        console.log(this.data.selectedTab);
         return (/*html*/`
         ${this.mainHeader.render()}
         <div class="main-form">
@@ -72,4 +76,3 @@ const rerenderApp = () => {
 const app = new App(
     rerenderApp
 );
-rerenderApp();

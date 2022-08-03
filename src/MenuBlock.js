@@ -4,23 +4,19 @@ import ItemsBlock from "./ItemsBlock";
 class MenuBlock extends Component {
     constructor(props) {
         const data = {
-            items: [],
-            // selectedTab: props.selectedTab,
-            testMethod: props.testMethod,
-            //rerenderApp: props.rerenderApp
+            items: props.items,
+            selectedTab: props.selectedTab,
+            //testMethod: props.testMethod,
         }
-        
-        
 
         super(data)
         super.setRerender(this.render)
         //super.setRerender(this.data.rerenderApp)
-        console.log(data.items.length);
+        console.log(data.items.length); 
     }
 
     // Далее что нужно сделать:
-    // 1. Фильтрация меню по категориям(возможно надо перенести функцию в App и передвавать пропсами)
-    // 2. Каунтеры(не забыть сделать так, чтобы они не менялись при переключении)
+    // 1. Каунтеры(не забыть сделать так, чтобы они не менялись при переключении)
 
     loadMenu() {
         //console.log(this.data.items);
@@ -43,7 +39,7 @@ class MenuBlock extends Component {
 
             items += itemsBlock.render(this.data.items[i], parseInt(i) + 1, logo);
         }
-        if (this.data.items === undefined) {
+        if (this.data.items.length === 0) {
             items = "Загрузка..."
         }
        // console.log(this.data.items);
@@ -54,7 +50,6 @@ class MenuBlock extends Component {
 
     render() {
         console.log("Рендер сработал");
-
         return (/*html*/`
         <div class="menu-block">
             <div class="items-block">
@@ -62,20 +57,6 @@ class MenuBlock extends Component {
             </div>
         </div>
       `)
-    }
-
-    enable() {
-        async function getData() {
-            await fetch("./src/data.json")
-                .then(response => response.json())
-                .then(data => {
-                    this.data.items = data.menu;
-                })
-        }
-
-        if(this.data.items !== 0) {
-            getData();
-        }
     }
 }
 

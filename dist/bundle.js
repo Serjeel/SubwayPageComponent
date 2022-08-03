@@ -128,23 +128,19 @@ __webpack_require__.r(__webpack_exports__);
 class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(props) {
         const data = {
-            items: [],
-            // selectedTab: props.selectedTab,
-            testMethod: props.testMethod,
-            //rerenderApp: props.rerenderApp
+            items: props.items,
+            selectedTab: props.selectedTab,
+            //testMethod: props.testMethod,
         }
-        
-        
 
         super(data)
         super.setRerender(this.render)
         //super.setRerender(this.data.rerenderApp)
-        console.log(data.items.length);
+        console.log(data.items.length); 
     }
 
     // Далее что нужно сделать:
-    // 1. Фильтрация меню по категориям(возможно надо перенести функцию в App и передвавать пропсами)
-    // 2. Каунтеры(не забыть сделать так, чтобы они не менялись при переключении)
+    // 1. Каунтеры(не забыть сделать так, чтобы они не менялись при переключении)
 
     loadMenu() {
         //console.log(this.data.items);
@@ -167,7 +163,7 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
             items += itemsBlock.render(this.data.items[i], parseInt(i) + 1, logo);
         }
-        if (this.data.items === undefined) {
+        if (this.data.items.length === 0) {
             items = "Загрузка..."
         }
        // console.log(this.data.items);
@@ -178,7 +174,6 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
     render() {
         console.log("Рендер сработал");
-
         return (/*html*/`
         <div class="menu-block">
             <div class="items-block">
@@ -186,20 +181,6 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             </div>
         </div>
       `)
-    }
-
-    enable() {
-        async function getData() {
-            await fetch("./src/data.json")
-                .then(response => response.json())
-                .then(data => {
-                    this.data.items = data.menu;
-                })
-        }
-
-        if(this.data.items !== 0) {
-            getData();
-        }
     }
 }
 
@@ -222,47 +203,54 @@ __webpack_require__.r(__webpack_exports__);
 
 class MenuCategories extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(props) {
-        super({})
-        //super.setRerender(this.rerender)
-        this.tab = "";
+        super()
         this.handleChangeSelectedTabClick = props.handleChangeSelectedTabClick;
+        console.log(this.handleChangeSelectedTabClick);
 
-        this.arrayId = ["pancakes", "shaurma", "sandwiches", "burgers", "chicken", "salads", "drinks"]
-    }
+        this.selectedTab = props.selectedTab
 
-    addListeners() {
-        for (let i in this.arrayId) {
-            document.getElementById(this.arrayId[i]).addEventListener('click', this.handleClickCategory.bind(this));
+        this.categories =
+        {
+            pancakes: "Блины",
+            shaurma: "Шаурма",
+            sandwiches: "Сэндвичи",
+            burgers: "Бургеры",
+            chicken: "Курица & Картофель",
+            salads: "Тортилья & Салаты",
+            drinks: "Напитки & Десерты"
         }
     }
 
-    handleClickCategory(target) {
-        console.log("Нажато");
-        console.log(this.data);
-        console.log(target.target.id);
-        this.tab = target.target.id;
-        this.handleChangeSelectedTabClick(this.tab);
-        // this.data.selectedTab = this.tab;
-    }
+        enable() {
+            for (let i in this.categories) {
+                const category = document.getElementById(i);
+                category.addEventListener('click', this.handleClickCategory.bind(this));
+            }
+        }
 
-    rerender() {
-        console.log(this.data.selectedTab);
-    }
+        handleClickCategory(target) {
+            console.log("Нажато");
+            console.log(target.target.id);
+            if (this.selectedTab !== target.target.id) {
+                this.handleChangeSelectedTabClick(target.target.id);
+            }
+        }
 
-    render() {
-        return (/*html*/`
+        render() {
+            let menuItems = ``;
+            for (let i in this.categories) {
+                menuItems += `<p class="${this.selectedTab === i ? "category-active" : "category"}"
+                id="${i}">${this.categories[i]}</p>` 
+            }
+           
+
+            return (/*html*/`
         <div class="menu-categories">
-            <p class="category" id="pancakes">Блины</p>
-            <p class="category" id="shaurma">Шаурма</p>
-            <p class="category" id="sandwiches">Сэндвичи</p>
-            <p class="category" id="burgers">Бургеры</p>
-            <p class="category" id="chicken">Курица & Картофель</p>
-            <p class="category" id="salads">Тортилья & Салаты</p>
-            <p class="category" id="drinks">Напитки & Десерты</p>
+            ${menuItems}
         </div>
       `)
+        }
     }
-}
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MenuCategories);
 
@@ -394,19 +382,27 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
-    constructor(
-        onChange
-    ) {
+    constructor(onChange) {
         const data = {
-            selectedTab: "sandwiches" // Пройтись по первой главе learnJs и выполнить все задачки
+            selectedTab: "sandwiches",
+            items: [] // Пройтись по первой главе learnJs и выполнить все задачки
         }
         super(data)
         super.setRerender(onChange)
-        console.log(onChange);
         this.onChange = onChange
         this.createChildren() // eslint + prettier
 
-        // Переместить getData сюда, так как App объявляется один раз, а enable вызывается много раз
+        const getData = async() => {
+            await fetch("./src/data.json")
+                .then(response => response.json())
+                .then(data => {
+                    this.data.items = data.menu;
+                })
+        }
+
+        if(this.data.items.length === 0) {
+            getData();
+        }
     }
 
     createChildren() {
@@ -417,7 +413,7 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         });
         this.order = new _Order__WEBPACK_IMPORTED_MODULE_4__["default"]();
         this.menuBlock = new _MenuBlock__WEBPACK_IMPORTED_MODULE_2__["default"]({
-            data: [],
+            items: this.data.items,
             selectedTab: this.data.selectedTab,
             testMethod: this.testMethod,
             //rerenderApp: this.onChange
@@ -425,10 +421,7 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     }
 
     enable() {
-        this.menuCategories.addListeners();
-        console.log(this.data.selectedTab);
-        this.menuBlock.enable();
-        
+        this.menuCategories.enable();     
     }
 
     testMethod() {
@@ -437,7 +430,6 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
     render() {
         this.createChildren();
-        console.log(this.data.selectedTab);
         return (/*html*/`
         ${this.mainHeader.render()}
         <div class="main-form">
@@ -461,7 +453,6 @@ const rerenderApp = () => {
 const app = new App(
     rerenderApp
 );
-rerenderApp();
 })();
 
 /******/ })()

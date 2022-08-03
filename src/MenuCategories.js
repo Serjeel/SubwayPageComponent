@@ -2,46 +2,53 @@ import Component from "./Component"
 
 class MenuCategories extends Component {
     constructor(props) {
-        super({})
-        //super.setRerender(this.rerender)
-        this.tab = "";
+        super()
         this.handleChangeSelectedTabClick = props.handleChangeSelectedTabClick;
+        console.log(this.handleChangeSelectedTabClick);
 
-        this.arrayId = ["pancakes", "shaurma", "sandwiches", "burgers", "chicken", "salads", "drinks"]
-    }
+        this.selectedTab = props.selectedTab
 
-    addListeners() {
-        for (let i in this.arrayId) {
-            document.getElementById(this.arrayId[i]).addEventListener('click', this.handleClickCategory.bind(this));
+        this.categories =
+        {
+            pancakes: "Блины",
+            shaurma: "Шаурма",
+            sandwiches: "Сэндвичи",
+            burgers: "Бургеры",
+            chicken: "Курица & Картофель",
+            salads: "Тортилья & Салаты",
+            drinks: "Напитки & Десерты"
         }
     }
 
-    handleClickCategory(target) {
-        console.log("Нажато");
-        console.log(this.data);
-        console.log(target.target.id);
-        this.tab = target.target.id;
-        this.handleChangeSelectedTabClick(this.tab);
-        // this.data.selectedTab = this.tab;
-    }
+        enable() {
+            for (let i in this.categories) {
+                const category = document.getElementById(i);
+                category.addEventListener('click', this.handleClickCategory.bind(this));
+            }
+        }
 
-    rerender() {
-        console.log(this.data.selectedTab);
-    }
+        handleClickCategory(target) {
+            console.log("Нажато");
+            console.log(target.target.id);
+            if (this.selectedTab !== target.target.id) {
+                this.handleChangeSelectedTabClick(target.target.id);
+            }
+        }
 
-    render() {
-        return (/*html*/`
+        render() {
+            let menuItems = ``;
+            for (let i in this.categories) {
+                menuItems += `<p class="${this.selectedTab === i ? "category-active" : "category"}"
+                id="${i}">${this.categories[i]}</p>` 
+            }
+           
+
+            return (/*html*/`
         <div class="menu-categories">
-            <p class="category" id="pancakes">Блины</p>
-            <p class="category" id="shaurma">Шаурма</p>
-            <p class="category" id="sandwiches">Сэндвичи</p>
-            <p class="category" id="burgers">Бургеры</p>
-            <p class="category" id="chicken">Курица & Картофель</p>
-            <p class="category" id="salads">Тортилья & Салаты</p>
-            <p class="category" id="drinks">Напитки & Десерты</p>
+            ${menuItems}
         </div>
       `)
+        }
     }
-}
 
 export default MenuCategories
