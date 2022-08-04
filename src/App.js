@@ -8,7 +8,8 @@ class App extends Component {
     constructor(onChange) {
         const data = {
             selectedTab: "sandwiches",
-            items: [] // Пройтись по первой главе learnJs и выполнить все задачки
+            items: [], // Пройтись по первой главе learnJs и выполнить все задачки
+            countersValue: []
         }
         super(data)
         super.setRerender(onChange)
@@ -19,6 +20,9 @@ class App extends Component {
             await fetch("./src/data.json")
                 .then(response => response.json())
                 .then(data => {
+                    data.menu.map(() => {
+                        this.data.countersValue.push(1)
+                    });
                     this.data.items = data.menu;
                 })
         }
@@ -34,8 +38,9 @@ class App extends Component {
         this.order = new Order();
         this.menuBlock = new MenuBlock({
             items: this.data.items,
+            countersValue: this.data.countersValue,
             selectedTab: this.data.selectedTab,
-            // Засунуть сюда countersValue
+            handleChangeCountersValueClick: (x) => { this.data.countersValue = x }
         });
     }
 

@@ -22,8 +22,7 @@ class Component {
 
     handleDataChange(item, property, value) {
         item[property] = value
-        this.rerender(this.data) //
-        console.log(this.data);
+        this.rerender(this.data)
         return true
     }
 
@@ -83,19 +82,17 @@ __webpack_require__.r(__webpack_exports__);
 class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(props) {
         const data = {
+            countersValue: props.countersValue,
             items: props.items,
-            selectedTab: props.selectedTab,
-            countersValue: []
+            selectedTab: props.selectedTab
         }
-
         super(data)
         super.setRerender(this.render)
-        console.log(data.items.length);
+        this.handleChangeCountersValueClick = props.handleChangeCountersValueClick;
     }
 
     // Далее что нужно сделать:
     // 1. Каунтеры(не забыть сделать так, чтобы они не менялись при переключении)
-
 
     enable() {
         for (let i = 0; i < this.data.items.length; i++) {
@@ -104,15 +101,16 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             }
             const handlePlusClick = () => {
                 this.data.countersValue[i] += 1;
-                console.log(this.data.countersValue[i]);
+                this.handleChangeCountersValueClick(this.data.countersValue)
+                console.log(this.data.countersValue);
                 console.log("Нажат плюс");
             }
             const handleMinusClick = () => {
                 this.data.countersValue[i] -= 1;
-                console.log(this.data.countersValue[i]);
+                this.handleChangeCountersValueClick(this.data.countersValue)
+                console.log(this.data.countersValue);
                 console.log("Нажат минус");
             }
-            console.log(document.getElementById("minus-" + (i + 1)));
 
             document.getElementById("plus-" + (i + 1)).addEventListener("click", handlePlusClick)
             document.getElementById("minus-" + (i + 1)).addEventListener("click", handleMinusClick)
@@ -124,7 +122,6 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         let items = "";
         let logo = "";
         for (let i in this.data.items) {
-            this.data.countersValue.push(1);
             if (this.data.items[i].category !== this.data.selectedTab) {
                 continue;
             }
@@ -175,7 +172,6 @@ class MenuCategories extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] 
     constructor(props) {
         super()
         this.handleChangeSelectedTabClick = props.handleChangeSelectedTabClick;
-        console.log(this.handleChangeSelectedTabClick);
 
         this.selectedTab = props.selectedTab
 
@@ -200,7 +196,6 @@ class MenuCategories extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] 
 
         handleClickCategory(target) {
             console.log("Нажато");
-            console.log(target.target.id);
             if (this.selectedTab !== target.target.id) {
                 this.handleChangeSelectedTabClick(target.target.id);
             }
@@ -400,7 +395,8 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(onChange) {
         const data = {
             selectedTab: "sandwiches",
-            items: [] // Пройтись по первой главе learnJs и выполнить все задачки
+            items: [], // Пройтись по первой главе learnJs и выполнить все задачки
+            countersValue: []
         }
         super(data)
         super.setRerender(onChange)
@@ -411,6 +407,9 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             await fetch("./src/data.json")
                 .then(response => response.json())
                 .then(data => {
+                    data.menu.map(() => {
+                        this.data.countersValue.push(1)
+                    });
                     this.data.items = data.menu;
                 })
         }
@@ -426,8 +425,9 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         this.order = new _Order__WEBPACK_IMPORTED_MODULE_4__["default"]();
         this.menuBlock = new _MenuBlock__WEBPACK_IMPORTED_MODULE_2__["default"]({
             items: this.data.items,
+            countersValue: this.data.countersValue,
             selectedTab: this.data.selectedTab,
-            // Засунуть сюда countersValue
+            handleChangeCountersValueClick: (x) => { this.data.countersValue = x }
         });
     }
 

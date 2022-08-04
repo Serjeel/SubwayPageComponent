@@ -4,7 +4,6 @@ class MenuCategories extends Component {
     constructor(props) {
         super()
         this.handleChangeSelectedTabClick = props.handleChangeSelectedTabClick;
-        console.log(this.handleChangeSelectedTabClick);
 
         this.selectedTab = props.selectedTab
 
@@ -29,7 +28,6 @@ class MenuCategories extends Component {
 
         handleClickCategory(target) {
             console.log("Нажато");
-            console.log(target.target.id);
             if (this.selectedTab !== target.target.id) {
                 this.handleChangeSelectedTabClick(target.target.id);
             }

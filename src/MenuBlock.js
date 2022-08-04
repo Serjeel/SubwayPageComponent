@@ -4,19 +4,17 @@ import MenuItem from "./MenuItem";
 class MenuBlock extends Component {
     constructor(props) {
         const data = {
+            countersValue: props.countersValue,
             items: props.items,
-            selectedTab: props.selectedTab,
-            countersValue: []
+            selectedTab: props.selectedTab
         }
-
         super(data)
         super.setRerender(this.render)
-        console.log(data.items.length);
+        this.handleChangeCountersValueClick = props.handleChangeCountersValueClick;
     }
 
     // Далее что нужно сделать:
     // 1. Каунтеры(не забыть сделать так, чтобы они не менялись при переключении)
-
 
     enable() {
         for (let i = 0; i < this.data.items.length; i++) {
@@ -25,15 +23,16 @@ class MenuBlock extends Component {
             }
             const handlePlusClick = () => {
                 this.data.countersValue[i] += 1;
-                console.log(this.data.countersValue[i]);
+                this.handleChangeCountersValueClick(this.data.countersValue)
+                console.log(this.data.countersValue);
                 console.log("Нажат плюс");
             }
             const handleMinusClick = () => {
                 this.data.countersValue[i] -= 1;
-                console.log(this.data.countersValue[i]);
+                this.handleChangeCountersValueClick(this.data.countersValue)
+                console.log(this.data.countersValue);
                 console.log("Нажат минус");
             }
-            console.log(document.getElementById("minus-" + (i + 1)));
 
             document.getElementById("plus-" + (i + 1)).addEventListener("click", handlePlusClick)
             document.getElementById("minus-" + (i + 1)).addEventListener("click", handleMinusClick)
@@ -45,7 +44,6 @@ class MenuBlock extends Component {
         let items = "";
         let logo = "";
         for (let i in this.data.items) {
-            this.data.countersValue.push(1);
             if (this.data.items[i].category !== this.data.selectedTab) {
                 continue;
             }
