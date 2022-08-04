@@ -37,51 +37,6 @@ class Component {
 
 /***/ }),
 
-/***/ "./src/ItemsBlock.js":
-/*!***************************!*\
-  !*** ./src/ItemsBlock.js ***!
-  \***************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Component */ "./src/Component.js");
-
-
-class ItemsBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"]{
-    constructor() {
-        super();
-    }
-    render(item, i, logo) {
-        return (/*html*/`
-            <div class="item" id="item-${i}">
-                <img class="logo" src=${logo} />
-                <img class="item-image" src=${item.image} />
-                <p class="item-name">${item.name}</p>
-                <p class="item-composition">${item.description}</p>
-                <div class="item-price-block">
-                    <p class="price-text">Цена:</p>
-                    <p class="price-value" id="price-${item}">${item.price}</p>
-                    <p class="price-currency">руб.</p>
-                </div>
-                <p class="item-amount">Количество</p>
-                <div class="amount-block">
-                    <img class="minus-icon" src="i/minus.svg" id="minus-${i}" onclick="minusClick(event.target)">
-                    <input class="item-counter" type="text" id="counter-${i}" value="1">
-                    <img class="plus-icon" src="i/plus.svg" id="plus-${i}" onclick="plusClick(event.target)">
-                </div>
-                <button class="item-button" id="button-${i}" onclick="addToBasket(event.target)">В КОРЗИНУ</button>
-        </div> 
-      `)
-    }
-}
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ItemsBlock);
-
-/***/ }),
-
 /***/ "./src/MainHeader.js":
 /*!***************************!*\
   !*** ./src/MainHeader.js ***!
@@ -121,7 +76,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Component */ "./src/Component.js");
-/* harmony import */ var _ItemsBlock__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ItemsBlock */ "./src/ItemsBlock.js");
+/* harmony import */ var _MenuItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MenuItem */ "./src/MenuItem.js");
 
 
 
@@ -130,29 +85,50 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         const data = {
             items: props.items,
             selectedTab: props.selectedTab,
-            //testMethod: props.testMethod,
+            countersValue: []
         }
 
         super(data)
         super.setRerender(this.render)
-        //super.setRerender(this.data.rerenderApp)
-        console.log(data.items.length); 
+        console.log(data.items.length);
     }
 
     // Далее что нужно сделать:
     // 1. Каунтеры(не забыть сделать так, чтобы они не менялись при переключении)
 
+
+    enable() {
+        for (let i = 0; i < this.data.items.length; i++) {
+            if (this.data.items[i] && this.data.items[i].category !== this.data.selectedTab) {
+                continue;
+            }
+            const handlePlusClick = () => {
+                this.data.countersValue[i] += 1;
+                console.log(this.data.countersValue[i]);
+                console.log("Нажат плюс");
+            }
+            const handleMinusClick = () => {
+                this.data.countersValue[i] -= 1;
+                console.log(this.data.countersValue[i]);
+                console.log("Нажат минус");
+            }
+            console.log(document.getElementById("minus-" + (i + 1)));
+
+            document.getElementById("plus-" + (i + 1)).addEventListener("click", handlePlusClick)
+            document.getElementById("minus-" + (i + 1)).addEventListener("click", handleMinusClick)
+        }
+    }
+
     loadMenu() {
-        //console.log(this.data.items);
-        //this.data.testMethod()
-        const itemsBlock = new _ItemsBlock__WEBPACK_IMPORTED_MODULE_1__["default"]();
+        const menuItem = new _MenuItem__WEBPACK_IMPORTED_MODULE_1__["default"]({ items: this.data.items });
         let items = "";
         let logo = "";
         for (let i in this.data.items) {
+            this.data.countersValue.push(1);
             if (this.data.items[i].category !== this.data.selectedTab) {
                 continue;
             }
-            
+
             if (this.data.items[i].market === "sfc") {
                 logo = "i/South_fried_chicken_logo.png";
             } else if (this.data.items[i].market === "doner") {
@@ -160,14 +136,8 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             } else {
                 logo = "i/Subway_logo.png";
             }
-
-            items += itemsBlock.render(this.data.items[i], parseInt(i) + 1, logo);
+            items += menuItem.render(this.data.items[i], parseInt(i) + 1, logo, this.data.countersValue);
         }
-        if (this.data.items.length === 0) {
-            items = "Загрузка..."
-        }
-       // console.log(this.data.items);
-        //console.log(this.props.selectedTab);
 
         return items;
     }
@@ -253,6 +223,51 @@ class MenuCategories extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] 
     }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MenuCategories);
+
+/***/ }),
+
+/***/ "./src/MenuItem.js":
+/*!*************************!*\
+  !*** ./src/MenuItem.js ***!
+  \*************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Component */ "./src/Component.js");
+
+
+class MenuItem extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"]{
+    constructor() {
+        super();
+    }
+    render(item, i, logo, countersValue) {
+        return (/*html*/`
+            <div class="item" id="item-${i}">
+                <img class="logo" src=${logo} />
+                <img class="item-image" src=${item.image} />
+                <p class="item-name">${item.name}</p>
+                <p class="item-composition">${item.description}</p>
+                <div class="item-price-block">
+                    <p class="price-text">Цена:</p>
+                    <p class="price-value" id="price-${i}">${item.price}</p>
+                    <p class="price-currency">руб.</p>
+                </div>
+                <p class="item-amount">Количество</p>
+                <div class="amount-block">
+                    <img class="minus-icon" src="i/minus.svg" id="minus-${i}">
+                    <input class="item-counter" type="text" id="counter-${i}" value=${countersValue[i-1]}>
+                    <img class="plus-icon" src="i/plus.svg" id="plus-${i}">
+                </div>
+                <button class="item-button" id="button-${i}" onclick="addToBasket(event.target)">В КОРЗИНУ</button>
+        </div> 
+      `)
+    }
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MenuItem);
 
 /***/ }),
 
@@ -392,36 +407,33 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         this.onChange = onChange
         this.createChildren() // eslint + prettier
 
-        const getData = async() => {
+        const getData = async () => {
             await fetch("./src/data.json")
                 .then(response => response.json())
                 .then(data => {
                     this.data.items = data.menu;
                 })
         }
-
-        if(this.data.items.length === 0) {
-            getData();
-        }
+        getData();
     }
 
     createChildren() {
         this.mainHeader = new _MainHeader__WEBPACK_IMPORTED_MODULE_1__["default"]();
         this.menuCategories = new _MenuCategories__WEBPACK_IMPORTED_MODULE_3__["default"]({
             selectedTab: this.data.selectedTab,
-            handleChangeSelectedTabClick: (x) => {this.data.selectedTab = x}
+            handleChangeSelectedTabClick: (x) => { this.data.selectedTab = x }
         });
         this.order = new _Order__WEBPACK_IMPORTED_MODULE_4__["default"]();
         this.menuBlock = new _MenuBlock__WEBPACK_IMPORTED_MODULE_2__["default"]({
             items: this.data.items,
             selectedTab: this.data.selectedTab,
-            testMethod: this.testMethod,
-            //rerenderApp: this.onChange
+            // Засунуть сюда countersValue
         });
     }
 
     enable() {
-        this.menuCategories.enable();     
+        this.menuCategories.enable();
+        this.menuBlock.enable();
     }
 
     testMethod() {

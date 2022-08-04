@@ -15,36 +15,33 @@ class App extends Component {
         this.onChange = onChange
         this.createChildren() // eslint + prettier
 
-        const getData = async() => {
+        const getData = async () => {
             await fetch("./src/data.json")
                 .then(response => response.json())
                 .then(data => {
                     this.data.items = data.menu;
                 })
         }
-
-        if(this.data.items.length === 0) {
-            getData();
-        }
+        getData();
     }
 
     createChildren() {
         this.mainHeader = new MainHeader();
         this.menuCategories = new MenuCategories({
             selectedTab: this.data.selectedTab,
-            handleChangeSelectedTabClick: (x) => {this.data.selectedTab = x}
+            handleChangeSelectedTabClick: (x) => { this.data.selectedTab = x }
         });
         this.order = new Order();
         this.menuBlock = new MenuBlock({
             items: this.data.items,
             selectedTab: this.data.selectedTab,
-            testMethod: this.testMethod,
-            //rerenderApp: this.onChange
+            // Засунуть сюда countersValue
         });
     }
 
     enable() {
-        this.menuCategories.enable();     
+        this.menuCategories.enable();
+        this.menuBlock.enable();
     }
 
     testMethod() {
