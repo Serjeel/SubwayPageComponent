@@ -84,7 +84,9 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         const data = {
             countersValue: props.countersValue,
             items: props.items,
-            selectedTab: props.selectedTab
+            selectedTab: props.selectedTab,
+            orderItems: props.orderItems,
+            setOrderItems: props.setOrderItems
         }
         super(data)
         super.setRerender(this.render)
@@ -92,7 +94,10 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     }
 
     // Далее что нужно сделать:
-    // 1. Каунтеры(не забыть сделать так, чтобы они не менялись при переключении)
+    // 1. Ручное изменение каунтера
+    // 2. Добавление в корзину
+    // 3. Модалка
+    // 4. Разделить css файлы для каждого компонента
 
     enable() {
         for (let i = 0; i < this.data.items.length; i++) {
@@ -112,8 +117,23 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                 console.log("Нажат минус");
             }
 
+            const handleChangeButtonClick = () => {
+                this.data.orderItems.push(/*html*/`
+                <div class="order-items" id="order-${this.data.orderItems.length + 1}">
+                    <p class="order-title">${this.data.items[i].name}</p>
+                    <p class="order-amount">${this.data.countersValue[i]}</p>
+                    <p class="order-price">${this.data.items[i].price * this.data.countersValue[i]} руб.</p>
+                    <img class="delete-icon" id="delete-${this.data.orderItems.length + 1}" src="i/trash.svg"/>
+                </div>
+                `)
+                this.data.setOrderItems(this.data.orderItems);
+                console.log(this.data.orderItems);
+            }
+
             document.getElementById("plus-" + (i + 1)).addEventListener("click", handlePlusClick)
             document.getElementById("minus-" + (i + 1)).addEventListener("click", handleMinusClick)
+            document.getElementById("button-" + (i + 1)).addEventListener("click", handleChangeButtonClick)
+            console.log(this.data.orderItems.length);
         }
     }
 
@@ -256,7 +276,7 @@ class MenuItem extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"]{
                     <input class="item-counter" type="text" id="counter-${i}" value=${countersValue[i-1]}>
                     <img class="plus-icon" src="i/plus.svg" id="plus-${i}">
                 </div>
-                <button class="item-button" id="button-${i}" onclick="addToBasket(event.target)">В КОРЗИНУ</button>
+                <button class="item-button" id="button-${i}">В КОРЗИНУ</button>
         </div> 
       `)
     }
@@ -280,9 +300,30 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"]{
-    constructor() {
-        super();
+    constructor(props) {
+        super()
+        this.orderItems = props.orderItems;
     }
+
+    addToBasket() {
+        let items = ""
+        this.orderItems.map((item) => {
+            items += item
+        })
+        
+        console.log(items);
+
+        return items
+    }
+
+    enable() {
+        const handleChangeDeleteIconClick = () => {
+            this.data.orderItems.map((item) => {
+                console.log(item);
+            })
+        }
+    }
+
      render() {
         return (/*html*/`
         <div class="order">
@@ -296,6 +337,7 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"]{
             <p class="price-header">Цена</p>
         </div>
         <div class="order-items-block">
+        ${this.addToBasket()}
         </div>
         <div>
             <div class="sum">
@@ -396,7 +438,8 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         const data = {
             selectedTab: "sandwiches",
             items: [], // Пройтись по первой главе learnJs и выполнить все задачки
-            countersValue: []
+            countersValue: [],
+            orderItems: []
         }
         super(data)
         super.setRerender(onChange)
@@ -422,12 +465,16 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             selectedTab: this.data.selectedTab,
             handleChangeSelectedTabClick: (x) => { this.data.selectedTab = x }
         });
-        this.order = new _Order__WEBPACK_IMPORTED_MODULE_4__["default"]();
+        this.order = new _Order__WEBPACK_IMPORTED_MODULE_4__["default"]({
+            orderItems: this.data.orderItems,
+        });
         this.menuBlock = new _MenuBlock__WEBPACK_IMPORTED_MODULE_2__["default"]({
             items: this.data.items,
             countersValue: this.data.countersValue,
             selectedTab: this.data.selectedTab,
-            handleChangeCountersValueClick: (x) => { this.data.countersValue = x }
+            handleChangeCountersValueClick: (x) => { this.data.countersValue = x },
+            orderItems: this.data.orderItems,
+            setOrderItems: (x) => { this.data.orderItems = x }
         });
     }
 

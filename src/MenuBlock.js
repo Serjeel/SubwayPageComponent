@@ -6,7 +6,9 @@ class MenuBlock extends Component {
         const data = {
             countersValue: props.countersValue,
             items: props.items,
-            selectedTab: props.selectedTab
+            selectedTab: props.selectedTab,
+            orderItems: props.orderItems,
+            setOrderItems: props.setOrderItems
         }
         super(data)
         super.setRerender(this.render)
@@ -14,7 +16,10 @@ class MenuBlock extends Component {
     }
 
     // Далее что нужно сделать:
-    // 1. Каунтеры(не забыть сделать так, чтобы они не менялись при переключении)
+    // 1. Ручное изменение каунтера
+    // 2. Добавление в корзину
+    // 3. Модалка
+    // 4. Разделить css файлы для каждого компонента
 
     enable() {
         for (let i = 0; i < this.data.items.length; i++) {
@@ -34,8 +39,23 @@ class MenuBlock extends Component {
                 console.log("Нажат минус");
             }
 
+            const handleChangeButtonClick = () => {
+                this.data.orderItems.push(/*html*/`
+                <div class="order-items" id="order-${this.data.orderItems.length + 1}">
+                    <p class="order-title">${this.data.items[i].name}</p>
+                    <p class="order-amount">${this.data.countersValue[i]}</p>
+                    <p class="order-price">${this.data.items[i].price * this.data.countersValue[i]} руб.</p>
+                    <img class="delete-icon" id="delete-${this.data.orderItems.length + 1}" src="i/trash.svg"/>
+                </div>
+                `)
+                this.data.setOrderItems(this.data.orderItems);
+                console.log(this.data.orderItems);
+            }
+
             document.getElementById("plus-" + (i + 1)).addEventListener("click", handlePlusClick)
             document.getElementById("minus-" + (i + 1)).addEventListener("click", handleMinusClick)
+            document.getElementById("button-" + (i + 1)).addEventListener("click", handleChangeButtonClick)
+            console.log(this.data.orderItems.length);
         }
     }
 

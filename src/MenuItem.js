@@ -22,7 +22,7 @@ class MenuItem extends Component{
                     <input class="item-counter" type="text" id="counter-${i}" value=${countersValue[i-1]}>
                     <img class="plus-icon" src="i/plus.svg" id="plus-${i}">
                 </div>
-                <button class="item-button" id="button-${i}" onclick="addToBasket(event.target)">В КОРЗИНУ</button>
+                <button class="item-button" id="button-${i}">В КОРЗИНУ</button>
         </div> 
       `)
     }

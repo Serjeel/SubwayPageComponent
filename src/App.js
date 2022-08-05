@@ -9,7 +9,8 @@ class App extends Component {
         const data = {
             selectedTab: "sandwiches",
             items: [], // Пройтись по первой главе learnJs и выполнить все задачки
-            countersValue: []
+            countersValue: [],
+            orderItems: []
         }
         super(data)
         super.setRerender(onChange)
@@ -35,12 +36,16 @@ class App extends Component {
             selectedTab: this.data.selectedTab,
             handleChangeSelectedTabClick: (x) => { this.data.selectedTab = x }
         });
-        this.order = new Order();
+        this.order = new Order({
+            orderItems: this.data.orderItems,
+        });
         this.menuBlock = new MenuBlock({
             items: this.data.items,
             countersValue: this.data.countersValue,
             selectedTab: this.data.selectedTab,
-            handleChangeCountersValueClick: (x) => { this.data.countersValue = x }
+            handleChangeCountersValueClick: (x) => { this.data.countersValue = x },
+            orderItems: this.data.orderItems,
+            setOrderItems: (x) => { this.data.orderItems = x }
         });
     }
 

@@ -1,9 +1,30 @@
 import Component from "./Component"
 
 class Order extends Component{
-    constructor() {
-        super();
+    constructor(props) {
+        super()
+        this.orderItems = props.orderItems;
     }
+
+    addToBasket() {
+        let items = ""
+        this.orderItems.map((item) => {
+            items += item
+        })
+        
+        console.log(items);
+
+        return items
+    }
+
+    enable() {
+        const handleChangeDeleteIconClick = () => {
+            this.data.orderItems.map((item) => {
+                console.log(item);
+            })
+        }
+    }
+
      render() {
         return (/*html*/`
         <div class="order">
@@ -17,6 +38,7 @@ class Order extends Component{
             <p class="price-header">Цена</p>
         </div>
         <div class="order-items-block">
+        ${this.addToBasket()}
         </div>
         <div>
             <div class="sum">
