@@ -23,12 +23,12 @@ class Component {
     handleDataChange(item, property, value) {
         item[property] = value
         this.rerender(this.data)
+        console.log(this.rerender);
         return true
     }
 
     setRerender(callback) {
         this.rerender = callback;
-        console.log(callback.name);
     }
 }
 
@@ -81,86 +81,82 @@ __webpack_require__.r(__webpack_exports__);
 
 class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(props) {
-        const data = {
-            countersValue: props.countersValue,
-            items: props.items,
-            selectedTab: props.selectedTab,
-            orderItems: props.orderItems,
-            setOrderItems: props.setOrderItems
-        }
-        super(data)
-        super.setRerender(this.render)
+        super()
+        this.countersValue = props.countersValue;
+        this.items = props.items;
+        this.selectedTab = props.selectedTab;
+        this.orderItems = props.orderItems;
+        this.totalPrice = props.totalPrice;
+
         this.handleChangeCountersValueClick = props.handleChangeCountersValueClick;
+        this.setOrderItems = props.setOrderItems;
+        this.setTotalPrice = props.setTotalPrice;
     }
 
     // Далее что нужно сделать:
     // 1. Ручное изменение каунтера
-    // 2. Добавление в корзину
-    // 3. Модалка
-    // 4. Разделить css файлы для каждого компонента
+    // 2. Модалка
+    // 3. Разделить css файлы для каждого компонента
 
     enable() {
-        for (let i = 0; i < this.data.items.length; i++) {
-            if (this.data.items[i] && this.data.items[i].category !== this.data.selectedTab) {
+        for (let i = 0; i < this.items.length; i++) {
+            if (this.items[i] && this.items[i].category !== this.selectedTab) {
                 continue;
             }
             const handlePlusClick = () => {
-                this.data.countersValue[i] += 1;
-                this.handleChangeCountersValueClick(this.data.countersValue)
-                console.log(this.data.countersValue);
+                this.countersValue[i] += 1;
+                this.handleChangeCountersValueClick(this.countersValue)
+                console.log(this.countersValue);
                 console.log("Нажат плюс");
             }
             const handleMinusClick = () => {
-                this.data.countersValue[i] -= 1;
-                this.handleChangeCountersValueClick(this.data.countersValue)
-                console.log(this.data.countersValue);
+                this.countersValue[i] -= 1;
+                this.handleChangeCountersValueClick(this.countersValue)
+                console.log(this.countersValue);
                 console.log("Нажат минус");
             }
 
             const handleChangeButtonClick = () => {
-                this.data.orderItems.push(/*html*/`
-                <div class="order-items" id="order-${this.data.orderItems.length + 1}">
-                    <p class="order-title">${this.data.items[i].name}</p>
-                    <p class="order-amount">${this.data.countersValue[i]}</p>
-                    <p class="order-price">${this.data.items[i].price * this.data.countersValue[i]} руб.</p>
-                    <img class="delete-icon" id="delete-${this.data.orderItems.length + 1}" src="i/trash.svg"/>
-                </div>
-                `)
-                this.data.setOrderItems(this.data.orderItems);
-                console.log(this.data.orderItems);
+                this.orderItems.push({
+                    id: this.orderItems.length + 1,
+                    title: this.items[i].name,
+                    amount: this.countersValue[i],
+                    price: this.items[i].price * this.countersValue[i],
+                });
+                this.setOrderItems(this.orderItems);
+                this.setTotalPrice(this.totalPrice + (this.items[i].price * this.countersValue[i]))
+                console.log(this.orderItems);
             }
 
             document.getElementById("plus-" + (i + 1)).addEventListener("click", handlePlusClick)
             document.getElementById("minus-" + (i + 1)).addEventListener("click", handleMinusClick)
             document.getElementById("button-" + (i + 1)).addEventListener("click", handleChangeButtonClick)
-            console.log(this.data.orderItems.length);
         }
     }
 
     loadMenu() {
-        const menuItem = new _MenuItem__WEBPACK_IMPORTED_MODULE_1__["default"]({ items: this.data.items });
+        const menuItem = new _MenuItem__WEBPACK_IMPORTED_MODULE_1__["default"]({ items: this.items });
         let items = "";
         let logo = "";
-        for (let i in this.data.items) {
-            if (this.data.items[i].category !== this.data.selectedTab) {
+        for (let i in this.items) {
+            if (this.items[i].category !== this.selectedTab) {
                 continue;
             }
 
-            if (this.data.items[i].market === "sfc") {
+            if (this.items[i].market === "sfc") {
                 logo = "i/South_fried_chicken_logo.png";
-            } else if (this.data.items[i].market === "doner") {
+            } else if (this.items[i].market === "doner") {
                 logo = "i/Doner_logo.png";
             } else {
                 logo = "i/Subway_logo.png";
             }
-            items += menuItem.render(this.data.items[i], parseInt(i) + 1, logo, this.data.countersValue);
+            items += menuItem.render(this.items[i], parseInt(i) + 1, logo, this.countersValue);
         }
 
         return items;
     }
 
     render() {
-        console.log("Рендер сработал");
         return (/*html*/`
         <div class="menu-block">
             <div class="items-block">
@@ -299,32 +295,47 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Component */ "./src/Component.js");
 
 
-class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"]{
+class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(props) {
         super()
         this.orderItems = props.orderItems;
+        this.setOrderItems = props.setOrderItems;
+        this.totalPrice = props.totalPrice,
+        this.setTotalPrice = props.setTotalPrice
     }
 
-    addToBasket() {
+    basketRender() {
         let items = ""
         this.orderItems.map((item) => {
-            items += item
+            items += /*html*/`
+                <div class="order-items" id="order-${item.id}">
+                   <p class="order-title">${item.title}</p>
+                    <p class="order-amount">${item.amount}</p>
+                    <p class="order-price">${item.price} руб.</p>
+                    <img class="delete-icon" id="delete-${item.id}" src="i/trash.svg"/>
+                </div>
+            `
         })
-        
-        console.log(items);
-
         return items
     }
 
     enable() {
-        const handleChangeDeleteIconClick = () => {
-            this.data.orderItems.map((item) => {
-                console.log(item);
-            })
+        for (let i = 0; i < this.orderItems.length; i++) {
+            const handleChangeDeleteIconClick = () => {
+                this.setTotalPrice(this.totalPrice - this.orderItems[i].price);
+                this.orderItems.splice(i, 1);
+
+                this.orderItems.map((item, i) => {
+                    item.id = i + 1;
+                })
+                this.setOrderItems(this.orderItems);
+
+            }
+            document.getElementById("delete-" + (i + 1)).addEventListener('click', handleChangeDeleteIconClick);
         }
     }
 
-     render() {
+    render() {
         return (/*html*/`
         <div class="order">
         <div class="order-head">
@@ -337,12 +348,12 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"]{
             <p class="price-header">Цена</p>
         </div>
         <div class="order-items-block">
-        ${this.addToBasket()}
+        ${this.basketRender()}
         </div>
         <div>
             <div class="sum">
                 <p class="sum-text">Цена: </p>
-                <p class="sum-value" id="sum">0</p>
+                <p class="sum-value" id="sum">${this.totalPrice}</p>
                 <p class="sum-currency">руб.</p>
             </div>
         </div>
@@ -439,11 +450,12 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             selectedTab: "sandwiches",
             items: [], // Пройтись по первой главе learnJs и выполнить все задачки
             countersValue: [],
-            orderItems: []
+            orderItems: [],
+            totalPrice: 0
         }
         super(data)
         super.setRerender(onChange)
-        this.onChange = onChange
+        this.onChange = onChange;
         this.createChildren() // eslint + prettier
 
         const getData = async () => {
@@ -467,6 +479,9 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         });
         this.order = new _Order__WEBPACK_IMPORTED_MODULE_4__["default"]({
             orderItems: this.data.orderItems,
+            setOrderItems: (x) => { this.data.orderItems = x },
+            totalPrice: this.data.totalPrice,
+            setTotalPrice: (x) => { this.data.totalPrice = x }
         });
         this.menuBlock = new _MenuBlock__WEBPACK_IMPORTED_MODULE_2__["default"]({
             items: this.data.items,
@@ -474,13 +489,16 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             selectedTab: this.data.selectedTab,
             handleChangeCountersValueClick: (x) => { this.data.countersValue = x },
             orderItems: this.data.orderItems,
-            setOrderItems: (x) => { this.data.orderItems = x }
+            setOrderItems: (x) => { this.data.orderItems = x },
+            totalPrice: this.data.totalPrice,
+            setTotalPrice: (x) => { this.data.totalPrice = x }
         });
     }
 
     enable() {
         this.menuCategories.enable();
         this.menuBlock.enable();
+        this.order.enable();
     }
 
     testMethod() {

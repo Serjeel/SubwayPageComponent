@@ -10,11 +10,12 @@ class App extends Component {
             selectedTab: "sandwiches",
             items: [], // Пройтись по первой главе learnJs и выполнить все задачки
             countersValue: [],
-            orderItems: []
+            orderItems: [],
+            totalPrice: 0
         }
         super(data)
         super.setRerender(onChange)
-        this.onChange = onChange
+        this.onChange = onChange;
         this.createChildren() // eslint + prettier
 
         const getData = async () => {
@@ -38,6 +39,9 @@ class App extends Component {
         });
         this.order = new Order({
             orderItems: this.data.orderItems,
+            setOrderItems: (x) => { this.data.orderItems = x },
+            totalPrice: this.data.totalPrice,
+            setTotalPrice: (x) => { this.data.totalPrice = x }
         });
         this.menuBlock = new MenuBlock({
             items: this.data.items,
@@ -45,13 +49,16 @@ class App extends Component {
             selectedTab: this.data.selectedTab,
             handleChangeCountersValueClick: (x) => { this.data.countersValue = x },
             orderItems: this.data.orderItems,
-            setOrderItems: (x) => { this.data.orderItems = x }
+            setOrderItems: (x) => { this.data.orderItems = x },
+            totalPrice: this.data.totalPrice,
+            setTotalPrice: (x) => { this.data.totalPrice = x }
         });
     }
 
     enable() {
         this.menuCategories.enable();
         this.menuBlock.enable();
+        this.order.enable();
     }
 
     testMethod() {
