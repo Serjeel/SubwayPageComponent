@@ -23,7 +23,6 @@ class Component {
     handleDataChange(item, property, value) {
         item[property] = value
         this.rerender(this.data)
-        console.log(this.rerender);
         return true
     }
 
@@ -33,6 +32,42 @@ class Component {
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Component);
+
+/***/ }),
+
+/***/ "./src/Ingredient.js":
+/*!***************************!*\
+  !*** ./src/Ingredient.js ***!
+  \***************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Component */ "./src/Component.js");
+
+
+class Ingredient extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
+    constructor() {
+        super();
+    }
+    render(item, i) {
+        return (/*html*/`
+            <div class="item" id="item-${i}">
+                <img class="item-image" src=${item.image} />
+                <p class="item-name">${item.name}</p>
+                <div class="item-price-block">
+                    <p class="price-text">Цена:</p>
+                    <p class="price-value" id="price-${i}">${item.price}</p>
+                    <p class="price-currency">руб.</p>
+                </div>
+            </div> 
+      `)
+    }
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Ingredient);
 
 /***/ }),
 
@@ -88,15 +123,16 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         this.orderItems = props.orderItems;
         this.totalPrice = props.totalPrice;
 
-        this.handleChangeCountersValueClick = props.handleChangeCountersValueClick;
+        this.setModalContent = props.setModalContent;
+        this.setModalWindowFlag = props.setModalWindowFlag;
+        this.setCountersValue = props.setCountersValue;
         this.setOrderItems = props.setOrderItems;
         this.setTotalPrice = props.setTotalPrice;
     }
 
     // Далее что нужно сделать:
-    // 1. Ручное изменение каунтера
-    // 2. Модалка
-    // 3. Разделить css файлы для каждого компонента
+    // 1. Модалка
+    // 2. Разделить css файлы для каждого компонента
 
     enable() {
         for (let i = 0; i < this.items.length; i++) {
@@ -105,37 +141,49 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             }
             const handlePlusClick = () => {
                 this.countersValue[i] += 1;
-                this.handleChangeCountersValueClick(this.countersValue)
-                console.log(this.countersValue);
-                console.log("Нажат плюс");
+                this.setCountersValue(this.countersValue)
             }
             const handleMinusClick = () => {
                 this.countersValue[i] -= 1;
-                this.handleChangeCountersValueClick(this.countersValue)
-                console.log(this.countersValue);
-                console.log("Нажат минус");
+                this.setCountersValue(this.countersValue)
             }
 
-            const handleChangeButtonClick = () => {
-                this.orderItems.push({
-                    id: this.orderItems.length + 1,
-                    title: this.items[i].name,
-                    amount: this.countersValue[i],
-                    price: this.items[i].price * this.countersValue[i],
-                });
-                this.setOrderItems(this.orderItems);
-                this.setTotalPrice(this.totalPrice + (this.items[i].price * this.countersValue[i]))
-                console.log(this.orderItems);
+            const handleInputChange = () => {
+                this.countersValue[i] = parseInt(document.getElementById("counter-" + (i + 1)).value);
+                console.log(this.countersValue);
+                this.setCountersValue(this.countersValue);
+            }
+
+            const handleButtonClick = () => {
+                if (this.selectedTab = "sandwiches") {
+                    this.setModalWindowFlag(true);
+                    this.setModalContent([{
+                        id: i + 1,
+                        title: this.items[i].name,
+                        amount: this.countersValue[i],
+                        price: this.items[i].price
+                    }]);
+                } else {
+                    this.orderItems.push({
+                        id: this.orderItems.length + 1,
+                        title: this.items[i].name,
+                        amount: this.countersValue[i],
+                        price: this.items[i].price * this.countersValue[i]
+                    });
+                    this.setOrderItems(this.orderItems);
+                    this.setTotalPrice(this.totalPrice + (this.items[i].price * this.countersValue[i]))
+                }
             }
 
             document.getElementById("plus-" + (i + 1)).addEventListener("click", handlePlusClick)
             document.getElementById("minus-" + (i + 1)).addEventListener("click", handleMinusClick)
-            document.getElementById("button-" + (i + 1)).addEventListener("click", handleChangeButtonClick)
+            document.getElementById("counter-" + (i + 1)).addEventListener("change", handleInputChange)
+            document.getElementById("button-" + (i + 1)).addEventListener("click", handleButtonClick)
         }
     }
 
     loadMenu() {
-        const menuItem = new _MenuItem__WEBPACK_IMPORTED_MODULE_1__["default"]({ items: this.items });
+        const menuItem = new _MenuItem__WEBPACK_IMPORTED_MODULE_1__["default"]();
         let items = "";
         let logo = "";
         for (let i in this.items) {
@@ -187,7 +235,7 @@ __webpack_require__.r(__webpack_exports__);
 class MenuCategories extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(props) {
         super()
-        this.handleChangeSelectedTabClick = props.handleChangeSelectedTabClick;
+        this.setSelectedTab = props.setSelectedTab;
 
         this.selectedTab = props.selectedTab
 
@@ -211,9 +259,8 @@ class MenuCategories extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] 
         }
 
         handleClickCategory(target) {
-            console.log("Нажато");
             if (this.selectedTab !== target.target.id) {
-                this.handleChangeSelectedTabClick(target.target.id);
+                this.setSelectedTab(target.target.id);
             }
         }
 
@@ -223,8 +270,6 @@ class MenuCategories extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] 
                 menuItems += `<p class="${this.selectedTab === i ? "category-active" : "category"}"
                 id="${i}">${this.categories[i]}</p>` 
             }
-           
-
             return (/*html*/`
         <div class="menu-categories">
             ${menuItems}
@@ -279,6 +324,98 @@ class MenuItem extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"]{
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MenuItem);
+
+/***/ }),
+
+/***/ "./src/ModalWindow.js":
+/*!****************************!*\
+  !*** ./src/ModalWindow.js ***!
+  \****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Component */ "./src/Component.js");
+/* harmony import */ var _Ingredient__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Ingredient */ "./src/Ingredient.js");
+
+
+
+class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
+    constructor(props) {
+        super();
+        this.ingredients = props.ingredients;
+        this.selectedModalTab = props.selectedModalTab;
+        this.modalContent = props.modalContent;
+
+        this.setSelectedModalTab = props.setSelectedModalTab;
+        this.tabs = {
+            sizes: "Размер",
+            breads: "Хлеб",
+            vegetables: "Овощи",
+            sauces: "Соусы",
+            fillings: "Начинка",
+            ready: "Готово!"
+        };
+    }
+
+    enable() {
+
+    }
+
+    loadIngredients() { // Перенести данные об ингредиентах сюда так, чтобы по ним можно было
+                        // пройтись циклом. Плюс поместить в рендер данные из modalContent
+        const ingredient = new _Ingredient__WEBPACK_IMPORTED_MODULE_1__["default"]();
+        let items = "";
+        console.log(this.ingredients);
+
+        for (let i in this.ingredients[this.selectedModalTab]) {
+            items += ingredient.render(this.ingredients[i], parseInt(i) + 1);
+        }
+        console.log(this.ingredients);
+        return items;
+    }
+
+    render() {
+        let modalTabs = ``;
+        for (let i in this.tabs) {
+            modalTabs += `<p class="${this.selectedModalTab === i ? "tab-active" : "tab"}"
+                id="${i}">${this.tabs[i]}</p>`
+        }
+        return (/*html*/`
+        <div class="modal-window">
+            <div class="modal-content">
+                <div class="modal-header-block">
+                    <h3 class="modal-header">Проверьте и добавьте в корзину</h3>
+                    <img class="close-icon" src="i/close-icon.svg"/>
+                </div>
+                <div class="modal-tabs-block">
+                    <div class="modal-tabs">
+                       ${modalTabs}
+                   </div>
+                </div>
+                <div class="arrows-block">
+                </div>
+                <div class="tab-content-block">
+                ${this.loadIngredients()}
+                </div>
+                <div class="modal-footer">
+                    <div class="item-price-block">
+                        <p class="price-text">Цена:</p>
+                        <p class="price-value" id="price-modal"></p>
+                        <p class="price-currency">руб.</p>
+                    </div>
+                    <div class="modal-order-block">
+                    </div>
+                </div>
+            </div>
+        </div>
+        `)
+    }
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ModalWindow);
 
 /***/ }),
 
@@ -437,7 +574,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _MainHeader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MainHeader */ "./src/MainHeader.js");
 /* harmony import */ var _MenuBlock__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MenuBlock */ "./src/MenuBlock.js");
 /* harmony import */ var _MenuCategories__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MenuCategories */ "./src/MenuCategories.js");
-/* harmony import */ var _Order__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Order */ "./src/Order.js");
+/* harmony import */ var _ModalWindow__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ModalWindow */ "./src/ModalWindow.js");
+/* harmony import */ var _Order__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Order */ "./src/Order.js");
+
 
 
 
@@ -448,10 +587,14 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(onChange) {
         const data = {
             selectedTab: "sandwiches",
+            selectedModalTab: "sizes",
             items: [], // Пройтись по первой главе learnJs и выполнить все задачки
+            ingredients: [],
             countersValue: [],
             orderItems: [],
-            totalPrice: 0
+            totalPrice: 0,
+            modalWindowFlag: false,
+            modalContent: []
         }
         super(data)
         super.setRerender(onChange)
@@ -466,6 +609,13 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                         this.data.countersValue.push(1)
                     });
                     this.data.items = data.menu;
+                    this.data.ingredients.push(
+                        data.sizes,
+                        data.breads,
+                        data.vegetables,
+                        data.sauces,
+                        data.fillings
+                    )
                 })
         }
         getData();
@@ -475,9 +625,9 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         this.mainHeader = new _MainHeader__WEBPACK_IMPORTED_MODULE_1__["default"]();
         this.menuCategories = new _MenuCategories__WEBPACK_IMPORTED_MODULE_3__["default"]({
             selectedTab: this.data.selectedTab,
-            handleChangeSelectedTabClick: (x) => { this.data.selectedTab = x }
+            setSelectedTab: (x) => { this.data.selectedTab = x }
         });
-        this.order = new _Order__WEBPACK_IMPORTED_MODULE_4__["default"]({
+        this.order = new _Order__WEBPACK_IMPORTED_MODULE_5__["default"]({
             orderItems: this.data.orderItems,
             setOrderItems: (x) => { this.data.orderItems = x },
             totalPrice: this.data.totalPrice,
@@ -487,11 +637,19 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             items: this.data.items,
             countersValue: this.data.countersValue,
             selectedTab: this.data.selectedTab,
-            handleChangeCountersValueClick: (x) => { this.data.countersValue = x },
+            setCountersValue: (x) => { this.data.countersValue = x },
             orderItems: this.data.orderItems,
             setOrderItems: (x) => { this.data.orderItems = x },
             totalPrice: this.data.totalPrice,
-            setTotalPrice: (x) => { this.data.totalPrice = x }
+            setTotalPrice: (x) => { this.data.totalPrice = x },
+            setModalWindowFlag: (x) => { this.data.modalWindowFlag = x },
+            setModalContent: (x) => { this.data.modalContent = x }
+        });
+        this.modalWindow = new _ModalWindow__WEBPACK_IMPORTED_MODULE_4__["default"]({
+            selectedModalTab: this.data.selectedModalTab,
+            setSelectedModalTab: (x) => { this.data.selectedModalTab = x },
+            ingredients: this.data.ingredients,
+            modalContent: this.data.modalContent
         });
     }
 
@@ -499,10 +657,6 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         this.menuCategories.enable();
         this.menuBlock.enable();
         this.order.enable();
-    }
-
-    testMethod() {
-        console.log("Метод сработал");
     }
 
     render() {
@@ -516,6 +670,7 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             </div>
             ${this.menuBlock.render()}
         </div>
+        ${this.data.modalWindowFlag ? this.modalWindow.render() : []}
         `)
     }
 }

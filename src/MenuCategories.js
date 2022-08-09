@@ -3,7 +3,7 @@ import Component from "./Component"
 class MenuCategories extends Component {
     constructor(props) {
         super()
-        this.handleChangeSelectedTabClick = props.handleChangeSelectedTabClick;
+        this.setSelectedTab = props.setSelectedTab;
 
         this.selectedTab = props.selectedTab
 
@@ -27,9 +27,8 @@ class MenuCategories extends Component {
         }
 
         handleClickCategory(target) {
-            console.log("Нажато");
             if (this.selectedTab !== target.target.id) {
-                this.handleChangeSelectedTabClick(target.target.id);
+                this.setSelectedTab(target.target.id);
             }
         }
 
@@ -39,8 +38,6 @@ class MenuCategories extends Component {
                 menuItems += `<p class="${this.selectedTab === i ? "category-active" : "category"}"
                 id="${i}">${this.categories[i]}</p>` 
             }
-           
-
             return (/*html*/`
         <div class="menu-categories">
             ${menuItems}

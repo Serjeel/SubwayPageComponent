@@ -2,16 +2,21 @@ import Component from "./Component";
 import MainHeader from "./MainHeader";
 import MenuBlock from "./MenuBlock";
 import MenuCategories from "./MenuCategories";
+import ModalWindow from "./ModalWindow";
 import Order from "./Order";
 
 class App extends Component {
     constructor(onChange) {
         const data = {
             selectedTab: "sandwiches",
+            selectedModalTab: "sizes",
             items: [], // Пройтись по первой главе learnJs и выполнить все задачки
+            ingredients: [],
             countersValue: [],
             orderItems: [],
-            totalPrice: 0
+            totalPrice: 0,
+            modalWindowFlag: false,
+            modalContent: []
         }
         super(data)
         super.setRerender(onChange)
@@ -26,6 +31,13 @@ class App extends Component {
                         this.data.countersValue.push(1)
                     });
                     this.data.items = data.menu;
+                    this.data.ingredients.push(
+                        data.sizes,
+                        data.breads,
+                        data.vegetables,
+                        data.sauces,
+                        data.fillings
+                    )
                 })
         }
         getData();
@@ -35,7 +47,7 @@ class App extends Component {
         this.mainHeader = new MainHeader();
         this.menuCategories = new MenuCategories({
             selectedTab: this.data.selectedTab,
-            handleChangeSelectedTabClick: (x) => { this.data.selectedTab = x }
+            setSelectedTab: (x) => { this.data.selectedTab = x }
         });
         this.order = new Order({
             orderItems: this.data.orderItems,
@@ -47,11 +59,19 @@ class App extends Component {
             items: this.data.items,
             countersValue: this.data.countersValue,
             selectedTab: this.data.selectedTab,
-            handleChangeCountersValueClick: (x) => { this.data.countersValue = x },
+            setCountersValue: (x) => { this.data.countersValue = x },
             orderItems: this.data.orderItems,
             setOrderItems: (x) => { this.data.orderItems = x },
             totalPrice: this.data.totalPrice,
-            setTotalPrice: (x) => { this.data.totalPrice = x }
+            setTotalPrice: (x) => { this.data.totalPrice = x },
+            setModalWindowFlag: (x) => { this.data.modalWindowFlag = x },
+            setModalContent: (x) => { this.data.modalContent = x }
+        });
+        this.modalWindow = new ModalWindow({
+            selectedModalTab: this.data.selectedModalTab,
+            setSelectedModalTab: (x) => { this.data.selectedModalTab = x },
+            ingredients: this.data.ingredients,
+            modalContent: this.data.modalContent
         });
     }
 
@@ -59,10 +79,6 @@ class App extends Component {
         this.menuCategories.enable();
         this.menuBlock.enable();
         this.order.enable();
-    }
-
-    testMethod() {
-        console.log("Метод сработал");
     }
 
     render() {
@@ -76,6 +92,7 @@ class App extends Component {
             </div>
             ${this.menuBlock.render()}
         </div>
+        ${this.data.modalWindowFlag ? this.modalWindow.render() : []}
         `)
     }
 }
