@@ -16,7 +16,14 @@ class App extends Component {
             orderItems: [],
             totalPrice: 0,
             modalWindowFlag: false,
-            modalContent: []
+            modalContent: [],
+            tabReadyContent : {
+                sizes: "15 См",
+                breads: "Белый итальянский",
+                vegetables: "",
+                sauces: "",
+                fillings: ""
+            }
         }
         super(data)
         super.setRerender(onChange)
@@ -73,7 +80,9 @@ class App extends Component {
             selectedModalTab: this.data.selectedModalTab,
             setSelectedModalTab: (x) => { this.data.selectedModalTab = x },
             ingredients: this.data.ingredients,
-            modalContent: this.data.modalContent
+            modalContent: this.data.modalContent,
+            tabReadyContent: this.data.tabReadyContent,
+            setTabReadyContent: (x) => {this.data.tabReadyContent = x}
         });
     }
 

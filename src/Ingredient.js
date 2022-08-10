@@ -1,12 +1,18 @@
 import Component from "./Component"
 
 class Ingredient extends Component {
-    constructor() {
+    constructor(props) {
         super();
+        this.tabReadyContent = props.tabReadyContent;
     }
     render(item, i) {
         return (/*html*/`
-            <div class="modal-item" id="item-${i}">
+            <div class=${this.tabReadyContent.sizes === item.name ||
+                this.tabReadyContent.breads === item.name ||
+                this.tabReadyContent.vegetables === item.name ||
+                this.tabReadyContent.sauces === item.name ||
+                this.tabReadyContent.fillings === item.name
+                ? "modal-item-active" : "modal-item"} id="item-${i}">
                 <img class="item-image" src=${item.image} />
                 <p class="item-name">${item.name}</p>
                 <div class="item-price-block">

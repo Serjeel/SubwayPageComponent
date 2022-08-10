@@ -16,6 +16,7 @@ class MenuBlock extends Component {
         this.setCountersValue = props.setCountersValue;
         this.setOrderItems = props.setOrderItems;
         this.setTotalPrice = props.setTotalPrice;
+        
     }
 
     // Далее что нужно сделать:
@@ -43,15 +44,15 @@ class MenuBlock extends Component {
             }
 
             const handleButtonClick = () => {
-                if (this.selectedTab = "sandwiches") {
+                if (this.selectedTab === "sandwiches") {
                     this.setSelectedModalTab("sizes")
                     this.setModalWindowFlag(true);
-                    this.setModalContent([{
+                    this.setModalContent({
                         id: i + 1,
                         title: this.items[i].name,
                         amount: this.countersValue[i],
                         price: this.items[i].price
-                    }]);
+                    });
                 } else {
                     this.orderItems.push({
                         id: this.orderItems.length + 1,
