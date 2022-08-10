@@ -6,7 +6,7 @@ class Ingredient extends Component {
     }
     render(item, i) {
         return (/*html*/`
-            <div class="item" id="item-${i}">
+            <div class="modal-item" id="item-${i}">
                 <img class="item-image" src=${item.image} />
                 <p class="item-name">${item.name}</p>
                 <div class="item-price-block">

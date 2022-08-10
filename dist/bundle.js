@@ -54,7 +54,7 @@ class Ingredient extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     }
     render(item, i) {
         return (/*html*/`
-            <div class="item" id="item-${i}">
+            <div class="modal-item" id="item-${i}">
                 <img class="item-image" src=${item.image} />
                 <p class="item-name">${item.name}</p>
                 <div class="item-price-block">
@@ -123,6 +123,7 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         this.orderItems = props.orderItems;
         this.totalPrice = props.totalPrice;
 
+        this.setSelectedModalTab = props.setSelectedModalTab;
         this.setModalContent = props.setModalContent;
         this.setModalWindowFlag = props.setModalWindowFlag;
         this.setCountersValue = props.setCountersValue;
@@ -156,6 +157,7 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
             const handleButtonClick = () => {
                 if (this.selectedTab = "sandwiches") {
+                    this.setSelectedModalTab("sizes")
                     this.setModalWindowFlag(true);
                     this.setModalContent([{
                         id: i + 1,
@@ -349,6 +351,7 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         this.selectedModalTab = props.selectedModalTab;
         this.modalContent = props.modalContent;
 
+        this.setModalWindowFlag = props.setModalWindowFlag;
         this.setSelectedModalTab = props.setSelectedModalTab;
         this.tabs = {
             sizes: "Размер",
@@ -361,19 +364,47 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     }
 
     enable() {
+            const sizesTabClick = () => {
+                this.setSelectedModalTab("sizes")
+            }
+            const breadsTabClick = () => {
+                this.setSelectedModalTab("breads")
+            }
+            const vegetablesTabClick = () => {
+                this.setSelectedModalTab("vegetables")
+            }
+            const saucesTabClick = () => {
+                this.setSelectedModalTab("sauces")
+            }
+            const fillingsTabClick = () => {
+                this.setSelectedModalTab("fillings")
+            }
+            const readyTabClick = () => {
+                this.setSelectedModalTab("ready")
+            }
 
+            const closeIconClick = () => {
+                this.setModalWindowFlag(false)
+            }
+
+            document.getElementById("sizes").addEventListener("click", sizesTabClick)
+            document.getElementById("breads").addEventListener("click", breadsTabClick)
+            document.getElementById("vegetables").addEventListener("click", vegetablesTabClick)
+            document.getElementById("sauces").addEventListener("click", saucesTabClick)
+            document.getElementById("fillings").addEventListener("click", fillingsTabClick)
+            document.getElementById("ready").addEventListener("click", readyTabClick)
+
+            document.getElementsByClassName("close-icon")[0].addEventListener("click", closeIconClick)
     }
 
-    loadIngredients() { // Перенести данные об ингредиентах сюда так, чтобы по ним можно было
-                        // пройтись циклом. Плюс поместить в рендер данные из modalContent
+    loadIngredients() { // Поместить в рендер данные из modalContent и сделать условный рендер для 6 вкладки
         const ingredient = new _Ingredient__WEBPACK_IMPORTED_MODULE_1__["default"]();
         let items = "";
-        console.log(this.ingredients);
 
         for (let i in this.ingredients[this.selectedModalTab]) {
-            items += ingredient.render(this.ingredients[i], parseInt(i) + 1);
+            items += ingredient.render(this.ingredients[this.selectedModalTab][i], i);
         }
-        console.log(this.ingredients);
+        
         return items;
     }
 
@@ -609,13 +640,13 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                         this.data.countersValue.push(1)
                     });
                     this.data.items = data.menu;
-                    this.data.ingredients.push(
-                        data.sizes,
-                        data.breads,
-                        data.vegetables,
-                        data.sauces,
-                        data.fillings
-                    )
+                    this.data.ingredients = {
+                        sizes: data.sizes,
+                        breads: data.breads,
+                        vegetables: data.vegetables,
+                        sauces: data.sauces,
+                        fillings: data.fillings
+                    }
                 })
         }
         getData();
@@ -643,9 +674,11 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             totalPrice: this.data.totalPrice,
             setTotalPrice: (x) => { this.data.totalPrice = x },
             setModalWindowFlag: (x) => { this.data.modalWindowFlag = x },
-            setModalContent: (x) => { this.data.modalContent = x }
+            setModalContent: (x) => { this.data.modalContent = x },
+            setSelectedModalTab: (x) => { this.data.selectedModalTab = x },
         });
         this.modalWindow = new _ModalWindow__WEBPACK_IMPORTED_MODULE_4__["default"]({
+            setModalWindowFlag: (x) => { this.data.modalWindowFlag = x },
             selectedModalTab: this.data.selectedModalTab,
             setSelectedModalTab: (x) => { this.data.selectedModalTab = x },
             ingredients: this.data.ingredients,
@@ -657,6 +690,9 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         this.menuCategories.enable();
         this.menuBlock.enable();
         this.order.enable();
+        if (this.data.modalWindowFlag) {
+            this.modalWindow.enable();
+        }
     }
 
     render() {

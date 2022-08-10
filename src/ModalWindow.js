@@ -8,6 +8,7 @@ class ModalWindow extends Component {
         this.selectedModalTab = props.selectedModalTab;
         this.modalContent = props.modalContent;
 
+        this.setModalWindowFlag = props.setModalWindowFlag;
         this.setSelectedModalTab = props.setSelectedModalTab;
         this.tabs = {
             sizes: "Размер",
@@ -20,19 +21,47 @@ class ModalWindow extends Component {
     }
 
     enable() {
+            const sizesTabClick = () => {
+                this.setSelectedModalTab("sizes")
+            }
+            const breadsTabClick = () => {
+                this.setSelectedModalTab("breads")
+            }
+            const vegetablesTabClick = () => {
+                this.setSelectedModalTab("vegetables")
+            }
+            const saucesTabClick = () => {
+                this.setSelectedModalTab("sauces")
+            }
+            const fillingsTabClick = () => {
+                this.setSelectedModalTab("fillings")
+            }
+            const readyTabClick = () => {
+                this.setSelectedModalTab("ready")
+            }
 
+            const closeIconClick = () => {
+                this.setModalWindowFlag(false)
+            }
+
+            document.getElementById("sizes").addEventListener("click", sizesTabClick)
+            document.getElementById("breads").addEventListener("click", breadsTabClick)
+            document.getElementById("vegetables").addEventListener("click", vegetablesTabClick)
+            document.getElementById("sauces").addEventListener("click", saucesTabClick)
+            document.getElementById("fillings").addEventListener("click", fillingsTabClick)
+            document.getElementById("ready").addEventListener("click", readyTabClick)
+
+            document.getElementsByClassName("close-icon")[0].addEventListener("click", closeIconClick)
     }
 
-    loadIngredients() { // Перенести данные об ингредиентах сюда так, чтобы по ним можно было
-                        // пройтись циклом. Плюс поместить в рендер данные из modalContent
+    loadIngredients() { // Поместить в рендер данные из modalContent и сделать условный рендер для 6 вкладки
         const ingredient = new Ingredient();
         let items = "";
-        console.log(this.ingredients);
 
         for (let i in this.ingredients[this.selectedModalTab]) {
-            items += ingredient.render(this.ingredients[i], parseInt(i) + 1);
+            items += ingredient.render(this.ingredients[this.selectedModalTab][i], i);
         }
-        console.log(this.ingredients);
+        
         return items;
     }
 

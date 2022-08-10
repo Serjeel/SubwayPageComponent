@@ -31,13 +31,13 @@ class App extends Component {
                         this.data.countersValue.push(1)
                     });
                     this.data.items = data.menu;
-                    this.data.ingredients.push(
-                        data.sizes,
-                        data.breads,
-                        data.vegetables,
-                        data.sauces,
-                        data.fillings
-                    )
+                    this.data.ingredients = {
+                        sizes: data.sizes,
+                        breads: data.breads,
+                        vegetables: data.vegetables,
+                        sauces: data.sauces,
+                        fillings: data.fillings
+                    }
                 })
         }
         getData();
@@ -65,9 +65,11 @@ class App extends Component {
             totalPrice: this.data.totalPrice,
             setTotalPrice: (x) => { this.data.totalPrice = x },
             setModalWindowFlag: (x) => { this.data.modalWindowFlag = x },
-            setModalContent: (x) => { this.data.modalContent = x }
+            setModalContent: (x) => { this.data.modalContent = x },
+            setSelectedModalTab: (x) => { this.data.selectedModalTab = x },
         });
         this.modalWindow = new ModalWindow({
+            setModalWindowFlag: (x) => { this.data.modalWindowFlag = x },
             selectedModalTab: this.data.selectedModalTab,
             setSelectedModalTab: (x) => { this.data.selectedModalTab = x },
             ingredients: this.data.ingredients,
@@ -79,6 +81,9 @@ class App extends Component {
         this.menuCategories.enable();
         this.menuBlock.enable();
         this.order.enable();
+        if (this.data.modalWindowFlag) {
+            this.modalWindow.enable();
+        }
     }
 
     render() {

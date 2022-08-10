@@ -10,6 +10,7 @@ class MenuBlock extends Component {
         this.orderItems = props.orderItems;
         this.totalPrice = props.totalPrice;
 
+        this.setSelectedModalTab = props.setSelectedModalTab;
         this.setModalContent = props.setModalContent;
         this.setModalWindowFlag = props.setModalWindowFlag;
         this.setCountersValue = props.setCountersValue;
@@ -43,6 +44,7 @@ class MenuBlock extends Component {
 
             const handleButtonClick = () => {
                 if (this.selectedTab = "sandwiches") {
+                    this.setSelectedModalTab("sizes")
                     this.setModalWindowFlag(true);
                     this.setModalContent([{
                         id: i + 1,
