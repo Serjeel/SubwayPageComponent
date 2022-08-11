@@ -20,9 +20,9 @@ class App extends Component {
             tabReadyContent : {
                 sizes: "15 См",
                 breads: "Белый итальянский",
-                vegetables: "",
-                sauces: "",
-                fillings: ""
+                vegetables: [],
+                sauces: [],
+                fillings: []
             }
         }
         super(data)

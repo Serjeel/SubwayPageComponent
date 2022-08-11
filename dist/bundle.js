@@ -53,19 +53,19 @@ class Ingredient extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         super();
         this.tabReadyContent = props.tabReadyContent;
     }
-    render(item, i) {
+    render(item, key) {
         return (/*html*/`
             <div class=${this.tabReadyContent.sizes === item.name ||
                 this.tabReadyContent.breads === item.name ||
-                this.tabReadyContent.vegetables === item.name ||
-                this.tabReadyContent.sauces === item.name ||
-                this.tabReadyContent.fillings === item.name
-                ? "modal-item-active" : "modal-item"} id="item-${i}">
+                this.tabReadyContent.vegetables.includes(item.name) ||
+                this.tabReadyContent.sauces.includes(item.name) ||
+                this.tabReadyContent.fillings.includes(item.name)
+                ? "modal-item-active" : "modal-item"} id="item-${key}">
                 <img class="item-image" src=${item.image} />
                 <p class="item-name">${item.name}</p>
                 <div class="item-price-block">
                     <p class="price-text">Цена:</p>
-                    <p class="price-value" id="price-${i}">${item.price}</p>
+                    <p class="price-value" id="price-${key}">${item.price}</p>
                     <p class="price-currency">руб.</p>
                 </div>
             </div> 
@@ -394,6 +394,13 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
         const closeIconClick = () => {
             this.setModalWindowFlag(false)
+            this.setTabReadyContent({
+                sizes: "15 См",
+                breads: "Белый итальянский",
+                vegetables: [],
+                sauces: [],
+                fillings: []
+            })
         }
 
         document.getElementById("sizes").addEventListener("click", sizesTabClick)
@@ -405,17 +412,31 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
         document.getElementsByClassName("close-icon")[0].addEventListener("click", closeIconClick)
 
-
         for (let key in this.ingredients[this.selectedModalTab]) {
             const modalItemClick = () => {
-                this.tabReadyContent[this.selectedModalTab] = this.ingredients[this.selectedModalTab][key].name
-                this.setTabReadyContent(this.tabReadyContent)
-                console.log(this.tabReadyContent[this.selectedModalTab]);
+                if (this.selectedModalTab === "sizes" || this.selectedModalTab === "breads") {
+                    this.tabReadyContent[this.selectedModalTab] = this.ingredients[this.selectedModalTab][key].name
+                    this.setTabReadyContent(this.tabReadyContent)
+                    console.log(this.tabReadyContent[this.selectedModalTab]);
+                } else {
+                    if(this.tabReadyContent[this.selectedModalTab].includes(this.
+                        ingredients[this.selectedModalTab][key].name)) {
+                            let n = this.tabReadyContent[this.selectedModalTab].indexOf(this.
+                                ingredients[this.selectedModalTab][key].name);
+                                console.log(n);
+                                this.tabReadyContent[this.selectedModalTab].splice(n, 1);
+                                console.log(this.tabReadyContent[this.selectedModalTab]);
+                                this.setTabReadyContent(this.tabReadyContent);
+                                // Далее по списку прибавление цены ингредиентов к итоговой цене
+                    } else {
+                        this.tabReadyContent[this.selectedModalTab].push(this.ingredients[this.selectedModalTab][key].name)
+                        this.setTabReadyContent(this.tabReadyContent)
+                        console.log(this.tabReadyContent[this.selectedModalTab]);
+                    }
+                }
             }
-            document.getElementById("item-" + key).addEventListener("click",
-            modalItemClick)
-            // А теперь продумать как сделать так, чтобы на оставшихся 3 вкладках можно было не выбирать
-            // один итем, а добавлять. Плюс сделать удаление при повторном нажатии
+
+            document.getElementById("item-" + key).addEventListener("click", modalItemClick)
         }
 
     }
@@ -426,8 +447,8 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         });
         let items = "";
 
-        for (let i in this.ingredients[this.selectedModalTab]) {
-            items += ingredient.render(this.ingredients[this.selectedModalTab][i], i);
+        for (let key in this.ingredients[this.selectedModalTab]) {
+            items += ingredient.render(this.ingredients[this.selectedModalTab][key], key);
         }
 
         return items;
@@ -450,17 +471,17 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         </div>
         <div class="final-order-vegetables">
             <p class="final-order-vegetables-text">Овощи:</p>
-            <p class="final-order-vegetables-value">${this.tabReadyContent.vegetables === ""
+            <p class="final-order-vegetables-value">${this.tabReadyContent.vegetables.length === 0
                 ? "Нет" : this.tabReadyContent.vegetables}</p>
         </div>
         <div class="final-order-sauces">
             <p class="final-order-sauces-text">Соусы:</p>
-            <p class="final-order-sauces-value">${this.tabReadyContent.sauces === ""
+            <p class="final-order-sauces-value">${this.tabReadyContent.sauces.length === 0
                 ? "Нет" : this.tabReadyContent.sauces}</p>
         </div>
         <div class="final-order-filling">
             <p class="final-order-filling-text">Начинка:</p>
-            <p class="final-order-filling-value">${this.tabReadyContent.fillings === ""
+            <p class="final-order-filling-value">${this.tabReadyContent.fillings.length === 0
                 ? "Нет" : this.tabReadyContent.fillings}</p>
         </div>
             <p class="final-order-title" id="item-name-modal">Индейка</p>
@@ -690,9 +711,9 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             tabReadyContent : {
                 sizes: "15 См",
                 breads: "Белый итальянский",
-                vegetables: "",
-                sauces: "",
-                fillings: ""
+                vegetables: [],
+                sauces: [],
+                fillings: []
             }
         }
         super(data)
