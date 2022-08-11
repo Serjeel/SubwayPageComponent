@@ -16,7 +16,6 @@ class MenuBlock extends Component {
         this.setCountersValue = props.setCountersValue;
         this.setOrderItems = props.setOrderItems;
         this.setTotalPrice = props.setTotalPrice;
-        
     }
 
     // Далее что нужно сделать:

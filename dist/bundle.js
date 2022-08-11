@@ -135,7 +135,6 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         this.setCountersValue = props.setCountersValue;
         this.setOrderItems = props.setOrderItems;
         this.setTotalPrice = props.setTotalPrice;
-        
     }
 
     // Далее что нужно сделать:
@@ -358,7 +357,10 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         this.selectedModalTab = props.selectedModalTab;
         this.modalContent = props.modalContent;
         this.tabReadyContent = props.tabReadyContent;
+        this.previousValues = props.previousValues;
 
+        this.setPreviousValues = props.setPreviousValues;
+        this.setModalContent = props.setModalContent;
         this.setTabReadyContent = props.setTabReadyContent;
         this.setModalWindowFlag = props.setModalWindowFlag;
         this.setSelectedModalTab = props.setSelectedModalTab;
@@ -393,6 +395,10 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         }
 
         const closeIconClick = () => {
+            this.setPreviousValues({
+                sizes: 0,
+                breads: 0
+            })
             this.setModalWindowFlag(false)
             this.setTabReadyContent({
                 sizes: "15 См",
@@ -414,34 +420,46 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
         for (let key in this.ingredients[this.selectedModalTab]) {
             const modalItemClick = () => {
+                const scrollPosition = document.getElementsByClassName("tab-content-block")[0].scrollTop
                 if (this.selectedModalTab === "sizes" || this.selectedModalTab === "breads") {
-                    this.tabReadyContent[this.selectedModalTab] = this.ingredients[this.selectedModalTab][key].name
-                    this.setTabReadyContent(this.tabReadyContent)
-                    console.log(this.tabReadyContent[this.selectedModalTab]);
+                    this.tabReadyContent[this.selectedModalTab] = this.ingredients[this.
+                        selectedModalTab][key].name;
+
+                    this.modalContent.price += this.ingredients[this.selectedModalTab][key].price;
+                    this.modalContent.price -= this.previousValues[this.selectedModalTab];
+
+                    this.previousValues[this.selectedModalTab] = this.
+                        ingredients[this.selectedModalTab][key].price;
+
+                    this.setTabReadyContent(this.tabReadyContent);
                 } else {
-                    if(this.tabReadyContent[this.selectedModalTab].includes(this.
+                    if (this.tabReadyContent[this.selectedModalTab].includes(this.
                         ingredients[this.selectedModalTab][key].name)) {
-                            let n = this.tabReadyContent[this.selectedModalTab].indexOf(this.
-                                ingredients[this.selectedModalTab][key].name);
-                                console.log(n);
-                                this.tabReadyContent[this.selectedModalTab].splice(n, 1);
-                                console.log(this.tabReadyContent[this.selectedModalTab]);
-                                this.setTabReadyContent(this.tabReadyContent);
-                                // Далее по списку прибавление цены ингредиентов к итоговой цене
+                        let n = this.tabReadyContent[this.selectedModalTab].indexOf(this.
+                            ingredients[this.selectedModalTab][key].name);
+                        console.log(n);
+                        this.modalContent.price -= this.ingredients[this.selectedModalTab][key].price;
+                        this.tabReadyContent[this.selectedModalTab].splice(n, 1);
+                        console.log(this.tabReadyContent[this.selectedModalTab]);
+                        this.setTabReadyContent(this.tabReadyContent);
                     } else {
-                        this.tabReadyContent[this.selectedModalTab].push(this.ingredients[this.selectedModalTab][key].name)
+                        this.tabReadyContent[this.selectedModalTab].push(this.ingredients[this.
+                            selectedModalTab][key].name)
+                        this.modalContent.price += this.ingredients[this.selectedModalTab][key].price;
                         this.setTabReadyContent(this.tabReadyContent)
                         console.log(this.tabReadyContent[this.selectedModalTab]);
                     }
                 }
+                document.getElementsByClassName("tab-content-block")[0].scrollTo(0, scrollPosition)
             }
-
             document.getElementById("item-" + key).addEventListener("click", modalItemClick)
         }
-
     }
 
-    loadIngredients() { // Поместить в рендер данные из modalContent и сделать условный рендер для 6 вкладки
+    // Теперь надо сделать добавление в корзину, возможность менять amount на плюс, минус и вручную и в 
+    // самой модалке и возможность редактирования
+
+    loadIngredients() {
         const ingredient = new _Ingredient__WEBPACK_IMPORTED_MODULE_1__["default"]({
             tabReadyContent: this.tabReadyContent
         });
@@ -484,10 +502,22 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             <p class="final-order-filling-value">${this.tabReadyContent.fillings.length === 0
                 ? "Нет" : this.tabReadyContent.fillings}</p>
         </div>
-            <p class="final-order-title" id="item-name-modal">Индейка</p>
+            <p class="final-order-title" id="item-name-modal">${this.modalContent.title}</p>
         </div>
         `
         return content
+    }
+
+    loadModalOrder() {
+        return (/*html*/ `
+        <p class="item-amount">Количество</p>
+        <div class="amount-block">
+            <img class="minus-icon" src="i/minus.svg">
+            <input class="item-counter" type="text" id="counter-modal" value=${this.modalContent.amount}>
+            <img class="plus-icon" src="i/plus.svg">
+        </div>
+        <button class="item-button">В КОРЗИНУ</button>
+        `)
     }
 
     render() {
@@ -516,10 +546,12 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                 <div class="modal-footer">
                     <div class="item-price-block">
                         <p class="price-text">Цена:</p>
-                        <p class="price-value" id="price-modal">${this.modalContent.price}</p>
+                        <p class="price-value" id="price-modal">${this.selectedModalTab === "ready" ?
+                this.modalContent.price * this.modalContent.amount : this.modalContent.price}</p>
                         <p class="price-currency">руб.</p>
                     </div>
                     <div class="modal-order-block">
+                    ${this.selectedModalTab === "ready" ? this.loadModalOrder() : []}
                     </div>
                 </div>
             </div>
@@ -714,6 +746,10 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                 vegetables: [],
                 sauces: [],
                 fillings: []
+            },
+            previousValues: {
+                sizes: 0,
+                breads: 0
             }
         }
         super(data)
@@ -773,7 +809,9 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             ingredients: this.data.ingredients,
             modalContent: this.data.modalContent,
             tabReadyContent: this.data.tabReadyContent,
-            setTabReadyContent: (x) => {this.data.tabReadyContent = x}
+            setTabReadyContent: (x) => {this.data.tabReadyContent = x},
+            previousValues: this.data.previousValues,
+            setPreviousValues: (x) => {this.data.previousValues = x}
         });
     }
 

@@ -23,6 +23,10 @@ class App extends Component {
                 vegetables: [],
                 sauces: [],
                 fillings: []
+            },
+            previousValues: {
+                sizes: 0,
+                breads: 0
             }
         }
         super(data)
@@ -82,7 +86,9 @@ class App extends Component {
             ingredients: this.data.ingredients,
             modalContent: this.data.modalContent,
             tabReadyContent: this.data.tabReadyContent,
-            setTabReadyContent: (x) => {this.data.tabReadyContent = x}
+            setTabReadyContent: (x) => {this.data.tabReadyContent = x},
+            previousValues: this.data.previousValues,
+            setPreviousValues: (x) => {this.data.previousValues = x}
         });
     }
 
