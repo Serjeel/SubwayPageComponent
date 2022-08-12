@@ -13,7 +13,9 @@ class ModalWindow extends Component {
         this.orderItems = props.orderItems;
         this.totalPrice = props.totalPrice;
         this.sandwichesLength = props.sandwichesLength;
+        this.sandwiches = props.sandwiches;
 
+        this.setSandwiches = props.setSandwiches;
         this.setSandwichesLength = props.setSandwichesLength;
         this.setTotalPrice= props.setTotalPrice;
         this.setOrderItems = props.setOrderItems;
@@ -121,11 +123,13 @@ class ModalWindow extends Component {
             console.log(this.countersValue);
         }
         const handleModalMinusClick = () => {
-            this.modalContent.amount -= 1;
-            this.setModalContent(this.modalContent);
-            this.countersValue[this.modalContent.id - 1] -= 1;
-            this.setCountersValue(this.countersValue);
-            console.log(this.countersValue);
+            if (this.modalContent.amount > 1) {
+                this.modalContent.amount -= 1;
+                this.setModalContent(this.modalContent);
+                this.countersValue[this.modalContent.id - 1] -= 1;
+                this.setCountersValue(this.countersValue);
+                console.log(this.countersValue);
+            }
         }
 
         const handleInputChange = () => {
@@ -145,6 +149,22 @@ class ModalWindow extends Component {
 
             console.log(this.sandwichesLength);
 
+            this.sandwiches.push({
+                id: this.modalContent,
+                title: this.modalContent,
+                amount: this.modalContent,
+                price: this.modalContent,
+                sizes:this.tabReadyContent.sizes,
+                breads: this.tabReadyContent.breads,
+                vegetables: this.tabReadyContent.vegetables,
+                sauces: this.tabReadyContent.sauces,
+                fillings: this.tabReadyContent.fillings
+            });
+
+            // Доделать редактирование
+
+            console.log(this.sandwiches);
+
             this.orderItems.push({
                 sandwichId: this.sandwichesLength + 1,
                 id: this.orderItems.length + 1,
@@ -153,6 +173,7 @@ class ModalWindow extends Component {
                 price: this.modalContent.price * this.modalContent.amount
             });
             this.setOrderItems(this.orderItems);
+            this.setSandwiches(this.sandwiches);
             console.log(this.orderItems);
             this.setTotalPrice(this.totalPrice + (this.modalContent.price * this.modalContent.amount));
         }

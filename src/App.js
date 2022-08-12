@@ -18,7 +18,8 @@ class App extends Component {
             modalWindowFlag: false,
             modalContent: [],
             sandwichesLength: 0,
-            tabReadyContent : {
+            sandwiches: [],
+            tabReadyContent: {
                 sizes: "15 См",
                 breads: "Белый итальянский",
                 vegetables: [],
@@ -65,7 +66,15 @@ class App extends Component {
             orderItems: this.data.orderItems,
             setOrderItems: (x) => { this.data.orderItems = x },
             totalPrice: this.data.totalPrice,
-            setTotalPrice: (x) => { this.data.totalPrice = x }
+            setTotalPrice: (x) => { this.data.totalPrice = x },
+            sandwiches: this.data.sandwiches,
+            setSandwiches: (x) => { this.data.sandwiches = x },
+            setModalWindowFlag: (x) => { this.data.modalWindowFlag = x },
+            modalContent: this.data.modalContent,
+            setModalContent: (x) => { this.data.modalContent = x },
+            setSelectedModalTab: (x) => { this.data.selectedModalTab = x },
+            tabReadyContent: this.data.tabReadyContent,
+            setTabReadyContent: (x) => { this.data.tabReadyContent = x }
         });
         this.menuBlock = new MenuBlock({
             items: this.data.items,
@@ -86,11 +95,11 @@ class App extends Component {
             setSelectedModalTab: (x) => { this.data.selectedModalTab = x },
             ingredients: this.data.ingredients,
             modalContent: this.data.modalContent,
-            setModalContent: (x) => {this.data.modalContent = x},
+            setModalContent: (x) => { this.data.modalContent = x },
             tabReadyContent: this.data.tabReadyContent,
-            setTabReadyContent: (x) => {this.data.tabReadyContent = x},
+            setTabReadyContent: (x) => { this.data.tabReadyContent = x },
             previousValues: this.data.previousValues,
-            setPreviousValues: (x) => {this.data.previousValues = x},
+            setPreviousValues: (x) => { this.data.previousValues = x },
             countersValue: this.data.countersValue,
             setCountersValue: (x) => { this.data.countersValue = x },
             orderItems: this.data.orderItems,
@@ -98,7 +107,9 @@ class App extends Component {
             totalPrice: this.data.totalPrice,
             setTotalPrice: (x) => { this.data.totalPrice = x },
             sandwichesLength: this.data.sandwichesLength,
-            setSandwichesLength: (x) => { this.data.sandwichesLength = x }
+            setSandwichesLength: (x) => { this.data.sandwichesLength = x },
+            sandwiches: this.data.sandwiches,
+            setSandwiches: (x) => { this.data.sandwiches = x }
         });
     }
 

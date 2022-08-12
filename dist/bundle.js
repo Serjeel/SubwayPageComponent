@@ -128,7 +128,7 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         this.selectedTab = props.selectedTab;
         this.orderItems = props.orderItems;
         this.totalPrice = props.totalPrice;
-       
+
         this.setSelectedModalTab = props.setSelectedModalTab;
         this.setModalContent = props.setModalContent;
         this.setModalWindowFlag = props.setModalWindowFlag;
@@ -153,8 +153,10 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             }
 
             const handleMinusClick = () => {
-                this.countersValue[i] -= 1;
-                this.setCountersValue(this.countersValue)
+                if (this.countersValue[i] > 1) {
+                    this.countersValue[i] -= 1;
+                    this.setCountersValue(this.countersValue)
+                }
             }
 
             const handleInputChange = () => {
@@ -165,7 +167,7 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
             const handleButtonClick = () => {
                 if (this.selectedTab === "sandwiches") {
-                    this.setSelectedModalTab("sizes")
+                    this.setSelectedModalTab("sizes");
                     this.setModalWindowFlag(true);
                     this.setModalContent({
                         id: i + 1,
@@ -364,7 +366,9 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         this.orderItems = props.orderItems;
         this.totalPrice = props.totalPrice;
         this.sandwichesLength = props.sandwichesLength;
+        this.sandwiches = props.sandwiches;
 
+        this.setSandwiches = props.setSandwiches;
         this.setSandwichesLength = props.setSandwichesLength;
         this.setTotalPrice= props.setTotalPrice;
         this.setOrderItems = props.setOrderItems;
@@ -472,11 +476,13 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             console.log(this.countersValue);
         }
         const handleModalMinusClick = () => {
-            this.modalContent.amount -= 1;
-            this.setModalContent(this.modalContent);
-            this.countersValue[this.modalContent.id - 1] -= 1;
-            this.setCountersValue(this.countersValue);
-            console.log(this.countersValue);
+            if (this.modalContent.amount > 1) {
+                this.modalContent.amount -= 1;
+                this.setModalContent(this.modalContent);
+                this.countersValue[this.modalContent.id - 1] -= 1;
+                this.setCountersValue(this.countersValue);
+                console.log(this.countersValue);
+            }
         }
 
         const handleInputChange = () => {
@@ -496,6 +502,22 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
             console.log(this.sandwichesLength);
 
+            this.sandwiches.push({
+                id: this.modalContent,
+                title: this.modalContent,
+                amount: this.modalContent,
+                price: this.modalContent,
+                sizes:this.tabReadyContent.sizes,
+                breads: this.tabReadyContent.breads,
+                vegetables: this.tabReadyContent.vegetables,
+                sauces: this.tabReadyContent.sauces,
+                fillings: this.tabReadyContent.fillings
+            });
+
+            // Доделать редактирование
+
+            console.log(this.sandwiches);
+
             this.orderItems.push({
                 sandwichId: this.sandwichesLength + 1,
                 id: this.orderItems.length + 1,
@@ -504,6 +526,7 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                 price: this.modalContent.price * this.modalContent.amount
             });
             this.setOrderItems(this.orderItems);
+            this.setSandwiches(this.sandwiches);
             console.log(this.orderItems);
             this.setTotalPrice(this.totalPrice + (this.modalContent.price * this.modalContent.amount));
         }
@@ -639,8 +662,17 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         super()
         this.orderItems = props.orderItems;
         this.setOrderItems = props.setOrderItems;
-        this.totalPrice = props.totalPrice,
-        this.setTotalPrice = props.setTotalPrice
+        this.totalPrice = props.totalPrice;
+        this.sandwiches = props.sandwiches;
+        this.modalContent = props.modalContent;
+        this.tabReadyContent = props.tabReadyContent;
+
+        this.setTabReadyContent = props.setTabReadyContent;
+        this.setModalContent = props.setModalContent;
+        this.setModalWindowFlag = props.setModalWindowFlag;
+        this.setSandwiches = props.setSandwiches;
+        this.setTotalPrice = props.setTotalPrice;
+        this.setSelectedModalTab = props.setSelectedModalTab;
     }
 
     basketRender() {
@@ -648,7 +680,8 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         this.orderItems.map((item) => {
             items += /*html*/`
                 <div class="order-items" id="order-${item.id}">
-                   <p class="order-title">${item.title}</p>
+                    <p class="${item.sandwichId ? "sandwich-title" : "order-title"}" 
+                    id="${item.sandwichId ? "sandwich-" + item.sandwichId : []}">${item.title}</p>
                     <p class="order-amount">${item.amount}</p>
                     <p class="order-price">${item.price} руб.</p>
                     <img class="delete-icon" id="delete-${item.id}" src="i/trash.svg"/>
@@ -671,6 +704,16 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
             }
             document.getElementById("delete-" + (i + 1)).addEventListener('click', handleChangeDeleteIconClick);
+        }
+        for (let i = 0; i < this.sandwiches.length; i++) {
+            const handleOrderClick = () => {
+                this.setSelectedModalTab("sizes");
+                this.setModalWindowFlag(true);
+                console.log(this.sandwiches[i]);
+                this.setTabReadyContent(this.sandwiches[i]);
+            }
+
+            document.getElementById("sandwich-" + (i + 1)).addEventListener("click", handleOrderClick);
         }
     }
 
@@ -798,7 +841,8 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             modalWindowFlag: false,
             modalContent: [],
             sandwichesLength: 0,
-            tabReadyContent : {
+            sandwiches: [],
+            tabReadyContent: {
                 sizes: "15 См",
                 breads: "Белый итальянский",
                 vegetables: [],
@@ -845,7 +889,15 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             orderItems: this.data.orderItems,
             setOrderItems: (x) => { this.data.orderItems = x },
             totalPrice: this.data.totalPrice,
-            setTotalPrice: (x) => { this.data.totalPrice = x }
+            setTotalPrice: (x) => { this.data.totalPrice = x },
+            sandwiches: this.data.sandwiches,
+            setSandwiches: (x) => { this.data.sandwiches = x },
+            setModalWindowFlag: (x) => { this.data.modalWindowFlag = x },
+            modalContent: this.data.modalContent,
+            setModalContent: (x) => { this.data.modalContent = x },
+            setSelectedModalTab: (x) => { this.data.selectedModalTab = x },
+            tabReadyContent: this.data.tabReadyContent,
+            setTabReadyContent: (x) => { this.data.tabReadyContent = x }
         });
         this.menuBlock = new _MenuBlock__WEBPACK_IMPORTED_MODULE_2__["default"]({
             items: this.data.items,
@@ -866,11 +918,11 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             setSelectedModalTab: (x) => { this.data.selectedModalTab = x },
             ingredients: this.data.ingredients,
             modalContent: this.data.modalContent,
-            setModalContent: (x) => {this.data.modalContent = x},
+            setModalContent: (x) => { this.data.modalContent = x },
             tabReadyContent: this.data.tabReadyContent,
-            setTabReadyContent: (x) => {this.data.tabReadyContent = x},
+            setTabReadyContent: (x) => { this.data.tabReadyContent = x },
             previousValues: this.data.previousValues,
-            setPreviousValues: (x) => {this.data.previousValues = x},
+            setPreviousValues: (x) => { this.data.previousValues = x },
             countersValue: this.data.countersValue,
             setCountersValue: (x) => { this.data.countersValue = x },
             orderItems: this.data.orderItems,
@@ -878,7 +930,9 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             totalPrice: this.data.totalPrice,
             setTotalPrice: (x) => { this.data.totalPrice = x },
             sandwichesLength: this.data.sandwichesLength,
-            setSandwichesLength: (x) => { this.data.sandwichesLength = x }
+            setSandwichesLength: (x) => { this.data.sandwichesLength = x },
+            sandwiches: this.data.sandwiches,
+            setSandwiches: (x) => { this.data.sandwiches = x }
         });
     }
 

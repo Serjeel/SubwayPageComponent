@@ -9,7 +9,7 @@ class MenuBlock extends Component {
         this.selectedTab = props.selectedTab;
         this.orderItems = props.orderItems;
         this.totalPrice = props.totalPrice;
-       
+
         this.setSelectedModalTab = props.setSelectedModalTab;
         this.setModalContent = props.setModalContent;
         this.setModalWindowFlag = props.setModalWindowFlag;
@@ -34,8 +34,10 @@ class MenuBlock extends Component {
             }
 
             const handleMinusClick = () => {
-                this.countersValue[i] -= 1;
-                this.setCountersValue(this.countersValue)
+                if (this.countersValue[i] > 1) {
+                    this.countersValue[i] -= 1;
+                    this.setCountersValue(this.countersValue)
+                }
             }
 
             const handleInputChange = () => {
@@ -46,7 +48,7 @@ class MenuBlock extends Component {
 
             const handleButtonClick = () => {
                 if (this.selectedTab === "sandwiches") {
-                    this.setSelectedModalTab("sizes")
+                    this.setSelectedModalTab("sizes");
                     this.setModalWindowFlag(true);
                     this.setModalContent({
                         id: i + 1,

@@ -5,8 +5,17 @@ class Order extends Component {
         super()
         this.orderItems = props.orderItems;
         this.setOrderItems = props.setOrderItems;
-        this.totalPrice = props.totalPrice,
-        this.setTotalPrice = props.setTotalPrice
+        this.totalPrice = props.totalPrice;
+        this.sandwiches = props.sandwiches;
+        this.modalContent = props.modalContent;
+        this.tabReadyContent = props.tabReadyContent;
+
+        this.setTabReadyContent = props.setTabReadyContent;
+        this.setModalContent = props.setModalContent;
+        this.setModalWindowFlag = props.setModalWindowFlag;
+        this.setSandwiches = props.setSandwiches;
+        this.setTotalPrice = props.setTotalPrice;
+        this.setSelectedModalTab = props.setSelectedModalTab;
     }
 
     basketRender() {
@@ -14,7 +23,8 @@ class Order extends Component {
         this.orderItems.map((item) => {
             items += /*html*/`
                 <div class="order-items" id="order-${item.id}">
-                   <p class="order-title">${item.title}</p>
+                    <p class="${item.sandwichId ? "sandwich-title" : "order-title"}" 
+                    id="${item.sandwichId ? "sandwich-" + item.sandwichId : []}">${item.title}</p>
                     <p class="order-amount">${item.amount}</p>
                     <p class="order-price">${item.price} руб.</p>
                     <img class="delete-icon" id="delete-${item.id}" src="i/trash.svg"/>
@@ -37,6 +47,16 @@ class Order extends Component {
 
             }
             document.getElementById("delete-" + (i + 1)).addEventListener('click', handleChangeDeleteIconClick);
+        }
+        for (let i = 0; i < this.sandwiches.length; i++) {
+            const handleOrderClick = () => {
+                this.setSelectedModalTab("sizes");
+                this.setModalWindowFlag(true);
+                console.log(this.sandwiches[i]);
+                this.setTabReadyContent(this.sandwiches[i]);
+            }
+
+            document.getElementById("sandwich-" + (i + 1)).addEventListener("click", handleOrderClick);
         }
     }
 
