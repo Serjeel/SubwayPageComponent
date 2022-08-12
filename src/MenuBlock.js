@@ -9,7 +9,7 @@ class MenuBlock extends Component {
         this.selectedTab = props.selectedTab;
         this.orderItems = props.orderItems;
         this.totalPrice = props.totalPrice;
-
+       
         this.setSelectedModalTab = props.setSelectedModalTab;
         this.setModalContent = props.setModalContent;
         this.setModalWindowFlag = props.setModalWindowFlag;
@@ -19,7 +19,7 @@ class MenuBlock extends Component {
     }
 
     // Далее что нужно сделать:
-    // 1. Модалка
+    // 1. Редактирование сэндвича
     // 2. Разделить css файлы для каждого компонента
 
     enable() {
@@ -27,10 +27,12 @@ class MenuBlock extends Component {
             if (this.items[i] && this.items[i].category !== this.selectedTab) {
                 continue;
             }
+
             const handlePlusClick = () => {
                 this.countersValue[i] += 1;
                 this.setCountersValue(this.countersValue)
             }
+
             const handleMinusClick = () => {
                 this.countersValue[i] -= 1;
                 this.setCountersValue(this.countersValue)

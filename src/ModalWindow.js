@@ -9,7 +9,15 @@ class ModalWindow extends Component {
         this.modalContent = props.modalContent;
         this.tabReadyContent = props.tabReadyContent;
         this.previousValues = props.previousValues;
+        this.countersValue = props.countersValue;
+        this.orderItems = props.orderItems;
+        this.totalPrice = props.totalPrice;
+        this.sandwichesLength = props.sandwichesLength;
 
+        this.setSandwichesLength = props.setSandwichesLength;
+        this.setTotalPrice= props.setTotalPrice;
+        this.setOrderItems = props.setOrderItems;
+        this.setCountersValue = props.setCountersValue;
         this.setPreviousValues = props.setPreviousValues;
         this.setModalContent = props.setModalContent;
         this.setTabReadyContent = props.setTabReadyContent;
@@ -105,10 +113,57 @@ class ModalWindow extends Component {
             }
             document.getElementById("item-" + key).addEventListener("click", modalItemClick)
         }
-    }
+        const handleModalPlusClick = () => {
+            this.modalContent.amount += 1;
+            this.setModalContent(this.modalContent);
+            this.countersValue[this.modalContent.id - 1] += 1;
+            this.setCountersValue(this.countersValue);
+            console.log(this.countersValue);
+        }
+        const handleModalMinusClick = () => {
+            this.modalContent.amount -= 1;
+            this.setModalContent(this.modalContent);
+            this.countersValue[this.modalContent.id - 1] -= 1;
+            this.setCountersValue(this.countersValue);
+            console.log(this.countersValue);
+        }
 
-    // Теперь надо сделать добавление в корзину, возможность менять amount на плюс, минус и вручную и в 
-    // самой модалке и возможность редактирования
+        const handleInputChange = () => {
+            this.modalContent.amount = parseInt(document.getElementById("counter-modal").value);
+            this.setModalContent(this.modalContent);
+            this.countersValue[this.modalContent.id - 1] = parseInt(document.
+                getElementById("counter-modal").value);
+            this.setCountersValue(this.countersValue);
+            console.log(this.countersValue);
+        }
+
+        const handleButtonModalClick = () => {
+            this.setSelectedModalTab("sizes");
+            this.setModalWindowFlag(false);
+
+            this.setSandwichesLength(this.sandwichesLength + 1);
+
+            console.log(this.sandwichesLength);
+
+            this.orderItems.push({
+                sandwichId: this.sandwichesLength + 1,
+                id: this.orderItems.length + 1,
+                title: this.modalContent.title,
+                amount: this.modalContent.amount,
+                price: this.modalContent.price * this.modalContent.amount
+            });
+            this.setOrderItems(this.orderItems);
+            console.log(this.orderItems);
+            this.setTotalPrice(this.totalPrice + (this.modalContent.price * this.modalContent.amount));
+        }
+
+        if (this.selectedModalTab === "ready") {
+            document.getElementById("plus-modal").addEventListener("click", handleModalPlusClick)
+            document.getElementById("minus-modal").addEventListener("click", handleModalMinusClick)
+            document.getElementById("counter-modal").addEventListener("change", handleInputChange)
+            document.getElementById("button-modal").addEventListener("click", handleButtonModalClick)
+        }
+    }
 
     loadIngredients() {
         const ingredient = new Ingredient({
@@ -163,11 +218,11 @@ class ModalWindow extends Component {
         return (/*html*/ `
         <p class="item-amount">Количество</p>
         <div class="amount-block">
-            <img class="minus-icon" src="i/minus.svg">
+            <img class="minus-icon" id="minus-modal" src="i/minus.svg">
             <input class="item-counter" type="text" id="counter-modal" value=${this.modalContent.amount}>
-            <img class="plus-icon" src="i/plus.svg">
+            <img class="plus-icon" id="plus-modal" src="i/plus.svg">
         </div>
-        <button class="item-button">В КОРЗИНУ</button>
+        <button class="item-button" id="button-modal">В КОРЗИНУ</button>
         `)
     }
 
