@@ -15,10 +15,15 @@ class App extends Component {
             countersValue: [],
             orderItems: [],
             totalPrice: 0,
-            modalWindowFlag: false,
-            modalContent: [],
+            modalWindowAddShow: false,
+            modalWindowEditShow: false,
+            modalContent: {},
             sandwichesLength: 0,
             sandwiches: [],
+            changeableOrderItem: {
+                orderId: 0,
+                sandwichId: 0
+            },
             tabReadyContent: {
                 sizes: "15 См",
                 breads: "Белый итальянский",
@@ -69,12 +74,17 @@ class App extends Component {
             setTotalPrice: (x) => { this.data.totalPrice = x },
             sandwiches: this.data.sandwiches,
             setSandwiches: (x) => { this.data.sandwiches = x },
-            setModalWindowFlag: (x) => { this.data.modalWindowFlag = x },
+            modalWindowAddShow: this.data.modalWindowAddShow,
+            setModalWindowAddShow: (x) => { this.data.modalWindowAddShow = x },
+            modalWindowEditShow: this.data.modalWindowEditShow,
+            setModalWindowEditShow: (x) => { this.data.modalWindowEditShow = x },
             modalContent: this.data.modalContent,
             setModalContent: (x) => { this.data.modalContent = x },
             setSelectedModalTab: (x) => { this.data.selectedModalTab = x },
             tabReadyContent: this.data.tabReadyContent,
-            setTabReadyContent: (x) => { this.data.tabReadyContent = x }
+            setTabReadyContent: (x) => { this.data.tabReadyContent = x },
+            changeableOrderItem: this.data.changeableOrderItem,
+            setChangeableOrderItem: (x) => { this.data.changeableOrderItem = x }
         });
         this.menuBlock = new MenuBlock({
             items: this.data.items,
@@ -85,12 +95,15 @@ class App extends Component {
             setOrderItems: (x) => { this.data.orderItems = x },
             totalPrice: this.data.totalPrice,
             setTotalPrice: (x) => { this.data.totalPrice = x },
-            setModalWindowFlag: (x) => { this.data.modalWindowFlag = x },
+            setModalWindowAddShow: (x) => { this.data.modalWindowAddShow = x },
             setModalContent: (x) => { this.data.modalContent = x },
             setSelectedModalTab: (x) => { this.data.selectedModalTab = x },
         });
         this.modalWindow = new ModalWindow({
-            setModalWindowFlag: (x) => { this.data.modalWindowFlag = x },
+            modalWindowAddShow: this.data.modalWindowAddShow,
+            setModalWindowAddShow: (x) => { this.data.modalWindowAddShow = x },
+            modalWindowEditShow: this.data.modalWindowEditShow,
+            setModalWindowEditShow: (x) => { this.data.modalWindowEditShow = x },
             selectedModalTab: this.data.selectedModalTab,
             setSelectedModalTab: (x) => { this.data.selectedModalTab = x },
             ingredients: this.data.ingredients,
@@ -109,7 +122,9 @@ class App extends Component {
             sandwichesLength: this.data.sandwichesLength,
             setSandwichesLength: (x) => { this.data.sandwichesLength = x },
             sandwiches: this.data.sandwiches,
-            setSandwiches: (x) => { this.data.sandwiches = x }
+            setSandwiches: (x) => { this.data.sandwiches = x },
+            changeableOrderItem: this.data.changeableOrderItem,
+            setChangeableOrderItem: (x) => { this.data.changeableOrderItem = x }
         });
     }
 
@@ -117,7 +132,7 @@ class App extends Component {
         this.menuCategories.enable();
         this.menuBlock.enable();
         this.order.enable();
-        if (this.data.modalWindowFlag) {
+        if (this.data.modalWindowAddShow || this.data.modalWindowEditShow) {
             this.modalWindow.enable();
         }
     }
@@ -133,7 +148,7 @@ class App extends Component {
             </div>
             ${this.menuBlock.render()}
         </div>
-        ${this.data.modalWindowFlag ? this.modalWindow.render() : []}
+        ${this.data.modalWindowAddShow || this.data.modalWindowEditShow ? this.modalWindow.render() : []}
         `)
     }
 }

@@ -131,15 +131,14 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
         this.setSelectedModalTab = props.setSelectedModalTab;
         this.setModalContent = props.setModalContent;
-        this.setModalWindowFlag = props.setModalWindowFlag;
+        this.setModalWindowAddShow = props.setModalWindowAddShow;
         this.setCountersValue = props.setCountersValue;
         this.setOrderItems = props.setOrderItems;
         this.setTotalPrice = props.setTotalPrice;
     }
 
     // Далее что нужно сделать:
-    // 1. Редактирование сэндвича
-    // 2. Разделить css файлы для каждого компонента
+    // 1. Разделить css файлы для каждого компонента
 
     enable() {
         for (let i = 0; i < this.items.length; i++) {
@@ -161,14 +160,13 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
             const handleInputChange = () => {
                 this.countersValue[i] = parseInt(document.getElementById("counter-" + (i + 1)).value);
-                console.log(this.countersValue);
                 this.setCountersValue(this.countersValue);
             }
 
             const handleButtonClick = () => {
                 if (this.selectedTab === "sandwiches") {
                     this.setSelectedModalTab("sizes");
-                    this.setModalWindowFlag(true);
+                    this.setModalWindowAddShow(true);
                     this.setModalContent({
                         id: i + 1,
                         title: this.items[i].name,
@@ -367,16 +365,21 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         this.totalPrice = props.totalPrice;
         this.sandwichesLength = props.sandwichesLength;
         this.sandwiches = props.sandwiches;
+        this.modalWindowAddShow = props.modalWindowAddShow;
+        this.modalWindowEditShow = props.modalWindowEditShow;
+        this.changeableOrderItem = props.changeableOrderItem;
 
+        this.setChangeableOrderItem = props.setChangeableOrderItem;
         this.setSandwiches = props.setSandwiches;
         this.setSandwichesLength = props.setSandwichesLength;
-        this.setTotalPrice= props.setTotalPrice;
+        this.setTotalPrice = props.setTotalPrice;
         this.setOrderItems = props.setOrderItems;
         this.setCountersValue = props.setCountersValue;
         this.setPreviousValues = props.setPreviousValues;
         this.setModalContent = props.setModalContent;
         this.setTabReadyContent = props.setTabReadyContent;
-        this.setModalWindowFlag = props.setModalWindowFlag;
+        this.setModalWindowAddShow = props.setModalWindowAddShow;
+        this.setModalWindowEditShow = props.setModalWindowEditShow;
         this.setSelectedModalTab = props.setSelectedModalTab;
         this.tabs = {
             sizes: "Размер",
@@ -413,7 +416,8 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                 sizes: 0,
                 breads: 0
             })
-            this.setModalWindowFlag(false)
+            this.setModalWindowAddShow(false);
+            this.setModalWindowEditShow(false);
             this.setTabReadyContent({
                 sizes: "15 См",
                 breads: "Белый итальянский",
@@ -451,87 +455,117 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                         ingredients[this.selectedModalTab][key].name)) {
                         let n = this.tabReadyContent[this.selectedModalTab].indexOf(this.
                             ingredients[this.selectedModalTab][key].name);
-                        console.log(n);
                         this.modalContent.price -= this.ingredients[this.selectedModalTab][key].price;
                         this.tabReadyContent[this.selectedModalTab].splice(n, 1);
-                        console.log(this.tabReadyContent[this.selectedModalTab]);
                         this.setTabReadyContent(this.tabReadyContent);
                     } else {
                         this.tabReadyContent[this.selectedModalTab].push(this.ingredients[this.
                             selectedModalTab][key].name)
                         this.modalContent.price += this.ingredients[this.selectedModalTab][key].price;
                         this.setTabReadyContent(this.tabReadyContent)
-                        console.log(this.tabReadyContent[this.selectedModalTab]);
                     }
                 }
                 document.getElementsByClassName("tab-content-block")[0].scrollTo(0, scrollPosition)
             }
             document.getElementById("item-" + key).addEventListener("click", modalItemClick)
         }
-        const handleModalPlusClick = () => {
-            this.modalContent.amount += 1;
-            this.setModalContent(this.modalContent);
-            this.countersValue[this.modalContent.id - 1] += 1;
-            this.setCountersValue(this.countersValue);
-            console.log(this.countersValue);
-        }
-        const handleModalMinusClick = () => {
-            if (this.modalContent.amount > 1) {
-                this.modalContent.amount -= 1;
-                this.setModalContent(this.modalContent);
-                this.countersValue[this.modalContent.id - 1] -= 1;
-                this.setCountersValue(this.countersValue);
-                console.log(this.countersValue);
-            }
-        }
-
-        const handleInputChange = () => {
-            this.modalContent.amount = parseInt(document.getElementById("counter-modal").value);
-            this.setModalContent(this.modalContent);
-            this.countersValue[this.modalContent.id - 1] = parseInt(document.
-                getElementById("counter-modal").value);
-            this.setCountersValue(this.countersValue);
-            console.log(this.countersValue);
-        }
-
-        const handleButtonModalClick = () => {
-            this.setSelectedModalTab("sizes");
-            this.setModalWindowFlag(false);
-
-            this.setSandwichesLength(this.sandwichesLength + 1);
-
-            console.log(this.sandwichesLength);
-
-            this.sandwiches.push({
-                id: this.modalContent,
-                title: this.modalContent,
-                amount: this.modalContent,
-                price: this.modalContent,
-                sizes:this.tabReadyContent.sizes,
-                breads: this.tabReadyContent.breads,
-                vegetables: this.tabReadyContent.vegetables,
-                sauces: this.tabReadyContent.sauces,
-                fillings: this.tabReadyContent.fillings
-            });
-
-            // Доделать редактирование
-
-            console.log(this.sandwiches);
-
-            this.orderItems.push({
-                sandwichId: this.sandwichesLength + 1,
-                id: this.orderItems.length + 1,
-                title: this.modalContent.title,
-                amount: this.modalContent.amount,
-                price: this.modalContent.price * this.modalContent.amount
-            });
-            this.setOrderItems(this.orderItems);
-            this.setSandwiches(this.sandwiches);
-            console.log(this.orderItems);
-            this.setTotalPrice(this.totalPrice + (this.modalContent.price * this.modalContent.amount));
-        }
 
         if (this.selectedModalTab === "ready") {
+            const handleModalPlusClick = () => {
+                this.modalContent.amount += 1;
+                this.setModalContent(this.modalContent);
+                this.countersValue[this.modalContent.id - 1] += 1;
+                this.setCountersValue(this.countersValue);
+            }
+            const handleModalMinusClick = () => {
+                if (this.modalContent.amount > 1) {
+                    this.modalContent.amount -= 1;
+                    this.setModalContent(this.modalContent);
+                    this.countersValue[this.modalContent.id - 1] -= 1;
+                    this.setCountersValue(this.countersValue);
+                }
+            }
+            const handleInputChange = () => {
+                this.modalContent.amount = parseInt(document.getElementById("counter-modal").value);
+                this.setModalContent(this.modalContent);
+                this.countersValue[this.modalContent.id - 1] = parseInt(document.
+                    getElementById("counter-modal").value);
+                this.setCountersValue(this.countersValue);
+            }
+
+            const handleButtonModalClick = () => {
+                this.setSelectedModalTab("sizes");
+                if (this.modalWindowAddShow) {
+                    this.setModalWindowAddShow(false);
+                    this.setSandwichesLength(this.sandwichesLength + 1);
+
+                    this.sandwiches.push({
+                        id: this.modalContent.id,
+                        title: this.modalContent.title,
+                        amount: this.modalContent.amount,
+                        price: this.modalContent.price,
+                        sizes: this.tabReadyContent.sizes,
+                        breads: this.tabReadyContent.breads,
+                        vegetables: this.tabReadyContent.vegetables,
+                        sauces: this.tabReadyContent.sauces,
+                        fillings: this.tabReadyContent.fillings
+                    });
+
+                    this.orderItems.push({
+                        sandwichId: this.sandwiches.length,
+                        id: this.orderItems.length + 1,
+                        title: this.modalContent.title,
+                        amount: this.modalContent.amount,
+                        price: this.modalContent.price * this.modalContent.amount
+                    });
+                    this.setOrderItems(this.orderItems);
+                    this.setSandwiches(this.sandwiches);
+
+                    this.setTotalPrice(this.totalPrice + (this.modalContent.price * this.modalContent.amount));
+
+                    this.setTabReadyContent({
+                        sizes: "15 См",
+                        breads: "Белый итальянский",
+                        vegetables: [],
+                        sauces: [],
+                        fillings: []
+                    })
+                }
+                if (this.modalWindowEditShow) {
+                    this.setModalWindowEditShow(false);
+
+                    console.log(this.changeableOrderItem);
+                    this.sandwiches[this.changeableOrderItem.sandwichId] = {
+                        id: this.modalContent.id,
+                        title: this.modalContent.title,
+                        amount: this.modalContent.amount,
+                        price: this.modalContent.price,
+                        sizes: this.tabReadyContent.sizes,
+                        breads: this.tabReadyContent.breads,
+                        vegetables: this.tabReadyContent.vegetables,
+                        sauces: this.tabReadyContent.sauces,
+                        fillings: this.tabReadyContent.fillings
+                    };
+                    this.setSandwiches(this.sandwiches);
+
+                    let previousPrice = this.orderItems[this.changeableOrderItem.orderId].price;
+                    console.log(previousPrice);
+
+                    this.orderItems[this.changeableOrderItem.orderId].amount = this.modalContent.amount;
+                    this.orderItems[this.changeableOrderItem.orderId].price =
+                        this.modalContent.price * this.modalContent.amount;
+
+                    this.setTotalPrice(this.totalPrice + (this.modalContent.price * 
+                        this.modalContent.amount) - previousPrice);
+                    this.setTabReadyContent({
+                        sizes: "15 См",
+                        breads: "Белый итальянский",
+                        vegetables: [],
+                        sauces: [],
+                        fillings: []
+                    })
+                }
+            }
             document.getElementById("plus-modal").addEventListener("click", handleModalPlusClick)
             document.getElementById("minus-modal").addEventListener("click", handleModalMinusClick)
             document.getElementById("counter-modal").addEventListener("change", handleInputChange)
@@ -596,7 +630,8 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             <input class="item-counter" type="text" id="counter-modal" value=${this.modalContent.amount}>
             <img class="plus-icon" id="plus-modal" src="i/plus.svg">
         </div>
-        <button class="item-button" id="button-modal">В КОРЗИНУ</button>
+        <button class="item-button" id="button-modal">${this.modalWindowAddShow ?
+                "В КОРЗИНУ" : (this.modalWindowEditShow ? "ИЗМЕНИТЬ" : [])}</button>
         `)
     }
 
@@ -666,10 +701,15 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         this.sandwiches = props.sandwiches;
         this.modalContent = props.modalContent;
         this.tabReadyContent = props.tabReadyContent;
+        this.modalWindowAddShow = props.modalWindowAddShow;
+        this.modalWindowEditShow = props.modalWindowEditShow;
+        this.changeableOrderItem = props.changeableOrderItem;
 
+        this.setChangeableOrderItem = props.setChangeableOrderItem;
         this.setTabReadyContent = props.setTabReadyContent;
         this.setModalContent = props.setModalContent;
-        this.setModalWindowFlag = props.setModalWindowFlag;
+        this.setModalWindowAddShow = props.setModalWindowAddShow;
+        this.setModalWindowEditShow = props.setModalWindowEditShow;
         this.setSandwiches = props.setSandwiches;
         this.setTotalPrice = props.setTotalPrice;
         this.setSelectedModalTab = props.setSelectedModalTab;
@@ -695,25 +735,41 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         for (let i = 0; i < this.orderItems.length; i++) {
             const handleChangeDeleteIconClick = () => {
                 this.setTotalPrice(this.totalPrice - this.orderItems[i].price);
+                if (this.orderItems[i].sandwichId) {
+                    this.sandwiches.splice(this.orderItems[i].sandwichId - 1, 1);
+                }
                 this.orderItems.splice(i, 1);
 
+                let sandwichId = 1;
                 this.orderItems.map((item, i) => {
                     item.id = i + 1;
+                    if (item.sandwichId) {
+                        item.sandwichId = sandwichId;
+                        sandwichId++;
+                    }
                 })
+                this.setSandwiches(this.sandwiches);
                 this.setOrderItems(this.orderItems);
-
             }
             document.getElementById("delete-" + (i + 1)).addEventListener('click', handleChangeDeleteIconClick);
         }
-        for (let i = 0; i < this.sandwiches.length; i++) {
-            const handleOrderClick = () => {
-                this.setSelectedModalTab("sizes");
-                this.setModalWindowFlag(true);
-                console.log(this.sandwiches[i]);
-                this.setTabReadyContent(this.sandwiches[i]);
+        if (this.sandwiches.length > 0) {
+            for (let i = 0; i < this.sandwiches.length; i++) {
+                const handleOrderClick = () => {
+                    console.log(this.orderItems);
+                    this.changeableOrderItem.sandwichId = i;
+                    let id = this.orderItems.find(item => item.sandwichId ===
+                        this.changeableOrderItem.sandwichId + 1).id - 1;
+                    this.changeableOrderItem.orderId = id;
+                    console.log(this.changeableOrderItem);
+                    this.setChangeableOrderItem(this.changeableOrderItem)
+                    this.setSelectedModalTab("sizes");
+                    this.setModalWindowEditShow(true);
+                    this.setTabReadyContent(this.sandwiches[i]);
+                    this.setModalContent(this.sandwiches[i]);
+                }
+                document.getElementById("sandwich-" + (i + 1)).addEventListener("click", handleOrderClick);
             }
-
-            document.getElementById("sandwich-" + (i + 1)).addEventListener("click", handleOrderClick);
         }
     }
 
@@ -838,10 +894,15 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             countersValue: [],
             orderItems: [],
             totalPrice: 0,
-            modalWindowFlag: false,
-            modalContent: [],
+            modalWindowAddShow: false,
+            modalWindowEditShow: false,
+            modalContent: {},
             sandwichesLength: 0,
             sandwiches: [],
+            changeableOrderItem: {
+                orderId: 0,
+                sandwichId: 0
+            },
             tabReadyContent: {
                 sizes: "15 См",
                 breads: "Белый итальянский",
@@ -892,12 +953,17 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             setTotalPrice: (x) => { this.data.totalPrice = x },
             sandwiches: this.data.sandwiches,
             setSandwiches: (x) => { this.data.sandwiches = x },
-            setModalWindowFlag: (x) => { this.data.modalWindowFlag = x },
+            modalWindowAddShow: this.data.modalWindowAddShow,
+            setModalWindowAddShow: (x) => { this.data.modalWindowAddShow = x },
+            modalWindowEditShow: this.data.modalWindowEditShow,
+            setModalWindowEditShow: (x) => { this.data.modalWindowEditShow = x },
             modalContent: this.data.modalContent,
             setModalContent: (x) => { this.data.modalContent = x },
             setSelectedModalTab: (x) => { this.data.selectedModalTab = x },
             tabReadyContent: this.data.tabReadyContent,
-            setTabReadyContent: (x) => { this.data.tabReadyContent = x }
+            setTabReadyContent: (x) => { this.data.tabReadyContent = x },
+            changeableOrderItem: this.data.changeableOrderItem,
+            setChangeableOrderItem: (x) => { this.data.changeableOrderItem = x }
         });
         this.menuBlock = new _MenuBlock__WEBPACK_IMPORTED_MODULE_2__["default"]({
             items: this.data.items,
@@ -908,12 +974,15 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             setOrderItems: (x) => { this.data.orderItems = x },
             totalPrice: this.data.totalPrice,
             setTotalPrice: (x) => { this.data.totalPrice = x },
-            setModalWindowFlag: (x) => { this.data.modalWindowFlag = x },
+            setModalWindowAddShow: (x) => { this.data.modalWindowAddShow = x },
             setModalContent: (x) => { this.data.modalContent = x },
             setSelectedModalTab: (x) => { this.data.selectedModalTab = x },
         });
         this.modalWindow = new _ModalWindow__WEBPACK_IMPORTED_MODULE_4__["default"]({
-            setModalWindowFlag: (x) => { this.data.modalWindowFlag = x },
+            modalWindowAddShow: this.data.modalWindowAddShow,
+            setModalWindowAddShow: (x) => { this.data.modalWindowAddShow = x },
+            modalWindowEditShow: this.data.modalWindowEditShow,
+            setModalWindowEditShow: (x) => { this.data.modalWindowEditShow = x },
             selectedModalTab: this.data.selectedModalTab,
             setSelectedModalTab: (x) => { this.data.selectedModalTab = x },
             ingredients: this.data.ingredients,
@@ -932,7 +1001,9 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             sandwichesLength: this.data.sandwichesLength,
             setSandwichesLength: (x) => { this.data.sandwichesLength = x },
             sandwiches: this.data.sandwiches,
-            setSandwiches: (x) => { this.data.sandwiches = x }
+            setSandwiches: (x) => { this.data.sandwiches = x },
+            changeableOrderItem: this.data.changeableOrderItem,
+            setChangeableOrderItem: (x) => { this.data.changeableOrderItem = x }
         });
     }
 
@@ -940,7 +1011,7 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         this.menuCategories.enable();
         this.menuBlock.enable();
         this.order.enable();
-        if (this.data.modalWindowFlag) {
+        if (this.data.modalWindowAddShow || this.data.modalWindowEditShow) {
             this.modalWindow.enable();
         }
     }
@@ -956,7 +1027,7 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             </div>
             ${this.menuBlock.render()}
         </div>
-        ${this.data.modalWindowFlag ? this.modalWindow.render() : []}
+        ${this.data.modalWindowAddShow || this.data.modalWindowEditShow ? this.modalWindow.render() : []}
         `)
     }
 }

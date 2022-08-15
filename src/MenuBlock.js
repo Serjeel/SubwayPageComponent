@@ -12,15 +12,14 @@ class MenuBlock extends Component {
 
         this.setSelectedModalTab = props.setSelectedModalTab;
         this.setModalContent = props.setModalContent;
-        this.setModalWindowFlag = props.setModalWindowFlag;
+        this.setModalWindowAddShow = props.setModalWindowAddShow;
         this.setCountersValue = props.setCountersValue;
         this.setOrderItems = props.setOrderItems;
         this.setTotalPrice = props.setTotalPrice;
     }
 
     // Далее что нужно сделать:
-    // 1. Редактирование сэндвича
-    // 2. Разделить css файлы для каждого компонента
+    // 1. Разделить css файлы для каждого компонента
 
     enable() {
         for (let i = 0; i < this.items.length; i++) {
@@ -42,14 +41,13 @@ class MenuBlock extends Component {
 
             const handleInputChange = () => {
                 this.countersValue[i] = parseInt(document.getElementById("counter-" + (i + 1)).value);
-                console.log(this.countersValue);
                 this.setCountersValue(this.countersValue);
             }
 
             const handleButtonClick = () => {
                 if (this.selectedTab === "sandwiches") {
                     this.setSelectedModalTab("sizes");
-                    this.setModalWindowFlag(true);
+                    this.setModalWindowAddShow(true);
                     this.setModalContent({
                         id: i + 1,
                         title: this.items[i].name,

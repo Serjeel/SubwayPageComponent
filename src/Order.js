@@ -9,10 +9,15 @@ class Order extends Component {
         this.sandwiches = props.sandwiches;
         this.modalContent = props.modalContent;
         this.tabReadyContent = props.tabReadyContent;
+        this.modalWindowAddShow = props.modalWindowAddShow;
+        this.modalWindowEditShow = props.modalWindowEditShow;
+        this.changeableOrderItem = props.changeableOrderItem;
 
+        this.setChangeableOrderItem = props.setChangeableOrderItem;
         this.setTabReadyContent = props.setTabReadyContent;
         this.setModalContent = props.setModalContent;
-        this.setModalWindowFlag = props.setModalWindowFlag;
+        this.setModalWindowAddShow = props.setModalWindowAddShow;
+        this.setModalWindowEditShow = props.setModalWindowEditShow;
         this.setSandwiches = props.setSandwiches;
         this.setTotalPrice = props.setTotalPrice;
         this.setSelectedModalTab = props.setSelectedModalTab;
@@ -38,25 +43,41 @@ class Order extends Component {
         for (let i = 0; i < this.orderItems.length; i++) {
             const handleChangeDeleteIconClick = () => {
                 this.setTotalPrice(this.totalPrice - this.orderItems[i].price);
+                if (this.orderItems[i].sandwichId) {
+                    this.sandwiches.splice(this.orderItems[i].sandwichId - 1, 1);
+                }
                 this.orderItems.splice(i, 1);
 
+                let sandwichId = 1;
                 this.orderItems.map((item, i) => {
                     item.id = i + 1;
+                    if (item.sandwichId) {
+                        item.sandwichId = sandwichId;
+                        sandwichId++;
+                    }
                 })
+                this.setSandwiches(this.sandwiches);
                 this.setOrderItems(this.orderItems);
-
             }
             document.getElementById("delete-" + (i + 1)).addEventListener('click', handleChangeDeleteIconClick);
         }
-        for (let i = 0; i < this.sandwiches.length; i++) {
-            const handleOrderClick = () => {
-                this.setSelectedModalTab("sizes");
-                this.setModalWindowFlag(true);
-                console.log(this.sandwiches[i]);
-                this.setTabReadyContent(this.sandwiches[i]);
+        if (this.sandwiches.length > 0) {
+            for (let i = 0; i < this.sandwiches.length; i++) {
+                const handleOrderClick = () => {
+                    console.log(this.orderItems);
+                    this.changeableOrderItem.sandwichId = i;
+                    let id = this.orderItems.find(item => item.sandwichId ===
+                        this.changeableOrderItem.sandwichId + 1).id - 1;
+                    this.changeableOrderItem.orderId = id;
+                    console.log(this.changeableOrderItem);
+                    this.setChangeableOrderItem(this.changeableOrderItem)
+                    this.setSelectedModalTab("sizes");
+                    this.setModalWindowEditShow(true);
+                    this.setTabReadyContent(this.sandwiches[i]);
+                    this.setModalContent(this.sandwiches[i]);
+                }
+                document.getElementById("sandwich-" + (i + 1)).addEventListener("click", handleOrderClick);
             }
-
-            document.getElementById("sandwich-" + (i + 1)).addEventListener("click", handleOrderClick);
         }
     }
 
