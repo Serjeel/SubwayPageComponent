@@ -65,12 +65,10 @@ class Order extends Component {
         if (this.sandwiches.length > 0) {
             for (let i = 0; i < this.sandwiches.length; i++) {
                 const handleOrderClick = () => {
-                    console.log(this.orderItems);
                     this.changeableOrderItem.sandwichId = i;
                     let id = this.orderItems.find(item => item.sandwichId ===
                         this.changeableOrderItem.sandwichId + 1).id - 1;
                     this.changeableOrderItem.orderId = id;
-                    console.log(this.changeableOrderItem);
                     this.setChangeableOrderItem(this.changeableOrderItem)
                     this.setSelectedModalTab("sizes");
                     this.setModalWindowEditShow(true);

@@ -1179,6 +1179,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
 /* harmony import */ var _MainHeader_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MainHeader.css */ "./src/MainHeader/MainHeader.css");
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
+
+
 
 
 
@@ -1187,6 +1190,9 @@ class MainHeader extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"]{
         super();
     }
     render() {
+        console.log(_storage__WEBPACK_IMPORTED_MODULE_2__.storage);
+        (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setSelectedCategory)("pancakes")
+        console.log(_storage__WEBPACK_IMPORTED_MODULE_2__.storage);
         return (/*html*/`
             <h1 class="main-header">СДЕЛАЙТЕ ЗАКАЗ НАПРЯМУЮ ИЗ РЕСТОРАНА</h1>
       `)
@@ -1631,7 +1637,6 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                 if (this.modalWindowEditShow) {
                     this.setModalWindowEditShow(false);
 
-                    console.log(this.changeableOrderItem);
                     this.sandwiches[this.changeableOrderItem.sandwichId] = {
                         id: this.modalContent.id,
                         title: this.modalContent.title,
@@ -1646,7 +1651,6 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                     this.setSandwiches(this.sandwiches);
 
                     let previousPrice = this.orderItems[this.changeableOrderItem.orderId].price;
-                    console.log(previousPrice);
 
                     this.orderItems[this.changeableOrderItem.orderId].amount = this.modalContent.amount;
                     this.orderItems[this.changeableOrderItem.orderId].price =
@@ -1855,12 +1859,10 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         if (this.sandwiches.length > 0) {
             for (let i = 0; i < this.sandwiches.length; i++) {
                 const handleOrderClick = () => {
-                    console.log(this.orderItems);
                     this.changeableOrderItem.sandwichId = i;
                     let id = this.orderItems.find(item => item.sandwichId ===
                         this.changeableOrderItem.sandwichId + 1).id - 1;
                     this.changeableOrderItem.orderId = id;
-                    console.log(this.changeableOrderItem);
                     this.setChangeableOrderItem(this.changeableOrderItem)
                     this.setSelectedModalTab("sizes");
                     this.setModalWindowEditShow(true);
@@ -1901,6 +1903,67 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Order);
+
+/***/ }),
+
+/***/ "./src/storage.js":
+/*!************************!*\
+  !*** ./src/storage.js ***!
+  \************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "setSelectedCategory": () => (/* binding */ setSelectedCategory),
+/* harmony export */   "storage": () => (/* binding */ storage)
+/* harmony export */ });
+class Storage { // Сделать самопальный redux
+    constructor(data) {
+        let handler = {
+            set: this.addSubscriber.bind(this)
+        }
+        this.data = new Proxy(data, handler);
+        this.subscribers = {};
+    }
+
+    addSubscriber(key, callback) {
+        this.subscribers[key] = callback;
+    }
+}
+
+const storage = new Storage({
+    selectedTab: "sandwiches",
+    selectedModalTab: "sizes",
+    items: [],
+    ingredients: [],
+    countersValue: [],
+    orderItems: [],
+    totalPrice: 0,
+    modalWindowAddShow: false,
+    modalWindowEditShow: false,
+    modalContent: {},
+    sandwiches: [],
+    changeableOrderItem: {
+        orderId: 0,
+        sandwichId: 0
+    },
+    tabReadyContent: {
+        sizes: "15 См",
+        breads: "Белый итальянский",
+        vegetables: [],
+        sauces: [],
+        fillings: []
+    },
+    previousValues: {
+        sizes: 0,
+        breads: 0
+    }
+});
+
+function setSelectedCategory(selectedTab) {
+    storage.data.selectedTab = selectedTab;
+}
+
 
 /***/ })
 

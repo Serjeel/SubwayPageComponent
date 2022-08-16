@@ -184,7 +184,6 @@ class ModalWindow extends Component {
                 if (this.modalWindowEditShow) {
                     this.setModalWindowEditShow(false);
 
-                    console.log(this.changeableOrderItem);
                     this.sandwiches[this.changeableOrderItem.sandwichId] = {
                         id: this.modalContent.id,
                         title: this.modalContent.title,
@@ -199,7 +198,6 @@ class ModalWindow extends Component {
                     this.setSandwiches(this.sandwiches);
 
                     let previousPrice = this.orderItems[this.changeableOrderItem.orderId].price;
-                    console.log(previousPrice);
 
                     this.orderItems[this.changeableOrderItem.orderId].amount = this.modalContent.amount;
                     this.orderItems[this.changeableOrderItem.orderId].price =
