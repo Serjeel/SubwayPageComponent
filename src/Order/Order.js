@@ -1,4 +1,5 @@
-import Component from "./Component"
+import Component from "../Component";
+import './Order.css';
 
 class Order extends Component {
     constructor(props) {

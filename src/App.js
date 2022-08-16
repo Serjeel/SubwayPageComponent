@@ -1,16 +1,17 @@
 import Component from "./Component";
-import MainHeader from "./MainHeader";
-import MenuBlock from "./MenuBlock";
-import MenuCategories from "./MenuCategories";
-import ModalWindow from "./ModalWindow";
-import Order from "./Order";
+import MainHeader from "./MainHeader/MainHeader";
+import MenuBlock from "./MenuBlock/MenuBlock";
+import MenuCategories from "./MenuCategories/MenuCategories";
+import ModalWindow from "./ModalWindow/ModalWindow";
+import Order from "./Order/Order";
+import './App.css';
 
 class App extends Component {
     constructor(onChange) {
         const data = {
             selectedTab: "sandwiches",
             selectedModalTab: "sizes",
-            items: [], // Пройтись по первой главе learnJs и выполнить все задачки
+            items: [],
             ingredients: [],
             countersValue: [],
             orderItems: [],
@@ -18,7 +19,6 @@ class App extends Component {
             modalWindowAddShow: false,
             modalWindowEditShow: false,
             modalContent: {},
-            sandwichesLength: 0,
             sandwiches: [],
             changeableOrderItem: {
                 orderId: 0,
@@ -39,7 +39,7 @@ class App extends Component {
         super(data)
         super.setRerender(onChange)
         this.onChange = onChange;
-        this.createChildren() // eslint + prettier
+        this.createChildren()
 
         const getData = async () => {
             await fetch("./src/data.json")
@@ -148,7 +148,7 @@ class App extends Component {
             </div>
             ${this.menuBlock.render()}
         </div>
-        ${this.data.modalWindowAddShow || this.data.modalWindowEditShow ? this.modalWindow.render() : []}
+        ${this.data.modalWindowAddShow || this.data.modalWindowEditShow ? this.modalWindow.render() : ''}
         `)
     }
 }

@@ -1,5 +1,6 @@
-import Component from "./Component";
-import MenuItem from "./MenuItem";
+import Component from "../Component";
+import MenuItem from "../MenuItem/MenuItem";
+import './MenuBlock.css';
 
 class MenuBlock extends Component {
     constructor(props) {
@@ -17,9 +18,6 @@ class MenuBlock extends Component {
         this.setOrderItems = props.setOrderItems;
         this.setTotalPrice = props.setTotalPrice;
     }
-
-    // Далее что нужно сделать:
-    // 1. Разделить css файлы для каждого компонента
 
     enable() {
         for (let i = 0; i < this.items.length; i++) {

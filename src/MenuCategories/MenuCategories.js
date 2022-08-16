@@ -1,4 +1,5 @@
-import Component from "./Component"
+import Component from "../Component";
+import './MenuCategories.css';
 
 class MenuCategories extends Component {
     constructor(props) {

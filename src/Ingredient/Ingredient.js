@@ -1,4 +1,5 @@
-import Component from "./Component";
+import Component from "../Component";
+import './Ingredient.css';
 
 class Ingredient extends Component {
     constructor(props) {

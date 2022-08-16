@@ -1,5 +1,6 @@
-import Component from "./Component";
-import Ingredient from "./Ingredient";
+import Component from "../Component";
+import Ingredient from "../Ingredient/Ingredient";
+import './ModalWindow.css';
 
 class ModalWindow extends Component {
     constructor(props) {

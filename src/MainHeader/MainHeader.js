@@ -1,4 +1,5 @@
-import Component from "./Component"
+import Component from "../Component";
+import './MainHeader.css';
 
 class MainHeader extends Component{
     constructor() {

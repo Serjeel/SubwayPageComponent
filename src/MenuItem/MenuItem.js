@@ -1,4 +1,5 @@
-import Component from "./Component"
+import Component from "../Component";
+import './MenuItem.css';
 
 class MenuItem extends Component{
     constructor() {
