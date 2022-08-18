@@ -1105,13 +1105,13 @@ class Component {
         let handler = {
             set: this.handleDataChange.bind(this)
         }
-        this.data = new Proxy(data, handler)
+        this.data = new Proxy(data, handler);
     }
 
     handleDataChange(item, property, value) {
-        item[property] = value
-        this.rerender(this.data)
-        return true
+        item[property] = value;
+        this.rerender(this.data);
+        return true;
     }
 
     setRerender(callback) {
@@ -1185,14 +1185,18 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 class MainHeader extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"]{
-    constructor() {
+    constructor(onChange) {
         super();
+        _storage__WEBPACK_IMPORTED_MODULE_2__.storage.addSubscriber('a', onChange);
     }
     render() {
-        console.log(_storage__WEBPACK_IMPORTED_MODULE_2__.storage);
-        (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setSelectedCategory)("pancakes")
-        console.log(_storage__WEBPACK_IMPORTED_MODULE_2__.storage);
+        (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setSelectedTab)("pancakes");
+        console.log(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.selectedTab);
+        (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setSelectedModalTab)("ready");
+        console.log(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.selectedModalTab);
+
         return (/*html*/`
             <h1 class="main-header">СДЕЛАЙТЕ ЗАКАЗ НАПРЯМУЮ ИЗ РЕСТОРАНА</h1>
       `)
@@ -1256,7 +1260,11 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             }
 
             const handleInputChange = () => {
-                this.countersValue[i] = parseInt(document.getElementById("counter-" + (i + 1)).value);
+                if (document.getElementById("counter-" + (i + 1)).value > 0) {
+                    this.countersValue[i] = parseInt(document.getElementById("counter-" + (i + 1)).value);
+                } else {
+                    this.countersValue[i] = 1;
+                }
                 this.setCountersValue(this.countersValue);
             }
 
@@ -1451,6 +1459,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
 /* harmony import */ var _Ingredient_Ingredient__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Ingredient/Ingredient */ "./src/Ingredient/Ingredient.js");
 /* harmony import */ var _ModalWindow_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ModalWindow.css */ "./src/ModalWindow/ModalWindow.css");
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
+
 
 
 
@@ -1466,15 +1476,15 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         this.countersValue = props.countersValue;
         this.orderItems = props.orderItems;
         this.totalPrice = props.totalPrice;
-        this.sandwichesLength = props.sandwichesLength;
         this.sandwiches = props.sandwiches;
         this.modalWindowAddShow = props.modalWindowAddShow;
         this.modalWindowEditShow = props.modalWindowEditShow;
         this.changeableOrderItem = props.changeableOrderItem;
 
         this.setChangeableOrderItem = props.setChangeableOrderItem;
+        _storage__WEBPACK_IMPORTED_MODULE_3__.storage.addSubscriber("changeableOrderItem", this.setChangeableOrderItem)
+
         this.setSandwiches = props.setSandwiches;
-        this.setSandwichesLength = props.setSandwichesLength;
         this.setTotalPrice = props.setTotalPrice;
         this.setOrderItems = props.setOrderItems;
         this.setCountersValue = props.setCountersValue;
@@ -1589,18 +1599,24 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                 }
             }
             const handleInputChange = () => {
-                this.modalContent.amount = parseInt(document.getElementById("counter-modal").value);
-                this.setModalContent(this.modalContent);
-                this.countersValue[this.modalContent.id - 1] = parseInt(document.
-                    getElementById("counter-modal").value);
-                this.setCountersValue(this.countersValue);
+                if (document.getElementById("counter-modal").value > 0) {
+                    this.modalContent.amount = parseInt(document.getElementById("counter-modal").value);
+                    this.setModalContent(this.modalContent);
+                    this.countersValue[this.modalContent.id - 1] = parseInt(document.
+                        getElementById("counter-modal").value);
+                    this.setCountersValue(this.countersValue);
+                } else {
+                    this.modalContent.amount = 1;
+                    this.setModalContent(this.modalContent);
+                    this.countersValue[this.modalContent.id - 1] = 1;
+                    this.setCountersValue(this.countersValue);
+                }
             }
 
             const handleButtonModalClick = () => {
                 this.setSelectedModalTab("sizes");
                 if (this.modalWindowAddShow) {
                     this.setModalWindowAddShow(false);
-                    this.setSandwichesLength(this.sandwichesLength + 1);
 
                     this.sandwiches.push({
                         id: this.modalContent.id,
@@ -1656,7 +1672,7 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                     this.orderItems[this.changeableOrderItem.orderId].price =
                         this.modalContent.price * this.modalContent.amount;
 
-                    this.setTotalPrice(this.totalPrice + (this.modalContent.price * 
+                    this.setTotalPrice(this.totalPrice + (this.modalContent.price *
                         this.modalContent.amount) - previousPrice);
                     this.setTabReadyContent({
                         sizes: "15 См",
@@ -1914,20 +1930,39 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "setSelectedCategory": () => (/* binding */ setSelectedCategory),
+/* harmony export */   "setChangeableOrderItem": () => (/* binding */ setChangeableOrderItem),
+/* harmony export */   "setCountersValue": () => (/* binding */ setCountersValue),
+/* harmony export */   "setModalContent": () => (/* binding */ setModalContent),
+/* harmony export */   "setModalWindowAddShow": () => (/* binding */ setModalWindowAddShow),
+/* harmony export */   "setModalWindowEditShow": () => (/* binding */ setModalWindowEditShow),
+/* harmony export */   "setOrderItems": () => (/* binding */ setOrderItems),
+/* harmony export */   "setPreviousValues": () => (/* binding */ setPreviousValues),
+/* harmony export */   "setSandwiches": () => (/* binding */ setSandwiches),
+/* harmony export */   "setSelectedModalTab": () => (/* binding */ setSelectedModalTab),
+/* harmony export */   "setSelectedTab": () => (/* binding */ setSelectedTab),
+/* harmony export */   "setTabReadyContent": () => (/* binding */ setTabReadyContent),
+/* harmony export */   "setTotalPrice": () => (/* binding */ setTotalPrice),
 /* harmony export */   "storage": () => (/* binding */ storage)
 /* harmony export */ });
-class Storage { // Сделать самопальный redux
+class Storage { // Переписать всё под getElement и передавать в subscribers функции для ререндера
+                // отдельных комплнентов под текстовый ключ. Ловить изменение с помощью прокси
+                // и вызывать функцию ререндера того компонента, из которого меняется переменная
     constructor(data) {
         let handler = {
-            set: this.addSubscriber.bind(this)
+            set: this.handleValueUpdated.bind(this)
         }
         this.data = new Proxy(data, handler);
         this.subscribers = {};
     }
 
+    // Сделать условие, что нужно добавить, если такого подписчика ещё нет
     addSubscriber(key, callback) {
         this.subscribers[key] = callback;
+    }
+
+    handleValueUpdated(item, key, callback) {
+        console.log(item, key, callback);
+        return true
     }
 }
 
@@ -1960,10 +1995,53 @@ const storage = new Storage({
     }
 });
 
-function setSelectedCategory(selectedTab) {
+function setSelectedTab(selectedTab) {
     storage.data.selectedTab = selectedTab;
 }
 
+function setOrderItems(orderItems) {
+    storage.data.orderItems = orderItems;
+}
+
+function setTotalPrice(totalPrice) {
+    storage.data.totalPrice = totalPrice;
+}
+
+function setSandwiches(sandwiches) {
+    storage.data.sandwiches = sandwiches;
+}
+
+function setModalWindowAddShow(modalWindowAddShow) {
+    storage.data.modalWindowAddShow = modalWindowAddShow;
+}
+
+function setModalWindowEditShow(modalWindowEditShow) {
+    storage.data.modalWindowEditShow = modalWindowEditShow;
+}
+
+function setModalContent(modalContent) {
+    storage.data.modalContent = modalContent;
+}
+
+function setSelectedModalTab(selectedModalTab) {
+    storage.data.selectedModalTab = selectedModalTab;
+}
+
+function setTabReadyContent(tabReadyContent) {
+    storage.data.tabReadyContent = tabReadyContent;
+}
+
+function setChangeableOrderItem(changeableOrderItem) {
+    storage.data.changeableOrderItem = changeableOrderItem;
+}
+
+function setCountersValue(countersValue) {
+    storage.data.countersValue = countersValue;
+}
+
+function setPreviousValues(previousValues) {
+    storage.data.previousValues = previousValues;
+}
 
 /***/ })
 
@@ -2056,7 +2134,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _MenuCategories_MenuCategories__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MenuCategories/MenuCategories */ "./src/MenuCategories/MenuCategories.js");
 /* harmony import */ var _ModalWindow_ModalWindow__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ModalWindow/ModalWindow */ "./src/ModalWindow/ModalWindow.js");
 /* harmony import */ var _Order_Order__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Order/Order */ "./src/Order/Order.js");
-/* harmony import */ var _App_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./App.css */ "./src/App.css");
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./storage */ "./src/storage.js");
+/* harmony import */ var _App_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./App.css */ "./src/App.css");
+
 
 
 
@@ -2121,7 +2201,9 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     }
 
     createChildren() {
-        this.mainHeader = new _MainHeader_MainHeader__WEBPACK_IMPORTED_MODULE_1__["default"]();
+        this.mainHeader = new _MainHeader_MainHeader__WEBPACK_IMPORTED_MODULE_1__["default"](() => {
+            this.rerenderMainHeader();
+        });
         this.menuCategories = new _MenuCategories_MenuCategories__WEBPACK_IMPORTED_MODULE_3__["default"]({
             selectedTab: this.data.selectedTab,
             setSelectedTab: (x) => { this.data.selectedTab = x }
@@ -2178,8 +2260,6 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             setOrderItems: (x) => { this.data.orderItems = x },
             totalPrice: this.data.totalPrice,
             setTotalPrice: (x) => { this.data.totalPrice = x },
-            sandwichesLength: this.data.sandwichesLength,
-            setSandwichesLength: (x) => { this.data.sandwichesLength = x },
             sandwiches: this.data.sandwiches,
             setSandwiches: (x) => { this.data.sandwiches = x },
             changeableOrderItem: this.data.changeableOrderItem,
@@ -2196,10 +2276,16 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         }
     }
 
+    rerenderMainHeader() {
+        document.getElementById('main-header').innerHTML = this.mainHeader.render();
+    }
+
     render() {
         this.createChildren();
         return (/*html*/`
-        ${this.mainHeader.render()}
+        <div id="main-header">
+            ${this.mainHeader.render()}
+        </div>
         <div class="main-form">
             <div class="categories_and_orders-block">
                 ${this.menuCategories.render()}

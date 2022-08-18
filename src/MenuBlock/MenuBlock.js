@@ -38,7 +38,11 @@ class MenuBlock extends Component {
             }
 
             const handleInputChange = () => {
-                this.countersValue[i] = parseInt(document.getElementById("counter-" + (i + 1)).value);
+                if (document.getElementById("counter-" + (i + 1)).value > 0) {
+                    this.countersValue[i] = parseInt(document.getElementById("counter-" + (i + 1)).value);
+                } else {
+                    this.countersValue[i] = 1;
+                }
                 this.setCountersValue(this.countersValue);
             }
 

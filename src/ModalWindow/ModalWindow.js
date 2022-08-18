@@ -1,6 +1,7 @@
 import Component from "../Component";
 import Ingredient from "../Ingredient/Ingredient";
 import './ModalWindow.css';
+import { storage } from "../storage";
 
 class ModalWindow extends Component {
     constructor(props) {
@@ -13,15 +14,15 @@ class ModalWindow extends Component {
         this.countersValue = props.countersValue;
         this.orderItems = props.orderItems;
         this.totalPrice = props.totalPrice;
-        this.sandwichesLength = props.sandwichesLength;
         this.sandwiches = props.sandwiches;
         this.modalWindowAddShow = props.modalWindowAddShow;
         this.modalWindowEditShow = props.modalWindowEditShow;
         this.changeableOrderItem = props.changeableOrderItem;
 
         this.setChangeableOrderItem = props.setChangeableOrderItem;
+        storage.addSubscriber("changeableOrderItem", this.setChangeableOrderItem)
+
         this.setSandwiches = props.setSandwiches;
-        this.setSandwichesLength = props.setSandwichesLength;
         this.setTotalPrice = props.setTotalPrice;
         this.setOrderItems = props.setOrderItems;
         this.setCountersValue = props.setCountersValue;
@@ -136,18 +137,24 @@ class ModalWindow extends Component {
                 }
             }
             const handleInputChange = () => {
-                this.modalContent.amount = parseInt(document.getElementById("counter-modal").value);
-                this.setModalContent(this.modalContent);
-                this.countersValue[this.modalContent.id - 1] = parseInt(document.
-                    getElementById("counter-modal").value);
-                this.setCountersValue(this.countersValue);
+                if (document.getElementById("counter-modal").value > 0) {
+                    this.modalContent.amount = parseInt(document.getElementById("counter-modal").value);
+                    this.setModalContent(this.modalContent);
+                    this.countersValue[this.modalContent.id - 1] = parseInt(document.
+                        getElementById("counter-modal").value);
+                    this.setCountersValue(this.countersValue);
+                } else {
+                    this.modalContent.amount = 1;
+                    this.setModalContent(this.modalContent);
+                    this.countersValue[this.modalContent.id - 1] = 1;
+                    this.setCountersValue(this.countersValue);
+                }
             }
 
             const handleButtonModalClick = () => {
                 this.setSelectedModalTab("sizes");
                 if (this.modalWindowAddShow) {
                     this.setModalWindowAddShow(false);
-                    this.setSandwichesLength(this.sandwichesLength + 1);
 
                     this.sandwiches.push({
                         id: this.modalContent.id,
@@ -203,7 +210,7 @@ class ModalWindow extends Component {
                     this.orderItems[this.changeableOrderItem.orderId].price =
                         this.modalContent.price * this.modalContent.amount;
 
-                    this.setTotalPrice(this.totalPrice + (this.modalContent.price * 
+                    this.setTotalPrice(this.totalPrice + (this.modalContent.price *
                         this.modalContent.amount) - previousPrice);
                     this.setTabReadyContent({
                         sizes: "15 См",

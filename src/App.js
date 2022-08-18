@@ -4,6 +4,7 @@ import MenuBlock from "./MenuBlock/MenuBlock";
 import MenuCategories from "./MenuCategories/MenuCategories";
 import ModalWindow from "./ModalWindow/ModalWindow";
 import Order from "./Order/Order";
+import { storage } from "./storage";
 import './App.css';
 
 class App extends Component {
@@ -62,7 +63,9 @@ class App extends Component {
     }
 
     createChildren() {
-        this.mainHeader = new MainHeader();
+        this.mainHeader = new MainHeader(() => {
+            this.rerenderMainHeader();
+        });
         this.menuCategories = new MenuCategories({
             selectedTab: this.data.selectedTab,
             setSelectedTab: (x) => { this.data.selectedTab = x }
@@ -119,8 +122,6 @@ class App extends Component {
             setOrderItems: (x) => { this.data.orderItems = x },
             totalPrice: this.data.totalPrice,
             setTotalPrice: (x) => { this.data.totalPrice = x },
-            sandwichesLength: this.data.sandwichesLength,
-            setSandwichesLength: (x) => { this.data.sandwichesLength = x },
             sandwiches: this.data.sandwiches,
             setSandwiches: (x) => { this.data.sandwiches = x },
             changeableOrderItem: this.data.changeableOrderItem,
@@ -137,10 +138,16 @@ class App extends Component {
         }
     }
 
+    rerenderMainHeader() {
+        document.getElementById('main-header').innerHTML = this.mainHeader.render();
+    }
+
     render() {
         this.createChildren();
         return (/*html*/`
-        ${this.mainHeader.render()}
+        <div id="main-header">
+            ${this.mainHeader.render()}
+        </div>
         <div class="main-form">
             <div class="categories_and_orders-block">
                 ${this.menuCategories.render()}
