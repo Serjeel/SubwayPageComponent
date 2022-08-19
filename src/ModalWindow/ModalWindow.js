@@ -20,8 +20,6 @@ class ModalWindow extends Component {
         this.changeableOrderItem = props.changeableOrderItem;
 
         this.setChangeableOrderItem = props.setChangeableOrderItem;
-        storage.addSubscriber("changeableOrderItem", this.setChangeableOrderItem)
-
         this.setSandwiches = props.setSandwiches;
         this.setTotalPrice = props.setTotalPrice;
         this.setOrderItems = props.setOrderItems;

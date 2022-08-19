@@ -4,8 +4,9 @@ import MenuBlock from "./MenuBlock/MenuBlock";
 import MenuCategories from "./MenuCategories/MenuCategories";
 import ModalWindow from "./ModalWindow/ModalWindow";
 import Order from "./Order/Order";
-import { storage } from "./storage";
+import { storage, setItemsInfo } from "./storage";
 import './App.css';
+import { getItemsInfo } from "./api";
 
 class App extends Component {
     constructor(onChange) {
@@ -38,6 +39,9 @@ class App extends Component {
             }
         }
         super(data)
+
+        this.rerenderMenuBlock = this.rerenderMenuBlock.bind(this);
+
         super.setRerender(onChange)
         this.onChange = onChange;
         this.createChildren()
@@ -60,17 +64,19 @@ class App extends Component {
                 })
         }
         getData();
+
+
     }
 
     createChildren() {
-        this.mainHeader = new MainHeader(() => {
-            this.rerenderMainHeader();
-        });
+        this.mainHeader = new MainHeader();
         this.menuCategories = new MenuCategories({
+            rerender: this.rerenderMenuCategories,
             selectedTab: this.data.selectedTab,
             setSelectedTab: (x) => { this.data.selectedTab = x }
         });
         this.order = new Order({
+            rerender: this.rerenderOrder,
             orderItems: this.data.orderItems,
             setOrderItems: (x) => { this.data.orderItems = x },
             totalPrice: this.data.totalPrice,
@@ -90,6 +96,7 @@ class App extends Component {
             setChangeableOrderItem: (x) => { this.data.changeableOrderItem = x }
         });
         this.menuBlock = new MenuBlock({
+            rerender: this.rerenderMenuBlock,
             items: this.data.items,
             selectedTab: this.data.selectedTab,
             countersValue: this.data.countersValue,
@@ -103,6 +110,7 @@ class App extends Component {
             setSelectedModalTab: (x) => { this.data.selectedModalTab = x },
         });
         this.modalWindow = new ModalWindow({
+            rerender: this.rerenderModalWindow,
             modalWindowAddShow: this.data.modalWindowAddShow,
             setModalWindowAddShow: (x) => { this.data.modalWindowAddShow = x },
             modalWindowEditShow: this.data.modalWindowEditShow,
@@ -129,25 +137,45 @@ class App extends Component {
         });
     }
 
-    enable() {
+    async enable() {
         this.menuCategories.enable();
         this.menuBlock.enable();
         this.order.enable();
         if (this.data.modalWindowAddShow || this.data.modalWindowEditShow) {
             this.modalWindow.enable();
         }
+        const itemsInfo = await getItemsInfo();
+        setItemsInfo(itemsInfo)
     }
 
     rerenderMainHeader() {
         document.getElementById('main-header').innerHTML = this.mainHeader.render();
     }
 
+    // А не изменятся ли только внутренности? Не добавится ли ещё див поверх другого? Надо это обдумать 
+
+    rerenderMenuCategories() {
+        document.getElementsByClassName("menu-categories")[0].innerHTML = this.menuCategories.render();
+    }
+
+    rerenderOrder() {
+        document.getElementsByClassName("order")[0].innerHTML = this.order.render();
+    }
+
+    rerenderMenuBlock() {
+        console.log(storage.data.items);
+        console.log("Функция сработала");
+        document.getElementsByClassName("menu-block")[0].innerHTML = this.menuBlock.render();
+    }
+
+    rerenderModalWindow() {
+        document.getElementsByClassName("modal-window")[0].innerHTML = this.modalWindow.render();
+    }
+
     render() {
         this.createChildren();
         return (/*html*/`
-        <div id="main-header">
             ${this.mainHeader.render()}
-        </div>
         <div class="main-form">
             <div class="categories_and_orders-block">
                 ${this.menuCategories.render()}

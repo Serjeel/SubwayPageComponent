@@ -1,6 +1,9 @@
 class Storage { // Переписать всё под getElement и передавать в subscribers функции для ререндера
                 // отдельных комплнентов под текстовый ключ. Ловить изменение с помощью прокси
-                // и вызывать функцию ререндера того компонента, из которого меняется переменная
+                // и вызывать функцию ререндера того компонента, из которого меняется переменная.
+                // Функции ререндера должны происходить здесь и храниться в подписчиках (по идее).
+                // Компонентом component воспользоваться, когда нужно изменить стейт, использующийся
+                // только в определённом компоненте
     constructor(data) {
         let handler = {
             set: this.handleValueUpdated.bind(this)
@@ -9,13 +12,16 @@ class Storage { // Переписать всё под getElement и переда
         this.subscribers = {};
     }
 
-    // Сделать условие, что нужно добавить, если такого подписчика ещё нет
     addSubscriber(key, callback) {
         this.subscribers[key] = callback;
     }
 
-    handleValueUpdated(item, key, callback) {
-        console.log(item, key, callback);
+    handleValueUpdated(item, key, value) {
+        item[key] = value;
+        if (this.subscribers[key]) {
+            console.log(this.subscribers[key].name);
+            this.subscribers[key]()
+        }
         return true
     }
 }
@@ -48,6 +54,8 @@ export const storage = new Storage({
         breads: 0
     }
 });
+
+
 
 export function setSelectedTab(selectedTab) {
     storage.data.selectedTab = selectedTab;
@@ -95,4 +103,18 @@ export function setCountersValue(countersValue) {
 
 export function setPreviousValues(previousValues) {
     storage.data.previousValues = previousValues;
+}
+
+export function setItemsInfo(data) {
+    data.menu.map(() => {
+        storage.data.countersValue.push(1)
+    });
+    storage.data.items = data.menu;
+    storage.data.ingredients = {
+        sizes: data.sizes,
+        breads: data.breads,
+        vegetables: data.vegetables,
+        sauces: data.sauces,
+        fillings: data.fillings
+    }
 }
