@@ -1,35 +1,30 @@
 import Component from "../Component";
 import Ingredient from "../Ingredient/Ingredient";
 import './ModalWindow.css';
-import { storage } from "../storage"; // Продолжаем замену props на storage
+
+import { storage } from "../storage";
+import { setOrderItems } from "../storage";
+import { setTabReadyContent } from "../storage";
+import { setModalContent } from "../storage";
+import { setSandwiches } from "../storage";
+import { setTotalPrice } from "../storage";
+import { setCountersValue } from "../storage";
+import { setPreviousValues } from "../storage";
+import { setModalWindowAddShow } from "../storage";
+import { setModalWindowEditShow } from "../storage";
+import { setSelectedModalTab } from "../storage";
 
 class ModalWindow extends Component {
     constructor(props) {
         super();
-        this.ingredients = props.ingredients;
-        this.selectedModalTab = props.selectedModalTab;
-        this.modalContent = props.modalContent;
-        this.tabReadyContent = props.tabReadyContent;
-        this.previousValues = props.previousValues;
-        this.countersValue = props.countersValue;
-        this.orderItems = props.orderItems;
-        this.totalPrice = props.totalPrice;
-        this.sandwiches = props.sandwiches;
-        this.modalWindowAddShow = props.modalWindowAddShow;
-        this.modalWindowEditShow = props.modalWindowEditShow;
-        this.changeableOrderItem = props.changeableOrderItem;
 
-        this.setChangeableOrderItem = props.setChangeableOrderItem;
-        this.setSandwiches = props.setSandwiches;
-        this.setTotalPrice = props.setTotalPrice;
-        this.setOrderItems = props.setOrderItems;
-        this.setCountersValue = props.setCountersValue;
-        this.setPreviousValues = props.setPreviousValues;
-        this.setModalContent = props.setModalContent;
-        this.setTabReadyContent = props.setTabReadyContent;
-        this.setModalWindowAddShow = props.setModalWindowAddShow;
-        this.setModalWindowEditShow = props.setModalWindowEditShow;
-        this.setSelectedModalTab = props.setSelectedModalTab;
+        this.subscribers = ["ingredients", "selectedModalTab", "modalContent", "tabReadyContent",
+            "previousValues", "countersValue", "orderItems", "totalPrice", "sandwiches",
+            "modalWindowAddShow", "modalWindowEditShow", "changeableOrderItem"]
+        for (let i in this.subscribers) {
+            storage.addSubscriber(this.subscribers[i], props.rerender);
+        }
+
         this.tabs = {
             sizes: "Размер",
             breads: "Хлеб",
@@ -42,32 +37,32 @@ class ModalWindow extends Component {
 
     enable() {
         const sizesTabClick = () => {
-            this.setSelectedModalTab("sizes")
+            setSelectedModalTab("sizes")
         }
         const breadsTabClick = () => {
-            this.setSelectedModalTab("breads")
+            setSelectedModalTab("breads")
         }
         const vegetablesTabClick = () => {
-            this.setSelectedModalTab("vegetables")
+            setSelectedModalTab("vegetables")
         }
         const saucesTabClick = () => {
-            this.setSelectedModalTab("sauces")
+            setSelectedModalTab("sauces")
         }
         const fillingsTabClick = () => {
-            this.setSelectedModalTab("fillings")
+            setSelectedModalTab("fillings")
         }
         const readyTabClick = () => {
-            this.setSelectedModalTab("ready")
+            setSelectedModalTab("ready")
         }
 
         const closeIconClick = () => {
-            this.setPreviousValues({
+            setPreviousValues({
                 sizes: 0,
                 breads: 0
             })
-            this.setModalWindowAddShow(false);
-            this.setModalWindowEditShow(false);
-            this.setTabReadyContent({
+            setModalWindowAddShow(false);
+            setModalWindowEditShow(false);
+            setTabReadyContent({
                 sizes: "15 См",
                 breads: "Белый итальянский",
                 vegetables: [],
@@ -85,33 +80,33 @@ class ModalWindow extends Component {
 
         document.getElementsByClassName("close-icon")[0].addEventListener("click", closeIconClick)
 
-        for (let key in this.ingredients[this.selectedModalTab]) {
+        for (let key in storage.data.ingredients[storage.data.selectedModalTab]) {
             const modalItemClick = () => {
                 const scrollPosition = document.getElementsByClassName("tab-content-block")[0].scrollTop
-                if (this.selectedModalTab === "sizes" || this.selectedModalTab === "breads") {
-                    this.tabReadyContent[this.selectedModalTab] = this.ingredients[this.
+                if (storage.data.selectedModalTab === "sizes" || storage.data.selectedModalTab === "breads") {
+                    storage.data.tabReadyContent[storage.data.selectedModalTab] = storage.data.ingredients[storage.data.
                         selectedModalTab][key].name;
 
-                    this.modalContent.price += this.ingredients[this.selectedModalTab][key].price;
-                    this.modalContent.price -= this.previousValues[this.selectedModalTab];
+                    storage.data.modalContent.price += storage.data.ingredients[storage.data.selectedModalTab][key].price;
+                    storage.data.modalContent.price -= storage.data.previousValues[storage.data.selectedModalTab];
 
-                    this.previousValues[this.selectedModalTab] = this.
-                        ingredients[this.selectedModalTab][key].price;
+                    storage.data.previousValues[storage.data.selectedModalTab] = storage.data.
+                        ingredients[storage.data.selectedModalTab][key].price;
 
-                    this.setTabReadyContent(this.tabReadyContent);
+                    setTabReadyContent(storage.data.tabReadyContent);
                 } else {
-                    if (this.tabReadyContent[this.selectedModalTab].includes(this.
-                        ingredients[this.selectedModalTab][key].name)) {
-                        let n = this.tabReadyContent[this.selectedModalTab].indexOf(this.
-                            ingredients[this.selectedModalTab][key].name);
-                        this.modalContent.price -= this.ingredients[this.selectedModalTab][key].price;
-                        this.tabReadyContent[this.selectedModalTab].splice(n, 1);
-                        this.setTabReadyContent(this.tabReadyContent);
+                    if (storage.data.tabReadyContent[storage.data.selectedModalTab].includes(storage.data.
+                        ingredients[storage.data.selectedModalTab][key].name)) {
+                        let n = storage.data.tabReadyContent[storage.data.selectedModalTab].indexOf(storage.data.
+                            ingredients[storage.data.selectedModalTab][key].name);
+                        storage.data.modalContent.price -= storage.data.ingredients[storage.data.selectedModalTab][key].price;
+                        storage.data.tabReadyContent[storage.data.selectedModalTab].splice(n, 1);
+                        setTabReadyContent(storage.data.tabReadyContent);
                     } else {
-                        this.tabReadyContent[this.selectedModalTab].push(this.ingredients[this.
+                        storage.data.tabReadyContent[storage.data.selectedModalTab].push(storage.data.ingredients[tstorage.datahis.
                             selectedModalTab][key].name)
-                        this.modalContent.price += this.ingredients[this.selectedModalTab][key].price;
-                        this.setTabReadyContent(this.tabReadyContent)
+                        storage.data.modalContent.price += storage.data.ingredients[storage.data.selectedModalTab][key].price;
+                        setTabReadyContent(storage.data.tabReadyContent)
                     }
                 }
                 document.getElementsByClassName("tab-content-block")[0].scrollTo(0, scrollPosition)
@@ -119,66 +114,66 @@ class ModalWindow extends Component {
             document.getElementById("item-" + key).addEventListener("click", modalItemClick)
         }
 
-        if (this.selectedModalTab === "ready") {
+        if (storage.data.selectedModalTab === "ready") {
             const handleModalPlusClick = () => {
-                this.modalContent.amount += 1;
-                this.setModalContent(this.modalContent);
-                this.countersValue[this.modalContent.id - 1] += 1;
-                this.setCountersValue(this.countersValue);
+                storage.data.modalContent.amount += 1;
+                setModalContent(storage.data.modalContent);
+                storage.data.countersValue[storage.data.modalContent.id - 1] += 1;
+                setCountersValue(storage.data.countersValue);
             }
             const handleModalMinusClick = () => {
-                if (this.modalContent.amount > 1) {
-                    this.modalContent.amount -= 1;
-                    this.setModalContent(this.modalContent);
-                    this.countersValue[this.modalContent.id - 1] -= 1;
-                    this.setCountersValue(this.countersValue);
+                if (storage.data.modalContent.amount > 1) {
+                    storage.data.modalContent.amount -= 1;
+                    setModalContent(storage.data.modalContent);
+                    storage.data.countersValue[storage.data.modalContent.id - 1] -= 1;
+                    setCountersValue(storage.data.countersValue);
                 }
             }
             const handleInputChange = () => {
                 if (document.getElementById("counter-modal").value > 0) {
-                    this.modalContent.amount = parseInt(document.getElementById("counter-modal").value);
-                    this.setModalContent(this.modalContent);
-                    this.countersValue[this.modalContent.id - 1] = parseInt(document.
+                    storage.data.modalContent.amount = parseInt(document.getElementById("counter-modal").value);
+                    setModalContent(storage.data.modalContent);
+                    storage.data.countersValue[storage.data.modalContent.id - 1] = parseInt(document.
                         getElementById("counter-modal").value);
-                    this.setCountersValue(this.countersValue);
+                    setCountersValue(storage.data.countersValue);
                 } else {
-                    this.modalContent.amount = 1;
-                    this.setModalContent(this.modalContent);
-                    this.countersValue[this.modalContent.id - 1] = 1;
-                    this.setCountersValue(this.countersValue);
+                    storage.data.modalContent.amount = 1;
+                    setModalContent(storage.data.modalContent);
+                    storage.data.countersValue[storage.data.modalContent.id - 1] = 1;
+                    setCountersValue(storage.data.countersValue);
                 }
             }
 
             const handleButtonModalClick = () => {
-                this.setSelectedModalTab("sizes");
-                if (this.modalWindowAddShow) {
-                    this.setModalWindowAddShow(false);
+                setSelectedModalTab("sizes");
+                if (storage.data.modalWindowAddShow) {
+                    setModalWindowAddShow(false);
 
-                    this.sandwiches.push({
-                        id: this.modalContent.id,
-                        title: this.modalContent.title,
-                        amount: this.modalContent.amount,
-                        price: this.modalContent.price,
-                        sizes: this.tabReadyContent.sizes,
-                        breads: this.tabReadyContent.breads,
-                        vegetables: this.tabReadyContent.vegetables,
-                        sauces: this.tabReadyContent.sauces,
-                        fillings: this.tabReadyContent.fillings
+                    storage.data.sandwiches.push({
+                        id: storage.data.modalContent.id,
+                        title: storage.data.modalContent.title,
+                        amount: storage.data.modalContent.amount,
+                        price: storage.data.modalContent.price,
+                        sizes: storage.data.tabReadyContent.sizes,
+                        breads: storage.data.tabReadyContent.breads,
+                        vegetables: storage.data.tabReadyContent.vegetables,
+                        sauces: storage.data.tabReadyContent.sauces,
+                        fillings: storage.data.tabReadyContent.fillings
                     });
 
-                    this.orderItems.push({
-                        sandwichId: this.sandwiches.length,
-                        id: this.orderItems.length + 1,
-                        title: this.modalContent.title,
-                        amount: this.modalContent.amount,
-                        price: this.modalContent.price * this.modalContent.amount
+                    storage.data.orderItems.push({
+                        sandwichId: storage.data.sandwiches.length,
+                        id: storage.data.orderItems.length + 1,
+                        title: storage.data.modalContent.title,
+                        amount: storage.data.modalContent.amount,
+                        price: storage.data.modalContent.price * storage.data.modalContent.amount
                     });
-                    this.setOrderItems(this.orderItems);
-                    this.setSandwiches(this.sandwiches);
+                    setOrderItems(storage.data.orderItems);
+                    setSandwiches(storage.data.sandwiches);
 
-                    this.setTotalPrice(this.totalPrice + (this.modalContent.price * this.modalContent.amount));
+                    setTotalPrice(storage.data.totalPrice + (storage.data.modalContent.price * storage.data.modalContent.amount));
 
-                    this.setTabReadyContent({
+                    setTabReadyContent({
                         sizes: "15 См",
                         breads: "Белый итальянский",
                         vegetables: [],
@@ -186,31 +181,31 @@ class ModalWindow extends Component {
                         fillings: []
                     })
                 }
-                if (this.modalWindowEditShow) {
-                    this.setModalWindowEditShow(false);
+                if (storage.data.modalWindowEditShow) {
+                    setModalWindowEditShow(false);
 
-                    this.sandwiches[this.changeableOrderItem.sandwichId] = {
-                        id: this.modalContent.id,
-                        title: this.modalContent.title,
-                        amount: this.modalContent.amount,
-                        price: this.modalContent.price,
-                        sizes: this.tabReadyContent.sizes,
-                        breads: this.tabReadyContent.breads,
-                        vegetables: this.tabReadyContent.vegetables,
-                        sauces: this.tabReadyContent.sauces,
-                        fillings: this.tabReadyContent.fillings
+                    storage.data.sandwiches[storage.data.changeableOrderItem.sandwichId] = {
+                        id: storage.data.modalContent.id,
+                        title: storage.data.modalContent.title,
+                        amount: storage.data.modalContent.amount,
+                        price: storage.data.modalContent.price,
+                        sizes: storage.data.tabReadyContent.sizes,
+                        breads: storage.data.tabReadyContent.breads,
+                        vegetables: storage.data.tabReadyContent.vegetables,
+                        sauces: storage.data.tabReadyContent.sauces,
+                        fillings: storage.data.tabReadyContent.fillings
                     };
-                    this.setSandwiches(this.sandwiches);
+                    setSandwiches(storage.data.sandwiches);
 
-                    let previousPrice = this.orderItems[this.changeableOrderItem.orderId].price;
+                    let previousPrice = storage.data.orderItems[storage.data.changeableOrderItem.orderId].price;
 
-                    this.orderItems[this.changeableOrderItem.orderId].amount = this.modalContent.amount;
-                    this.orderItems[this.changeableOrderItem.orderId].price =
-                        this.modalContent.price * this.modalContent.amount;
+                    storage.data.orderItems[storage.data.changeableOrderItem.orderId].amount = storage.data.modalContent.amount;
+                    storage.data.orderItems[storage.data.changeableOrderItem.orderId].price =
+                        storage.data.modalContent.price * storage.data.modalContent.amount;
 
-                    this.setTotalPrice(this.totalPrice + (this.modalContent.price *
-                        this.modalContent.amount) - previousPrice);
-                    this.setTabReadyContent({
+                    setTotalPrice(storage.data.totalPrice + (storage.data.modalContent.price *
+                        storage.data.modalContent.amount) - previousPrice);
+                    storage.data.setTabReadyContent({
                         sizes: "15 См",
                         breads: "Белый итальянский",
                         vegetables: [],
@@ -228,12 +223,12 @@ class ModalWindow extends Component {
 
     loadIngredients() {
         const ingredient = new Ingredient({
-            tabReadyContent: this.tabReadyContent
+            tabReadyContent: storage.data.tabReadyContent
         });
         let items = "";
 
-        for (let key in this.ingredients[this.selectedModalTab]) {
-            items += ingredient.render(this.ingredients[this.selectedModalTab][key], key);
+        for (let key in storage.data.ingredients[storage.data.selectedModalTab]) {
+            items += ingredient.render(storage.data.ingredients[storage.data.selectedModalTab][key], key);
         }
 
         return items;
@@ -248,28 +243,28 @@ class ModalWindow extends Component {
             <p class="final-order-ready">Ваш сендвич готов!</p>
         <div class="final-order-size">
             <p class="final-order-size-text">Размер:</p>
-            <p class="final-order-size-value">${this.tabReadyContent.sizes}</p>
+            <p class="final-order-size-value">${storage.data.tabReadyContent.sizes}</p>
         </div>
         <div class="final-order-bread">
             <p class="final-order-bread-text">Хлеб:</p>
-            <p class="final-order-bread-value">${this.tabReadyContent.breads}</p>
+            <p class="final-order-bread-value">${storage.data.tabReadyContent.breads}</p>
         </div>
         <div class="final-order-vegetables">
             <p class="final-order-vegetables-text">Овощи:</p>
-            <p class="final-order-vegetables-value">${this.tabReadyContent.vegetables.length === 0
-                ? "Нет" : this.tabReadyContent.vegetables}</p>
+            <p class="final-order-vegetables-value">${storage.data.tabReadyContent.vegetables.length === 0
+                ? "Нет" : storage.data.tabReadyContent.vegetables}</p>
         </div>
         <div class="final-order-sauces">
             <p class="final-order-sauces-text">Соусы:</p>
-            <p class="final-order-sauces-value">${this.tabReadyContent.sauces.length === 0
-                ? "Нет" : this.tabReadyContent.sauces}</p>
+            <p class="final-order-sauces-value">${storage.data.tabReadyContent.sauces.length === 0
+                ? "Нет" : storage.data.tabReadyContent.sauces}</p>
         </div>
         <div class="final-order-filling">
             <p class="final-order-filling-text">Начинка:</p>
-            <p class="final-order-filling-value">${this.tabReadyContent.fillings.length === 0
-                ? "Нет" : this.tabReadyContent.fillings}</p>
+            <p class="final-order-filling-value">${storage.data.tabReadyContent.fillings.length === 0
+                ? "Нет" : storage.data.tabReadyContent.fillings}</p>
         </div>
-            <p class="final-order-title" id="item-name-modal">${this.modalContent.title}</p>
+            <p class="final-order-title" id="item-name-modal">${storage.data.modalContent.title}</p>
         </div>
         `
         return content
@@ -280,18 +275,18 @@ class ModalWindow extends Component {
         <p class="item-amount">Количество</p>
         <div class="amount-block">
             <img class="minus-icon" id="minus-modal" src="i/minus.svg">
-            <input class="item-counter" type="text" id="counter-modal" value=${this.modalContent.amount}>
+            <input class="item-counter" type="text" id="counter-modal" value=${storage.data.modalContent.amount}>
             <img class="plus-icon" id="plus-modal" src="i/plus.svg">
         </div>
-        <button class="item-button" id="button-modal">${this.modalWindowAddShow ?
-                "В КОРЗИНУ" : (this.modalWindowEditShow ? "ИЗМЕНИТЬ" : [])}</button>
+        <button class="item-button" id="button-modal">${storage.data.modalWindowAddShow ?
+                "В КОРЗИНУ" : (storage.data.modalWindowEditShow ? "ИЗМЕНИТЬ" : [])}</button>
         `)
     }
 
     render() {
         let modalTabs = ``;
         for (let i in this.tabs) {
-            modalTabs += `<p class="${this.selectedModalTab === i ? "tab-active" : "tab"}"
+            modalTabs += `<p class="${storage.data.selectedModalTab === i ? "tab-active" : "tab"}"
                 id="${i}">${this.tabs[i]}</p>`
         }
         return (/*html*/`
@@ -309,17 +304,17 @@ class ModalWindow extends Component {
                 <div class="arrows-block">
                 </div>
                 <div class="tab-content-block">
-                ${this.selectedModalTab === "ready" ? this.loadReadyPage() : this.loadIngredients()}
+                ${storage.data.selectedModalTab === "ready" ? this.loadReadyPage() : this.loadIngredients()}
                 </div>
                 <div class="modal-footer">
                     <div class="item-price-block">
                         <p class="price-text">Цена:</p>
-                        <p class="price-value" id="price-modal">${this.selectedModalTab === "ready" ?
-                this.modalContent.price * this.modalContent.amount : this.modalContent.price}</p>
+                        <p class="price-value" id="price-modal">${storage.data.selectedModalTab === "ready" ?
+                storage.data.modalContent.price * this.modalContent.amount : storage.data.modalContent.price}</p>
                         <p class="price-currency">руб.</p>
                     </div>
                     <div class="modal-order-block">
-                    ${this.selectedModalTab === "ready" ? this.loadModalOrder() : []}
+                    ${storage.data.selectedModalTab === "ready" ? this.loadModalOrder() : []}
                     </div>
                 </div>
             </div>

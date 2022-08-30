@@ -5,11 +5,13 @@ import { storage } from "../storage";
 import { setSelectedTab } from "../storage";
 
 class MenuCategories extends Component {
-    constructor() {
+    constructor(props) {
         super()
 
-        this.categories =
-        {
+        console.log(props.rerender);
+        storage.addSubscriber("selectedTab", props.rerender);
+
+        this.categories = {
             pancakes: "Блины",
             shaurma: "Шаурма",
             sandwiches: "Сэндвичи",
@@ -40,9 +42,7 @@ class MenuCategories extends Component {
                 id="${i}">${this.categories[i]}</p>`
         }
         return (/*html*/`
-        <div class="menu-categories">
-            ${menuItems}
-        </div>
+        ${menuItems}
       `)
     }
 }

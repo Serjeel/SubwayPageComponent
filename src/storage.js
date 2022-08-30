@@ -1,9 +1,9 @@
 class Storage { // Переписать всё под getElement и передавать в subscribers функции для ререндера
-                // отдельных комплнентов под текстовый ключ. Ловить изменение с помощью прокси
-                // и вызывать функцию ререндера того компонента, из которого меняется переменная.
-                // Функции ререндера должны происходить здесь и храниться в подписчиках (по идее).
-                // Компонентом component воспользоваться, когда нужно изменить стейт, использующийся
-                // только в определённом компоненте
+    // отдельных комплнентов под текстовый ключ. Ловить изменение с помощью прокси
+    // и вызывать функцию ререндера того компонента, из которого меняется переменная.
+    // Функции ререндера должны происходить здесь и храниться в подписчиках (по идее).
+    // Компонентом component воспользоваться, когда нужно изменить стейт, использующийся
+    // только в определённом компоненте
     constructor(data) {
         let handler = {
             set: this.handleValueUpdated.bind(this)
@@ -13,14 +13,22 @@ class Storage { // Переписать всё под getElement и переда
     }
 
     addSubscriber(key, callback) {
-        this.subscribers[key] = callback;
+        if (!this.subscribers[key]) {
+            this.subscribers[key] = [];
+        }
+        this.subscribers[key].push(callback);
     }
 
     handleValueUpdated(item, key, value) {
         item[key] = value;
         if (this.subscribers[key]) {
-            console.log(this.subscribers[key].name);
-            this.subscribers[key]()
+            console.log(this.subscribers);
+            console.log(this.subscribers[key]);
+            console.log(key);
+            for (let callback in this.subscribers[key]) {
+                console.log(this.subscribers[key][callback]);
+                this.subscribers[key][callback]()
+            }
         }
         return true
     }

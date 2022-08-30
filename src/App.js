@@ -41,6 +41,9 @@ class App extends Component {
         super(data)
 
         this.rerenderMenuBlock = this.rerenderMenuBlock.bind(this);
+        this.rerenderMenuCategories = this.rerenderMenuCategories.bind(this);
+        this.rerenderOrder = this.rerenderOrder.bind(this);
+        this.rerenderModalWindow = this.rerenderModalWindow.bind(this);
 
         super.setRerender(onChange)
         this.onChange = onChange;
@@ -148,19 +151,20 @@ class App extends Component {
         setItemsInfo(itemsInfo)
     }
 
-    rerenderMainHeader() {
-        document.getElementById('main-header').innerHTML = this.mainHeader.render();
-    }
+    // А не изменятся ли только внутренности? Не добавится ли ещё див поверх другого? Даделать в остальных элементах 
 
-    // А не изменятся ли только внутренности? Не добавится ли ещё див поверх другого? Надо это обдумать 
+    // Продумать, какие элементы должны ререндериться при изменении какой-то переменной
 
-   /* rerenderMenuCategories() {
+    // Разобраться почему не открывается модалка
+    rerenderMenuCategories() {
         document.getElementsByClassName("menu-categories")[0].innerHTML = this.menuCategories.render();
+        this.menuCategories.enable();
     }
 
     rerenderOrder() {
         document.getElementsByClassName("order")[0].innerHTML = this.order.render();
-    }*/
+        this.order.enable();
+    }
 
     rerenderMenuBlock() {
         document.getElementsByClassName("menu-block")[0].innerHTML = this.menuBlock.render();
@@ -168,7 +172,9 @@ class App extends Component {
     }
 
     rerenderModalWindow() {
-        document.getElementsByClassName("modal-window")[0].innerHTML = this.modalWindow.render();
+        if (storage.modalWindowAddShow || storage.modalWindowEditShow) {
+            document.getElementsByClassName("modal-window")[0].innerHTML = this.modalWindow.render();
+        }
     }
 
     render() {
@@ -177,8 +183,12 @@ class App extends Component {
             ${this.mainHeader.render()}
         <div class="main-form">
             <div class="categories_and_orders-block">
+            <div class="menu-categories">
                 ${this.menuCategories.render()}
+            </div>
+            <div class="order">
                 ${this.order.render()}
+            </div>
             </div>
             ${this.menuBlock.render()}
         </div>

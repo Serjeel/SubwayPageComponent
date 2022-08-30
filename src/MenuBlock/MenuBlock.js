@@ -21,8 +21,6 @@ class MenuBlock extends Component {
     }
 
     enable() {
-        console.log("enable");
-        console.log(storage.data.items);
         for (let i = 0; i < storage.data.items.length; i++) {
             if (storage.data.items[i] && storage.data.items[i].category !== storage.data.selectedTab) {
                 continue;
@@ -85,8 +83,6 @@ class MenuBlock extends Component {
     }
 
     loadMenu() {
-        console.log("loadMenu");
-        console.log(storage.data.items);
         const menuItem = new MenuItem();
         let items = "";
         let logo = "";
