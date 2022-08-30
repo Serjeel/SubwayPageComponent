@@ -1,12 +1,12 @@
 import Component from "../Component";
 import './MenuCategories.css';
 
-class MenuCategories extends Component {
-    constructor(props) {
-        super()
-        this.setSelectedTab = props.setSelectedTab;
+import { storage } from "../storage";
+import { setSelectedTab } from "../storage";
 
-        this.selectedTab = props.selectedTab
+class MenuCategories extends Component {
+    constructor() {
+        super()
 
         this.categories =
         {
@@ -20,31 +20,31 @@ class MenuCategories extends Component {
         }
     }
 
-        enable() {
-            for (let i in this.categories) {
-                const category = document.getElementById(i);
-                category.addEventListener('click', this.handleClickCategory.bind(this));
-            }
+    enable() {
+        for (let i in this.categories) {
+            const category = document.getElementById(i);
+            category.addEventListener('click', this.handleClickCategory.bind(this));
         }
+    }
 
-        handleClickCategory(target) {
-            if (this.selectedTab !== target.target.id) {
-                this.setSelectedTab(target.target.id);
-            }
+    handleClickCategory(target) {
+        if (storage.data.selectedTab !== target.target.id) {
+            setSelectedTab(target.target.id);
         }
+    }
 
-        render() {
-            let menuItems = ``;
-            for (let i in this.categories) {
-                menuItems += `<p class="${this.selectedTab === i ? "category-active" : "category"}"
-                id="${i}">${this.categories[i]}</p>` 
-            }
-            return (/*html*/`
+    render() {
+        let menuItems = ``;
+        for (let i in this.categories) {
+            menuItems += `<p class="${storage.data.selectedTab === i ? "category-active" : "category"}"
+                id="${i}">${this.categories[i]}</p>`
+        }
+        return (/*html*/`
         <div class="menu-categories">
             ${menuItems}
         </div>
       `)
-        }
     }
+}
 
 export default MenuCategories

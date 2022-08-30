@@ -9,78 +9,71 @@ import { setCountersValue } from "../storage";
 import { setOrderItems } from "../storage";
 import { setTotalPrice } from "../storage";
 
-class MenuBlock extends Component { 
+class MenuBlock extends Component {
     constructor(props) {
-        super() 
+        super()
 
-        this.data = { // Значения после прихода данных не меняются, так как раньше они обновлялись
-                      // засчёт createChildren. Продумать этот момент
-            countersValue: storage.data.countersValue,
-            items: storage.data.items,
-            selectedTab: storage.data.selectedTab,
-            orderItems: storage.data.orderItems,
-            totalPrice: storage.data.totalPrice
-        }
-
-        for (let i in this.data) {
-            storage.addSubscriber(i, props.rerender)
-        }
-
-        /*this.setSelectedModalTab = props.setSelectedModalTab;
-        this.setModalContent = props.setModalContent;
-        this.setModalWindowAddShow = props.setModalWindowAddShow;
-        this.setCountersValue = props.setCountersValue;
-        this.setOrderItems = props.setOrderItems;
-        this.setTotalPrice = props.setTotalPrice;*/
+        storage.addSubscriber("countersValue", props.rerender);
+        storage.addSubscriber("items", props.rerender);
+        storage.addSubscriber("selectedTab", props.rerender);
+        storage.addSubscriber("orderItems", props.rerender);
+        storage.addSubscriber("totalPrice", props.rerender);
     }
 
     enable() {
-        console.log(this.data.items);
-        for (let i = 0; i < this.data.items.length; i++) {
-            if (this.items[i] && this.data.items[i].category !== this.data.selectedTab) {
+        console.log("enable");
+        console.log(storage.data.items);
+        for (let i = 0; i < storage.data.items.length; i++) {
+            if (storage.data.items[i] && storage.data.items[i].category !== storage.data.selectedTab) {
                 continue;
             }
 
             const handlePlusClick = () => {
-                this.data.countersValue[i] += 1;
-                setCountersValue(this.countersValue)
+                let countersValue = storage.data.countersValue;
+                countersValue[i] += 1; // Сделать отдельные переменные для изменения и 
+                // прокидывания в функцию
+                setCountersValue(countersValue)
             }
 
             const handleMinusClick = () => {
-                if (this.data.countersValue[i] > 1) {
-                    this.countersValue[i] -= 1;
-                    setCountersValue(this.countersValue)
+                if (storage.data.countersValue[i] > 1) {
+                    let countersValue = storage.data.countersValue;
+                    countersValue[i] -= 1;
+                    setCountersValue(countersValue)
                 }
             }
 
             const handleInputChange = () => {
+                let countersValue = storage.data.countersValue;
                 if (document.getElementById("counter-" + (i + 1)).value > 0) {
-                    this.data.countersValue[i] = parseInt(document.getElementById("counter-" + (i + 1)).value);
+                    countersValue[i] = parseInt(document.getElementById("counter-" + (i + 1)).value);
                 } else {
-                    this.data.countersValue[i] = 1;
+                    countersValue[i] = 1;
                 }
-                setCountersValue(this.data.countersValue);
+                setCountersValue(countersValue);
             }
 
             const handleButtonClick = () => {
-                if (this.selectedTab === "sandwiches") {
+                if (storage.data.selectedTab === "sandwiches") {
                     setSelectedModalTab("sizes");
                     setModalWindowAddShow(true);
                     setModalContent({
                         id: i + 1,
-                        title: this.data.items[i].name,
-                        amount: this.data.countersValue[i],
-                        price: this.data.items[i].price
+                        title: storage.data.items[i].name,
+                        amount: storage.data.countersValue[i],
+                        price: storage.data.items[i].price
                     });
                 } else {
-                    this.orderItems.push({
-                        id: this.data.orderItems.length + 1,
-                        title: this.data.items[i].name,
-                        amount: this.data.countersValue[i],
-                        price: this.data.items[i].price * this.countersValue[i]
+                    let orderItems = storage.data.orderItems;
+                    orderItems.push({
+                        id: storage.data.orderItems.length + 1,
+                        title: storage.data.items[i].name,
+                        amount: storage.data.countersValue[i],
+                        price: storage.data.items[i].price * storage.data.countersValue[i]
                     });
-                    setOrderItems(this.data.orderItems);
-                    setTotalPrice(this.data.totalPrice + (this.data.items[i].price * this.data.countersValue[i]))
+                    setOrderItems(orderItems);
+                    setTotalPrice(storage.data.totalPrice + (storage.data.items[i].price
+                        * storage.data.countersValue[i]))
                 }
             }
 
@@ -92,29 +85,31 @@ class MenuBlock extends Component {
     }
 
     loadMenu() {
+        console.log("loadMenu");
+        console.log(storage.data.items);
         const menuItem = new MenuItem();
         let items = "";
         let logo = "";
-        for (let i in this.items) {
-            if (this.data.items[i].category !== this.data.selectedTab) {
+        for (let i in storage.data.items) {
+            if (storage.data.items[i].category !== storage.data.selectedTab) {
                 continue;
             }
 
-            if (this.data.items[i].market === "sfc") {
+            if (storage.data.items[i].market === "sfc") {
                 logo = "i/South_fried_chicken_logo.png";
-            } else if (this.data.items[i].market === "doner") {
+            } else if (storage.data.items[i].market === "doner") {
                 logo = "i/Doner_logo.png";
             } else {
                 logo = "i/Subway_logo.png";
             }
-            items += menuItem.render(this.data.items[i], parseInt(i) + 1, logo, this.data.countersValue);
+            items += menuItem.render(storage.data.items[i], parseInt(i) + 1, logo,
+                storage.data.countersValue);
         }
 
         return items;
     }
 
     render() {
-        console.log(this.data.items);
         return (/*html*/`
         <div class="menu-block">
             <div class="items-block">

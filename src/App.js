@@ -139,7 +139,7 @@ class App extends Component {
 
     async enable() {
         this.menuCategories.enable();
-        this.menuBlock.enable();
+
         this.order.enable();
         if (this.data.modalWindowAddShow || this.data.modalWindowEditShow) {
             this.modalWindow.enable();
@@ -154,18 +154,17 @@ class App extends Component {
 
     // А не изменятся ли только внутренности? Не добавится ли ещё див поверх другого? Надо это обдумать 
 
-    rerenderMenuCategories() {
+   /* rerenderMenuCategories() {
         document.getElementsByClassName("menu-categories")[0].innerHTML = this.menuCategories.render();
     }
 
     rerenderOrder() {
         document.getElementsByClassName("order")[0].innerHTML = this.order.render();
-    }
+    }*/
 
     rerenderMenuBlock() {
-        console.log(storage.data.items);
-        console.log("Функция сработала");
         document.getElementsByClassName("menu-block")[0].innerHTML = this.menuBlock.render();
+        this.menuBlock.enable();
     }
 
     rerenderModalWindow() {

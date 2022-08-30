@@ -1,7 +1,7 @@
 import Component from "../Component";
 import Ingredient from "../Ingredient/Ingredient";
 import './ModalWindow.css';
-import { storage } from "../storage";
+import { storage } from "../storage"; // Продолжаем замену props на storage
 
 class ModalWindow extends Component {
     constructor(props) {
