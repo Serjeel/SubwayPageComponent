@@ -7,8 +7,6 @@ import { setSelectedTab } from "../storage";
 class MenuCategories extends Component {
     constructor(props) {
         super()
-
-        console.log(props.rerender);
         storage.addSubscriber("selectedTab", props.rerender);
 
         this.categories = {

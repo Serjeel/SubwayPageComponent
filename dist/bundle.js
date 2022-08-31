@@ -1229,8 +1229,8 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         _storage__WEBPACK_IMPORTED_MODULE_3__.storage.addSubscriber("countersValue", props.rerender);
         _storage__WEBPACK_IMPORTED_MODULE_3__.storage.addSubscriber("items", props.rerender);
         _storage__WEBPACK_IMPORTED_MODULE_3__.storage.addSubscriber("selectedTab", props.rerender);
-        _storage__WEBPACK_IMPORTED_MODULE_3__.storage.addSubscriber("orderItems", props.rerender);
-        _storage__WEBPACK_IMPORTED_MODULE_3__.storage.addSubscriber("totalPrice", props.rerender);
+       /* storage.addSubscriber("orderItems", props.rerender);
+        storage.addSubscriber("totalPrice", props.rerender);*/
     }
 
     enable() {
@@ -1241,8 +1241,7 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
             const handlePlusClick = () => {
                 let countersValue = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue;
-                countersValue[i] += 1; // Сделать отдельные переменные для изменения и 
-                // прокидывания в функцию
+                countersValue[i] += 1; 
                 (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setCountersValue)(countersValue)
             }
 
@@ -1320,10 +1319,8 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
     render() {
         return (/*html*/`
-        <div class="menu-block">
-            <div class="items-block">
+        <div class="items-block">
             ${this.loadMenu()}
-            </div>
         </div>
       `)
     }
@@ -1355,8 +1352,6 @@ __webpack_require__.r(__webpack_exports__);
 class MenuCategories extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(props) {
         super()
-
-        console.log(props.rerender);
         _storage__WEBPACK_IMPORTED_MODULE_2__.storage.addSubscriber("selectedTab", props.rerender);
 
         this.categories = {
@@ -1480,9 +1475,8 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(props) {
         super();
 
-        this.subscribers = ["ingredients", "selectedModalTab", "modalContent", "tabReadyContent",
-            "previousValues", "countersValue", "orderItems", "totalPrice", "sandwiches",
-            "modalWindowAddShow", "modalWindowEditShow", "changeableOrderItem"]
+        this.subscribers = ["selectedModalTab", "modalContent", "tabReadyContent", 
+        "countersValue", "modalWindowAddShow", "modalWindowEditShow", "changeableOrderItem"]
         for (let i in this.subscribers) {
             _storage__WEBPACK_IMPORTED_MODULE_3__.storage.addSubscriber(this.subscribers[i], props.rerender);
         }
@@ -1561,8 +1555,7 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                         _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].splice(n, 1);
                         (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent);
                     } else {
-                        _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].push(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[tstorage.datahis.
-                            selectedModalTab][key].name)
+                        _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].push(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].name)
                         _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.price += _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].price;
                         (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent)
                     }
@@ -1663,7 +1656,7 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
                     (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.totalPrice + (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.price *
                         _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount) - previousPrice);
-                    _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.setTabReadyContent({
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)({
                         sizes: "15 См",
                         breads: "Белый итальянский",
                         vegetables: [],
@@ -1768,7 +1761,7 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                     <div class="item-price-block">
                         <p class="price-text">Цена:</p>
                         <p class="price-value" id="price-modal">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab === "ready" ?
-                _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.price * this.modalContent.amount : _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.price}</p>
+                _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.price * _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount : _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.price}</p>
                         <p class="price-currency">руб.</p>
                     </div>
                     <div class="modal-order-block">
@@ -1818,11 +1811,11 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         _storage__WEBPACK_IMPORTED_MODULE_2__.storage.addSubscriber("orderItems", props.rerender);
         _storage__WEBPACK_IMPORTED_MODULE_2__.storage.addSubscriber("totalPrice", props.rerender);
         _storage__WEBPACK_IMPORTED_MODULE_2__.storage.addSubscriber("sandwiches", props.rerender);
-        _storage__WEBPACK_IMPORTED_MODULE_2__.storage.addSubscriber("modalContent", props.rerender);
-        _storage__WEBPACK_IMPORTED_MODULE_2__.storage.addSubscriber("tabReadyContent", props.rerender);
-        _storage__WEBPACK_IMPORTED_MODULE_2__.storage.addSubscriber("modalWindowAddShow", props.rerender);
-        _storage__WEBPACK_IMPORTED_MODULE_2__.storage.addSubscriber("modalWindowEditShow", props.rerender);
-        _storage__WEBPACK_IMPORTED_MODULE_2__.storage.addSubscriber("changeableOrderItem", props.rerender);
+        /*storage.addSubscriber("modalContent", props.rerender);
+        storage.addSubscriber("tabReadyContent", props.rerender);
+        storage.addSubscriber("modalWindowAddShow", props.rerender);
+        storage.addSubscriber("modalWindowEditShow", props.rerender);
+        storage.addSubscriber("changeableOrderItem", props.rerender);*/
 
     }
 
@@ -1978,11 +1971,8 @@ class Storage { // Переписать всё под getElement и переда
     handleValueUpdated(item, key, value) {
         item[key] = value;
         if (this.subscribers[key]) {
-            console.log(this.subscribers);
-            console.log(this.subscribers[key]);
-            console.log(key);
             for (let callback in this.subscribers[key]) {
-                console.log(this.subscribers[key][callback]);
+                console.log(key, this.subscribers[key][callback]);
                 this.subscribers[key][callback]()
             }
         }
@@ -2165,9 +2155,6 @@ var __webpack_exports__ = {};
   !*** ./src/App.js ***!
   \********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 /* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Component */ "./src/Component.js");
 /* harmony import */ var _MainHeader_MainHeader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MainHeader/MainHeader */ "./src/MainHeader/MainHeader.js");
 /* harmony import */ var _MenuBlock_MenuBlock__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MenuBlock/MenuBlock */ "./src/MenuBlock/MenuBlock.js");
@@ -2188,134 +2175,29 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
-    constructor(onChange) {
-        const data = {
-            selectedTab: "sandwiches",
-            selectedModalTab: "sizes",
-            items: [],
-            ingredients: [],
-            countersValue: [],
-            orderItems: [],
-            totalPrice: 0,
-            modalWindowAddShow: false,
-            modalWindowEditShow: false,
-            modalContent: {},
-            sandwiches: [],
-            changeableOrderItem: {
-                orderId: 0,
-                sandwichId: 0
-            },
-            tabReadyContent: {
-                sizes: "15 См",
-                breads: "Белый итальянский",
-                vegetables: [],
-                sauces: [],
-                fillings: []
-            },
-            previousValues: {
-                sizes: 0,
-                breads: 0
-            }
-        }
-        super(data)
+    constructor() {
+       
+        super()
 
         this.rerenderMenuBlock = this.rerenderMenuBlock.bind(this);
         this.rerenderMenuCategories = this.rerenderMenuCategories.bind(this);
         this.rerenderOrder = this.rerenderOrder.bind(this);
         this.rerenderModalWindow = this.rerenderModalWindow.bind(this);
-
-        super.setRerender(onChange)
-        this.onChange = onChange;
-        this.createChildren()
-
-        const getData = async () => {
-            await fetch("./src/data.json")
-                .then(response => response.json())
-                .then(data => {
-                    data.menu.map(() => {
-                        this.data.countersValue.push(1)
-                    });
-                    this.data.items = data.menu;
-                    this.data.ingredients = {
-                        sizes: data.sizes,
-                        breads: data.breads,
-                        vegetables: data.vegetables,
-                        sauces: data.sauces,
-                        fillings: data.fillings
-                    }
-                })
-        }
-        getData();
-
-
     }
 
     createChildren() {
         this.mainHeader = new _MainHeader_MainHeader__WEBPACK_IMPORTED_MODULE_1__["default"]();
         this.menuCategories = new _MenuCategories_MenuCategories__WEBPACK_IMPORTED_MODULE_3__["default"]({
             rerender: this.rerenderMenuCategories,
-            selectedTab: this.data.selectedTab,
-            setSelectedTab: (x) => { this.data.selectedTab = x }
         });
         this.order = new _Order_Order__WEBPACK_IMPORTED_MODULE_5__["default"]({
             rerender: this.rerenderOrder,
-            orderItems: this.data.orderItems,
-            setOrderItems: (x) => { this.data.orderItems = x },
-            totalPrice: this.data.totalPrice,
-            setTotalPrice: (x) => { this.data.totalPrice = x },
-            sandwiches: this.data.sandwiches,
-            setSandwiches: (x) => { this.data.sandwiches = x },
-            modalWindowAddShow: this.data.modalWindowAddShow,
-            setModalWindowAddShow: (x) => { this.data.modalWindowAddShow = x },
-            modalWindowEditShow: this.data.modalWindowEditShow,
-            setModalWindowEditShow: (x) => { this.data.modalWindowEditShow = x },
-            modalContent: this.data.modalContent,
-            setModalContent: (x) => { this.data.modalContent = x },
-            setSelectedModalTab: (x) => { this.data.selectedModalTab = x },
-            tabReadyContent: this.data.tabReadyContent,
-            setTabReadyContent: (x) => { this.data.tabReadyContent = x },
-            changeableOrderItem: this.data.changeableOrderItem,
-            setChangeableOrderItem: (x) => { this.data.changeableOrderItem = x }
         });
         this.menuBlock = new _MenuBlock_MenuBlock__WEBPACK_IMPORTED_MODULE_2__["default"]({
             rerender: this.rerenderMenuBlock,
-            items: this.data.items,
-            selectedTab: this.data.selectedTab,
-            countersValue: this.data.countersValue,
-            setCountersValue: (x) => { this.data.countersValue = x },
-            orderItems: this.data.orderItems,
-            setOrderItems: (x) => { this.data.orderItems = x },
-            totalPrice: this.data.totalPrice,
-            setTotalPrice: (x) => { this.data.totalPrice = x },
-            setModalWindowAddShow: (x) => { this.data.modalWindowAddShow = x },
-            setModalContent: (x) => { this.data.modalContent = x },
-            setSelectedModalTab: (x) => { this.data.selectedModalTab = x },
         });
         this.modalWindow = new _ModalWindow_ModalWindow__WEBPACK_IMPORTED_MODULE_4__["default"]({
             rerender: this.rerenderModalWindow,
-            modalWindowAddShow: this.data.modalWindowAddShow,
-            setModalWindowAddShow: (x) => { this.data.modalWindowAddShow = x },
-            modalWindowEditShow: this.data.modalWindowEditShow,
-            setModalWindowEditShow: (x) => { this.data.modalWindowEditShow = x },
-            selectedModalTab: this.data.selectedModalTab,
-            setSelectedModalTab: (x) => { this.data.selectedModalTab = x },
-            ingredients: this.data.ingredients,
-            modalContent: this.data.modalContent,
-            setModalContent: (x) => { this.data.modalContent = x },
-            tabReadyContent: this.data.tabReadyContent,
-            setTabReadyContent: (x) => { this.data.tabReadyContent = x },
-            previousValues: this.data.previousValues,
-            setPreviousValues: (x) => { this.data.previousValues = x },
-            countersValue: this.data.countersValue,
-            setCountersValue: (x) => { this.data.countersValue = x },
-            orderItems: this.data.orderItems,
-            setOrderItems: (x) => { this.data.orderItems = x },
-            totalPrice: this.data.totalPrice,
-            setTotalPrice: (x) => { this.data.totalPrice = x },
-            sandwiches: this.data.sandwiches,
-            setSandwiches: (x) => { this.data.sandwiches = x },
-            changeableOrderItem: this.data.changeableOrderItem,
-            setChangeableOrderItem: (x) => { this.data.changeableOrderItem = x }
         });
     }
 
@@ -2330,11 +2212,8 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         (0,_storage__WEBPACK_IMPORTED_MODULE_6__.setItemsInfo)(itemsInfo)
     }
 
-    // А не изменятся ли только внутренности? Не добавится ли ещё див поверх другого? Даделать в остальных элементах 
+    // Сделать отдельные переменные для изменения и прокидывания в функцию
 
-    // Продумать, какие элементы должны ререндериться при изменении какой-то переменной
-
-    // Разобраться почему не открывается модалка
     rerenderMenuCategories() {
         document.getElementsByClassName("menu-categories")[0].innerHTML = this.menuCategories.render();
         this.menuCategories.enable();
@@ -2351,8 +2230,11 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     }
 
     rerenderModalWindow() {
-        if (_storage__WEBPACK_IMPORTED_MODULE_6__.storage.modalWindowAddShow || _storage__WEBPACK_IMPORTED_MODULE_6__.storage.modalWindowEditShow) {
-            document.getElementsByClassName("modal-window")[0].innerHTML = this.modalWindow.render();
+        if (_storage__WEBPACK_IMPORTED_MODULE_6__.storage.data.modalWindowAddShow || _storage__WEBPACK_IMPORTED_MODULE_6__.storage.data.modalWindowEditShow) {
+            document.getElementsByClassName("modal-block")[0].innerHTML = this.modalWindow.render();
+            this.modalWindow.enable();
+        } else {
+            document.getElementsByClassName("modal-block")[0].innerHTML = "";
         }
     }
 
@@ -2369,23 +2251,20 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                 ${this.order.render()}
             </div>
             </div>
-            ${this.menuBlock.render()}
+            <div class="menu-block">
+                ${this.menuBlock.render()}
+            </div>
         </div>
-        ${this.data.modalWindowAddShow || this.data.modalWindowEditShow ? this.modalWindow.render() : ''}
+        <div class="modal-block">
+        </div>
         `)
     }
 }
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);
+const app = new App();
 
-const rerenderApp = () => {
-    document.body.innerHTML = app.render();
-    app.enable();
-}
-
-const app = new App(
-    rerenderApp
-);
+document.body.innerHTML = app.render();
+app.enable();
 })();
 
 /******/ })()

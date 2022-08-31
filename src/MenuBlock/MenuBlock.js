@@ -16,8 +16,8 @@ class MenuBlock extends Component {
         storage.addSubscriber("countersValue", props.rerender);
         storage.addSubscriber("items", props.rerender);
         storage.addSubscriber("selectedTab", props.rerender);
-        storage.addSubscriber("orderItems", props.rerender);
-        storage.addSubscriber("totalPrice", props.rerender);
+       /* storage.addSubscriber("orderItems", props.rerender);
+        storage.addSubscriber("totalPrice", props.rerender);*/
     }
 
     enable() {
@@ -28,8 +28,7 @@ class MenuBlock extends Component {
 
             const handlePlusClick = () => {
                 let countersValue = storage.data.countersValue;
-                countersValue[i] += 1; // Сделать отдельные переменные для изменения и 
-                // прокидывания в функцию
+                countersValue[i] += 1; 
                 setCountersValue(countersValue)
             }
 
@@ -107,10 +106,8 @@ class MenuBlock extends Component {
 
     render() {
         return (/*html*/`
-        <div class="menu-block">
-            <div class="items-block">
+        <div class="items-block">
             ${this.loadMenu()}
-            </div>
         </div>
       `)
     }

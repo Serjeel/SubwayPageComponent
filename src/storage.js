@@ -22,11 +22,8 @@ class Storage { // Переписать всё под getElement и переда
     handleValueUpdated(item, key, value) {
         item[key] = value;
         if (this.subscribers[key]) {
-            console.log(this.subscribers);
-            console.log(this.subscribers[key]);
-            console.log(key);
             for (let callback in this.subscribers[key]) {
-                console.log(this.subscribers[key][callback]);
+                console.log(key, this.subscribers[key][callback]);
                 this.subscribers[key][callback]()
             }
         }

@@ -18,9 +18,8 @@ class ModalWindow extends Component {
     constructor(props) {
         super();
 
-        this.subscribers = ["ingredients", "selectedModalTab", "modalContent", "tabReadyContent",
-            "previousValues", "countersValue", "orderItems", "totalPrice", "sandwiches",
-            "modalWindowAddShow", "modalWindowEditShow", "changeableOrderItem"]
+        this.subscribers = ["selectedModalTab", "modalContent", "tabReadyContent", 
+        "countersValue", "modalWindowAddShow", "modalWindowEditShow", "changeableOrderItem"]
         for (let i in this.subscribers) {
             storage.addSubscriber(this.subscribers[i], props.rerender);
         }
@@ -103,7 +102,7 @@ class ModalWindow extends Component {
                         storage.data.tabReadyContent[storage.data.selectedModalTab].splice(n, 1);
                         setTabReadyContent(storage.data.tabReadyContent);
                     } else {
-                        storage.data.tabReadyContent[storage.data.selectedModalTab].push(storage.data.ingredients[tstorage.datahis.
+                        storage.data.tabReadyContent[storage.data.selectedModalTab].push(storage.data.ingredients[storage.data.
                             selectedModalTab][key].name)
                         storage.data.modalContent.price += storage.data.ingredients[storage.data.selectedModalTab][key].price;
                         setTabReadyContent(storage.data.tabReadyContent)
@@ -205,7 +204,7 @@ class ModalWindow extends Component {
 
                     setTotalPrice(storage.data.totalPrice + (storage.data.modalContent.price *
                         storage.data.modalContent.amount) - previousPrice);
-                    storage.data.setTabReadyContent({
+                    setTabReadyContent({
                         sizes: "15 См",
                         breads: "Белый итальянский",
                         vegetables: [],
@@ -310,7 +309,7 @@ class ModalWindow extends Component {
                     <div class="item-price-block">
                         <p class="price-text">Цена:</p>
                         <p class="price-value" id="price-modal">${storage.data.selectedModalTab === "ready" ?
-                storage.data.modalContent.price * this.modalContent.amount : storage.data.modalContent.price}</p>
+                storage.data.modalContent.price * storage.data.modalContent.amount : storage.data.modalContent.price}</p>
                         <p class="price-currency">руб.</p>
                     </div>
                     <div class="modal-order-block">

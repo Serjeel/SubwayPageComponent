@@ -18,11 +18,11 @@ class Order extends Component {
         storage.addSubscriber("orderItems", props.rerender);
         storage.addSubscriber("totalPrice", props.rerender);
         storage.addSubscriber("sandwiches", props.rerender);
-        storage.addSubscriber("modalContent", props.rerender);
+        /*storage.addSubscriber("modalContent", props.rerender);
         storage.addSubscriber("tabReadyContent", props.rerender);
         storage.addSubscriber("modalWindowAddShow", props.rerender);
         storage.addSubscriber("modalWindowEditShow", props.rerender);
-        storage.addSubscriber("changeableOrderItem", props.rerender);
+        storage.addSubscriber("changeableOrderItem", props.rerender);*/
 
     }
 
