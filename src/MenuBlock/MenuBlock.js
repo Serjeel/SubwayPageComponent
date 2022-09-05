@@ -13,11 +13,10 @@ class MenuBlock extends Component {
     constructor(props) {
         super()
 
-        storage.addSubscriber("countersValue", props.rerender);
-        storage.addSubscriber("items", props.rerender);
-        storage.addSubscriber("selectedTab", props.rerender);
-       /* storage.addSubscriber("orderItems", props.rerender);
-        storage.addSubscriber("totalPrice", props.rerender);*/
+        this.subscribers = ["countersValue", "items", "selectedTab"];
+        for (let i in this.subscribers) {
+            storage.addSubscriber(this.subscribers[i], props.rerender);
+        }
     }
 
     enable() {

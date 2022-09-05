@@ -18,8 +18,8 @@ class ModalWindow extends Component {
     constructor(props) {
         super();
 
-        this.subscribers = ["selectedModalTab", "modalContent", "tabReadyContent", 
-        "countersValue", "modalWindowAddShow", "modalWindowEditShow", "changeableOrderItem"]
+        this.subscribers = ["selectedModalTab", "modalContent", "tabReadyContent",
+            "countersValue", "modalWindowAddShow", "modalWindowEditShow", "changeableOrderItem"];
         for (let i in this.subscribers) {
             storage.addSubscriber(this.subscribers[i], props.rerender);
         }
@@ -35,6 +35,11 @@ class ModalWindow extends Component {
     }
 
     enable() {
+        let tabReadyContent = storage.data.tabReadyContent;
+        let modalContent = storage.data.modalContent;
+        let previousValues = storage.data.previousValues;
+        let sandwiches = storage.data.sandwiches;
+        let orderItems = storage.data.orderItems;
         const sizesTabClick = () => {
             setSelectedModalTab("sizes")
         }
@@ -83,29 +88,35 @@ class ModalWindow extends Component {
             const modalItemClick = () => {
                 const scrollPosition = document.getElementsByClassName("tab-content-block")[0].scrollTop
                 if (storage.data.selectedModalTab === "sizes" || storage.data.selectedModalTab === "breads") {
-                    storage.data.tabReadyContent[storage.data.selectedModalTab] = storage.data.ingredients[storage.data.
-                        selectedModalTab][key].name;
 
-                    storage.data.modalContent.price += storage.data.ingredients[storage.data.selectedModalTab][key].price;
-                    storage.data.modalContent.price -= storage.data.previousValues[storage.data.selectedModalTab];
+                    tabReadyContent[storage.data.selectedModalTab] = storage.data.
+                        ingredients[storage.data.selectedModalTab][key].name;
 
-                    storage.data.previousValues[storage.data.selectedModalTab] = storage.data.
+                    modalContent.price += storage.data.ingredients[storage.data.selectedModalTab][key].price;
+                    modalContent.price -= storage.data.previousValues[storage.data.selectedModalTab];
+
+                    setModalContent(modalContent);
+
+                    previousValues[storage.data.selectedModalTab] = storage.data.
                         ingredients[storage.data.selectedModalTab][key].price;
 
-                    setTabReadyContent(storage.data.tabReadyContent);
+                    setPreviousValues(previousValues);
+                    setTabReadyContent(tabReadyContent);
                 } else {
                     if (storage.data.tabReadyContent[storage.data.selectedModalTab].includes(storage.data.
                         ingredients[storage.data.selectedModalTab][key].name)) {
                         let n = storage.data.tabReadyContent[storage.data.selectedModalTab].indexOf(storage.data.
                             ingredients[storage.data.selectedModalTab][key].name);
-                        storage.data.modalContent.price -= storage.data.ingredients[storage.data.selectedModalTab][key].price;
-                        storage.data.tabReadyContent[storage.data.selectedModalTab].splice(n, 1);
+                        modalContent.price -= storage.data.ingredients[storage.data.selectedModalTab][key].price;
+                        tabReadyContent[storage.data.selectedModalTab].splice(n, 1);
+                        setModalContent(modalContent);
                         setTabReadyContent(storage.data.tabReadyContent);
                     } else {
-                        storage.data.tabReadyContent[storage.data.selectedModalTab].push(storage.data.ingredients[storage.data.
-                            selectedModalTab][key].name)
-                        storage.data.modalContent.price += storage.data.ingredients[storage.data.selectedModalTab][key].price;
-                        setTabReadyContent(storage.data.tabReadyContent)
+                        tabReadyContent[storage.data.selectedModalTab].push(storage.data.ingredients[storage.data.
+                            selectedModalTab][key].name);
+                        modalContent.price += storage.data.ingredients[storage.data.selectedModalTab][key].price;
+                        setModalContent(modalContent);
+                        setTabReadyContent(storage.data.tabReadyContent);
                     }
                 }
                 document.getElementsByClassName("tab-content-block")[0].scrollTo(0, scrollPosition)
@@ -115,30 +126,30 @@ class ModalWindow extends Component {
 
         if (storage.data.selectedModalTab === "ready") {
             const handleModalPlusClick = () => {
-                storage.data.modalContent.amount += 1;
+                modalContent.amount += 1;
                 setModalContent(storage.data.modalContent);
-                storage.data.countersValue[storage.data.modalContent.id - 1] += 1;
+                countersValue[storage.data.modalContent.id - 1] += 1;
                 setCountersValue(storage.data.countersValue);
             }
             const handleModalMinusClick = () => {
                 if (storage.data.modalContent.amount > 1) {
-                    storage.data.modalContent.amount -= 1;
+                    modalContent.amount -= 1;
                     setModalContent(storage.data.modalContent);
-                    storage.data.countersValue[storage.data.modalContent.id - 1] -= 1;
+                    countersValue[storage.data.modalContent.id - 1] -= 1;
                     setCountersValue(storage.data.countersValue);
                 }
             }
             const handleInputChange = () => {
                 if (document.getElementById("counter-modal").value > 0) {
-                    storage.data.modalContent.amount = parseInt(document.getElementById("counter-modal").value);
+                    modalContent.amount = parseInt(document.getElementById("counter-modal").value);
                     setModalContent(storage.data.modalContent);
-                    storage.data.countersValue[storage.data.modalContent.id - 1] = parseInt(document.
+                    countersValue[storage.data.modalContent.id - 1] = parseInt(document.
                         getElementById("counter-modal").value);
                     setCountersValue(storage.data.countersValue);
                 } else {
-                    storage.data.modalContent.amount = 1;
+                    modalContent.amount = 1;
                     setModalContent(storage.data.modalContent);
-                    storage.data.countersValue[storage.data.modalContent.id - 1] = 1;
+                    countersValue[storage.data.modalContent.id - 1] = 1;
                     setCountersValue(storage.data.countersValue);
                 }
             }
@@ -148,7 +159,7 @@ class ModalWindow extends Component {
                 if (storage.data.modalWindowAddShow) {
                     setModalWindowAddShow(false);
 
-                    storage.data.sandwiches.push({
+                    sandwiches.push({
                         id: storage.data.modalContent.id,
                         title: storage.data.modalContent.title,
                         amount: storage.data.modalContent.amount,
@@ -160,15 +171,15 @@ class ModalWindow extends Component {
                         fillings: storage.data.tabReadyContent.fillings
                     });
 
-                    storage.data.orderItems.push({
+                    orderItems.push({
                         sandwichId: storage.data.sandwiches.length,
                         id: storage.data.orderItems.length + 1,
                         title: storage.data.modalContent.title,
                         amount: storage.data.modalContent.amount,
                         price: storage.data.modalContent.price * storage.data.modalContent.amount
                     });
-                    setOrderItems(storage.data.orderItems);
                     setSandwiches(storage.data.sandwiches);
+                    setOrderItems(storage.data.orderItems);
 
                     setTotalPrice(storage.data.totalPrice + (storage.data.modalContent.price * storage.data.modalContent.amount));
 
@@ -183,7 +194,7 @@ class ModalWindow extends Component {
                 if (storage.data.modalWindowEditShow) {
                     setModalWindowEditShow(false);
 
-                    storage.data.sandwiches[storage.data.changeableOrderItem.sandwichId] = {
+                    sandwiches[storage.data.changeableOrderItem.sandwichId] = {
                         id: storage.data.modalContent.id,
                         title: storage.data.modalContent.title,
                         amount: storage.data.modalContent.amount,
@@ -198,9 +209,11 @@ class ModalWindow extends Component {
 
                     let previousPrice = storage.data.orderItems[storage.data.changeableOrderItem.orderId].price;
 
-                    storage.data.orderItems[storage.data.changeableOrderItem.orderId].amount = storage.data.modalContent.amount;
-                    storage.data.orderItems[storage.data.changeableOrderItem.orderId].price =
+                    orderItems[storage.data.changeableOrderItem.orderId].amount = storage.data.modalContent.amount;
+                    orderItems[storage.data.changeableOrderItem.orderId].price =
                         storage.data.modalContent.price * storage.data.modalContent.amount;
+
+                    setOrderItems(orderItems);
 
                     setTotalPrice(storage.data.totalPrice + (storage.data.modalContent.price *
                         storage.data.modalContent.amount) - previousPrice);

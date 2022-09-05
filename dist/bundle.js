@@ -1226,11 +1226,10 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(props) {
         super()
 
-        _storage__WEBPACK_IMPORTED_MODULE_3__.storage.addSubscriber("countersValue", props.rerender);
-        _storage__WEBPACK_IMPORTED_MODULE_3__.storage.addSubscriber("items", props.rerender);
-        _storage__WEBPACK_IMPORTED_MODULE_3__.storage.addSubscriber("selectedTab", props.rerender);
-       /* storage.addSubscriber("orderItems", props.rerender);
-        storage.addSubscriber("totalPrice", props.rerender);*/
+        this.subscribers = ["countersValue", "items", "selectedTab"];
+        for (let i in this.subscribers) {
+            _storage__WEBPACK_IMPORTED_MODULE_3__.storage.addSubscriber(this.subscribers[i], props.rerender);
+        }
     }
 
     enable() {
@@ -1475,8 +1474,8 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(props) {
         super();
 
-        this.subscribers = ["selectedModalTab", "modalContent", "tabReadyContent", 
-        "countersValue", "modalWindowAddShow", "modalWindowEditShow", "changeableOrderItem"]
+        this.subscribers = ["selectedModalTab", "modalContent", "tabReadyContent",
+            "countersValue", "modalWindowAddShow", "modalWindowEditShow", "changeableOrderItem"];
         for (let i in this.subscribers) {
             _storage__WEBPACK_IMPORTED_MODULE_3__.storage.addSubscriber(this.subscribers[i], props.rerender);
         }
@@ -1492,6 +1491,11 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     }
 
     enable() {
+        let tabReadyContent = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent;
+        let modalContent = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent;
+        let previousValues = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.previousValues;
+        let sandwiches = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches;
+        let orderItems = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems;
         const sizesTabClick = () => {
             (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedModalTab)("sizes")
         }
@@ -1540,24 +1544,30 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             const modalItemClick = () => {
                 const scrollPosition = document.getElementsByClassName("tab-content-block")[0].scrollTop
                 if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab === "sizes" || _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab === "breads") {
-                    _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab] = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].name;
 
-                    _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.price += _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].price;
-                    _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.price -= _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.previousValues[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab];
+                    tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab] = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].name;
 
-                    _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.previousValues[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab] = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].price;
+                    modalContent.price += _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].price;
+                    modalContent.price -= _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.previousValues[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab];
 
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent);
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(modalContent);
+
+                    previousValues[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab] = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].price;
+
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setPreviousValues)(previousValues);
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)(tabReadyContent);
                 } else {
                     if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].includes(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].name)) {
                         let n = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].indexOf(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].name);
-                        _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.price -= _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].price;
-                        _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].splice(n, 1);
+                        modalContent.price -= _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].price;
+                        tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].splice(n, 1);
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(modalContent);
                         (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent);
                     } else {
-                        _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].push(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].name)
-                        _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.price += _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].price;
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent)
+                        tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].push(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].name);
+                        modalContent.price += _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].price;
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(modalContent);
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent);
                     }
                 }
                 document.getElementsByClassName("tab-content-block")[0].scrollTo(0, scrollPosition)
@@ -1567,30 +1577,30 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
         if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab === "ready") {
             const handleModalPlusClick = () => {
-                _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount += 1;
+                modalContent.amount += 1;
                 (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent);
-                _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.id - 1] += 1;
+                countersValue[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.id - 1] += 1;
                 (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setCountersValue)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue);
             }
             const handleModalMinusClick = () => {
                 if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount > 1) {
-                    _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount -= 1;
+                    modalContent.amount -= 1;
                     (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent);
-                    _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.id - 1] -= 1;
+                    countersValue[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.id - 1] -= 1;
                     (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setCountersValue)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue);
                 }
             }
             const handleInputChange = () => {
                 if (document.getElementById("counter-modal").value > 0) {
-                    _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount = parseInt(document.getElementById("counter-modal").value);
+                    modalContent.amount = parseInt(document.getElementById("counter-modal").value);
                     (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent);
-                    _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.id - 1] = parseInt(document.
+                    countersValue[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.id - 1] = parseInt(document.
                         getElementById("counter-modal").value);
                     (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setCountersValue)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue);
                 } else {
-                    _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount = 1;
+                    modalContent.amount = 1;
                     (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent);
-                    _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.id - 1] = 1;
+                    countersValue[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.id - 1] = 1;
                     (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setCountersValue)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue);
                 }
             }
@@ -1600,7 +1610,7 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                 if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalWindowAddShow) {
                     (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowAddShow)(false);
 
-                    _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches.push({
+                    sandwiches.push({
                         id: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.id,
                         title: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.title,
                         amount: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount,
@@ -1612,15 +1622,15 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                         fillings: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.fillings
                     });
 
-                    _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems.push({
+                    orderItems.push({
                         sandwichId: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches.length,
                         id: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems.length + 1,
                         title: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.title,
                         amount: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount,
                         price: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.price * _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount
                     });
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setOrderItems)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems);
                     (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSandwiches)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches);
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setOrderItems)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems);
 
                     (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.totalPrice + (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.price * _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount));
 
@@ -1635,7 +1645,7 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                 if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalWindowEditShow) {
                     (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowEditShow)(false);
 
-                    _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.changeableOrderItem.sandwichId] = {
+                    sandwiches[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.changeableOrderItem.sandwichId] = {
                         id: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.id,
                         title: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.title,
                         amount: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount,
@@ -1650,9 +1660,11 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
                     let previousPrice = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.changeableOrderItem.orderId].price;
 
-                    _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.changeableOrderItem.orderId].amount = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount;
-                    _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.changeableOrderItem.orderId].price =
+                    orderItems[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.changeableOrderItem.orderId].amount = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount;
+                    orderItems[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.changeableOrderItem.orderId].price =
                         _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.price * _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount;
+
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setOrderItems)(orderItems);
 
                     (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.totalPrice + (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.price *
                         _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount) - previousPrice);
@@ -1808,15 +1820,10 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(props) {
         super()
 
-        _storage__WEBPACK_IMPORTED_MODULE_2__.storage.addSubscriber("orderItems", props.rerender);
-        _storage__WEBPACK_IMPORTED_MODULE_2__.storage.addSubscriber("totalPrice", props.rerender);
-        _storage__WEBPACK_IMPORTED_MODULE_2__.storage.addSubscriber("sandwiches", props.rerender);
-        /*storage.addSubscriber("modalContent", props.rerender);
-        storage.addSubscriber("tabReadyContent", props.rerender);
-        storage.addSubscriber("modalWindowAddShow", props.rerender);
-        storage.addSubscriber("modalWindowEditShow", props.rerender);
-        storage.addSubscriber("changeableOrderItem", props.rerender);*/
-
+        this.subscribers = ["orderItems", "totalPrice", "sandwiches"];
+        for (let i in this.subscribers) {
+            _storage__WEBPACK_IMPORTED_MODULE_2__.storage.addSubscriber(this.subscribers[i], props.rerender);
+        }
     }
 
     basketRender() {

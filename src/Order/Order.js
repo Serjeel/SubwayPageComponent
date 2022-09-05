@@ -15,15 +15,10 @@ class Order extends Component {
     constructor(props) {
         super()
 
-        storage.addSubscriber("orderItems", props.rerender);
-        storage.addSubscriber("totalPrice", props.rerender);
-        storage.addSubscriber("sandwiches", props.rerender);
-        /*storage.addSubscriber("modalContent", props.rerender);
-        storage.addSubscriber("tabReadyContent", props.rerender);
-        storage.addSubscriber("modalWindowAddShow", props.rerender);
-        storage.addSubscriber("modalWindowEditShow", props.rerender);
-        storage.addSubscriber("changeableOrderItem", props.rerender);*/
-
+        this.subscribers = ["orderItems", "totalPrice", "sandwiches"];
+        for (let i in this.subscribers) {
+            storage.addSubscriber(this.subscribers[i], props.rerender);
+        }
     }
 
     basketRender() {
