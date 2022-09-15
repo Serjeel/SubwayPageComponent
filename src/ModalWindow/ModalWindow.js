@@ -64,15 +64,11 @@ class ModalWindow extends Component {
                 sizes: 0,
                 breads: 0
             })
-            setModalWindowAddShow(false);
-            setModalWindowEditShow(false);
-            setTabReadyContent({
-                sizes: "15 См",
-                breads: "Белый итальянский",
-                vegetables: [],
-                sauces: [],
-                fillings: []
-            })
+            if (storage.data.modalWindowAddShow) {
+                setModalWindowAddShow(false);
+            } else {
+                setModalWindowEditShow(false);
+            }
         }
 
         document.getElementById("sizes").addEventListener("click", sizesTabClick)

@@ -1,6 +1,10 @@
+import axios from 'axios';
+
 export async function getItemsInfo () {
-    const data = await fetch("./src/data.json")
-        .then(response => response.json());
+    let data = {};
+    await axios.get(`http://localhost:8000/food/getAllFood`)
+        .then(res => {data = res.data[0];
+        console.log(res.data[0]);});
 
     return data;
-} // async и await тут возможно не нужны
+}

@@ -46,8 +46,6 @@ class App extends Component {
         setItemsInfo(itemsInfo)
     }
 
-    // Сделать отдельные переменные для изменения и прокидывания в функцию
-
     rerenderMenuCategories() {
         document.getElementsByClassName("menu-categories")[0].innerHTML = this.menuCategories.render();
         this.menuCategories.enable();
