@@ -3,7 +3,7 @@ const router = express.Router();
 
 const {
 getAllFood
-} = require('./foodController');
+} = require('../controllers/foodController');
 
 router.get('/getAllFood', getAllFood);
 

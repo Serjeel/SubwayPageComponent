@@ -6,7 +6,7 @@ const app = express();
 
 app.use(express.json());
 
-const foodRoute = require("./foodRoute");
+const foodRoute = require("./routes/foodRoute");
 app.use(cors());
 
 app.use("/food", foodRoute);

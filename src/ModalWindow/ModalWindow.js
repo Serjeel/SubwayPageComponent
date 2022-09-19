@@ -121,6 +121,7 @@ class ModalWindow extends Component {
         }
 
         if (storage.data.selectedModalTab === "ready") {
+            let countersValue = storage.data.countersValue;
             const handleModalPlusClick = () => {
                 modalContent.amount += 1;
                 setModalContent(storage.data.modalContent);

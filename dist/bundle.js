@@ -4063,6 +4063,7 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         }
 
         if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab === "ready") {
+            let countersValue = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue;
             const handleModalPlusClick = () => {
                 modalContent.amount += 1;
                 (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent);
@@ -4450,12 +4451,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "setTotalPrice": () => (/* binding */ setTotalPrice),
 /* harmony export */   "storage": () => (/* binding */ storage)
 /* harmony export */ });
-class Storage { // Переписать всё под getElement и передавать в subscribers функции для ререндера
-    // отдельных комплнентов под текстовый ключ. Ловить изменение с помощью прокси
-    // и вызывать функцию ререндера того компонента, из которого меняется переменная.
-    // Функции ререндера должны происходить здесь и храниться в подписчиках (по идее).
-    // Компонентом component воспользоваться, когда нужно изменить стейт, использующийся
-    // только в определённом компоненте
+class Storage {
     constructor(data) {
         let handler = {
             set: this.handleValueUpdated.bind(this)
