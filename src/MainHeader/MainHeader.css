@@ -1,3 +1,20 @@
-.main-header {
+.header {
+    display: flex;
+    justify-content: end;
+}
+
+.login_and_register-button {
+    height: 30px;
+    font-family: Noto Sans, sans-serif;
+    background-color: white;
+}
+
+.login_and_register-button:hover {
+    background-color: #F5C300;
+}
+
+.headline {
+    height: 30px;
+    margin-top: 15px;
     text-align: center;
 }

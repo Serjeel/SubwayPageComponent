@@ -7,7 +7,10 @@ class MainHeader extends Component{
     }
     render() {
         return (/*html*/`
-            <h1 class="main-header">СДЕЛАЙТЕ ЗАКАЗ НАПРЯМУЮ ИЗ РЕСТОРАНА</h1>
+            <div class="header">
+            <button class="login_and_register-button">Войти/Зарегистироваться</button>
+            </div>
+            <h1 class="headline">СДЕЛАЙТЕ ЗАКАЗ НАПРЯМУЮ ИЗ РЕСТОРАНА</h1>
       `)
     }
 }

@@ -2536,7 +2536,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".main-header {\n    text-align: center;\n}", "",{"version":3,"sources":["webpack://./src/MainHeader/MainHeader.css"],"names":[],"mappings":"AAAA;IACI,kBAAkB;AACtB","sourcesContent":[".main-header {\n    text-align: center;\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ".header {\n    display: flex;\n    justify-content: end;\n}\n\n.login_and_register-button {\n    height: 30px;\n    font-family: Noto Sans, sans-serif;\n    background-color: white;\n}\n\n.login_and_register-button:hover {\n    background-color: #F5C300;\n}\n\n.headline {\n    height: 30px;\n    margin-top: 15px;\n    text-align: center;\n}", "",{"version":3,"sources":["webpack://./src/MainHeader/MainHeader.css"],"names":[],"mappings":"AAAA;IACI,aAAa;IACb,oBAAoB;AACxB;;AAEA;IACI,YAAY;IACZ,kCAAkC;IAClC,uBAAuB;AAC3B;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,YAAY;IACZ,gBAAgB;IAChB,kBAAkB;AACtB","sourcesContent":[".header {\n    display: flex;\n    justify-content: end;\n}\n\n.login_and_register-button {\n    height: 30px;\n    font-family: Noto Sans, sans-serif;\n    background-color: white;\n}\n\n.login_and_register-button:hover {\n    background-color: #F5C300;\n}\n\n.headline {\n    height: 30px;\n    margin-top: 15px;\n    text-align: center;\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -2624,10 +2624,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, ".item {\n    display: flex;\n    flex-
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js!./src/ModalWindow/ModalWindow.css":
-/*!*******************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./src/ModalWindow/ModalWindow.css ***!
-  \*******************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js!./src/ModalWindowSandwich/ModalWindowSandwich.css":
+/*!***********************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./src/ModalWindowSandwich/ModalWindowSandwich.css ***!
+  \***********************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -2644,7 +2644,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".modal-window {\n    width: 100%;\n    height: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    position: fixed;\n    left: 0;\n    top: 0;\n    background-color: rgba(0, 0, 0, 0.6);\n}\n\n.modal-content {\n    width: 900px;\n    height: 570px;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    background-color: gainsboro;\n    border-radius: 5px;\n}\n\n.modal-header-block {\n    width: 100%;\n    display: flex;\n    background-color: var(--yellow-color);\n    border-top-right-radius: 5px;\n    border-top-left-radius: 5px;\n}\n\n.modal-header {\n    height: 50px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    width: 100%;\n    font-weight: 300;\n    color: white;\n    margin: 0;\n}\n\n.close-icon {\n    width: 20px;\n    height: 20px;\n    cursor: pointer;\n}\n\n.modal-tabs-block {\n    height: 50px;\n    margin-top: 15px;\n}\n\n.modal-tabs {\n    width: 800px;\n    height: 50px;\n    display: flex;\n    justify-content: center;\n    background-color: white;\n    cursor: pointer;\n    border-radius: 5px;\n    overflow: hidden;\n}\n\n.tab {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    width: 100%;\n    height: 100%;\n    margin: 0;\n    padding-left: 30px;\n    padding-right: 30px;\n}\n\n.tab-active {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    width: 100%;\n    height: 100%;\n    margin: 0;\n    padding-left: 30px;\n    padding-right: 30px;\n    color: white;\n    background-color: #D96746;\n}\n\n.arrows-block {\n    display: flex;  \n    justify-content: space-between;\n    width: 800px;\n    margin-top: 10px;\n    margin-bottom: 10px;\n}\n\n.arrow {\n    cursor: pointer;\n    width: 100px;\n    height: 30px;\n    background-color: #D96746;\n    color: white;\n    border: none;\n    border-radius: 5px;\n    font-size: 16px;\n}\n\n.tab-content-block {\n    background-color: gainsboro;\n    width: 85%;\n    display: grid;\n    grid-template-columns: repeat(3, 1fr);\n    overflow: auto;\n}\n\n.modal-item {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    margin-bottom: 40px;\n}\n\n.modal-item-active {\n    cursor: pointer;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    margin-bottom: 40px;\n    background-color: var(--yellow-color);\n}\n\n.modal-item:hover {\n    cursor: pointer;\n    background-color: #F6D846;\n}\n\n.image-block {\n    width: 200px;\n    height: 270px;\n    display: flex;\n    align-items: flex-end;\n    justify-content: center;\n}\n\n.result-image {\n    width: 150px;\n    height: 150px;\n    border-radius: 100%;\n    border: 10px solid var(--yellow-color);\n}\n\n.final-order-block {\n    width: 450px;\n    height: 270px;\n    margin-left: 30px;\n}\n\n.final-order-ready {\n    font-size: 20px;\n    border-bottom: 2px solid var(--light-gray-color);\n}\n\n.final-order-size,\n.final-order-bread,\n.final-order-vegetables,\n.final-order-sauces {\n    margin: 0;\n    display: flex;\n    font-size: 14px;\n    margin-top: 10px;\n}\n\n.final-order-filling {\n    display: flex;\n    font-size: 14px;\n    border-bottom: 2px solid var(--light-gray-color);\n    padding-bottom: 20px;\n    margin-top: 10px;\n}\n\n.final-order-size-text,\n.final-order-bread-text,\n.final-order-vegetables-text,\n.final-order-sauces-text,\n.final-order-filling-text {\n    margin: 0;\n}\n\n.final-order-size-value,\n.final-order-bread-value,\n.final-order-vegetables-value,\n.final-order-sauces-value,\n.final-order-filling-value  {\n    margin: 0;\n    margin-left: 5px;\n}\n\n.final-order-title {\n    padding-top: 20px;\n    font-size: 20px;\n    margin: 0;\n}\n\n.modal-footer {\n    width: 100%;\n    padding-bottom: 20px;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    background-color: white;\n    margin-top: auto;\n    border-bottom-right-radius: 5px;\n    border-bottom-left-radius: 5px;\n}\n\n.modal-order-block {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n}", "",{"version":3,"sources":["webpack://./src/ModalWindow/ModalWindow.css"],"names":[],"mappings":"AAAA;IACI,WAAW;IACX,YAAY;IACZ,aAAa;IACb,mBAAmB;IACnB,uBAAuB;IACvB,eAAe;IACf,OAAO;IACP,MAAM;IACN,oCAAoC;AACxC;;AAEA;IACI,YAAY;IACZ,aAAa;IACb,aAAa;IACb,sBAAsB;IACtB,mBAAmB;IACnB,2BAA2B;IAC3B,kBAAkB;AACtB;;AAEA;IACI,WAAW;IACX,aAAa;IACb,qCAAqC;IACrC,4BAA4B;IAC5B,2BAA2B;AAC/B;;AAEA;IACI,YAAY;IACZ,aAAa;IACb,mBAAmB;IACnB,uBAAuB;IACvB,WAAW;IACX,gBAAgB;IAChB,YAAY;IACZ,SAAS;AACb;;AAEA;IACI,WAAW;IACX,YAAY;IACZ,eAAe;AACnB;;AAEA;IACI,YAAY;IACZ,gBAAgB;AACpB;;AAEA;IACI,YAAY;IACZ,YAAY;IACZ,aAAa;IACb,uBAAuB;IACvB,uBAAuB;IACvB,eAAe;IACf,kBAAkB;IAClB,gBAAgB;AACpB;;AAEA;IACI,aAAa;IACb,mBAAmB;IACnB,uBAAuB;IACvB,WAAW;IACX,YAAY;IACZ,SAAS;IACT,kBAAkB;IAClB,mBAAmB;AACvB;;AAEA;IACI,aAAa;IACb,mBAAmB;IACnB,uBAAuB;IACvB,WAAW;IACX,YAAY;IACZ,SAAS;IACT,kBAAkB;IAClB,mBAAmB;IACnB,YAAY;IACZ,yBAAyB;AAC7B;;AAEA;IACI,aAAa;IACb,8BAA8B;IAC9B,YAAY;IACZ,gBAAgB;IAChB,mBAAmB;AACvB;;AAEA;IACI,eAAe;IACf,YAAY;IACZ,YAAY;IACZ,yBAAyB;IACzB,YAAY;IACZ,YAAY;IACZ,kBAAkB;IAClB,eAAe;AACnB;;AAEA;IACI,2BAA2B;IAC3B,UAAU;IACV,aAAa;IACb,qCAAqC;IACrC,cAAc;AAClB;;AAEA;IACI,aAAa;IACb,sBAAsB;IACtB,mBAAmB;IACnB,mBAAmB;AACvB;;AAEA;IACI,eAAe;IACf,aAAa;IACb,sBAAsB;IACtB,mBAAmB;IACnB,mBAAmB;IACnB,qCAAqC;AACzC;;AAEA;IACI,eAAe;IACf,yBAAyB;AAC7B;;AAEA;IACI,YAAY;IACZ,aAAa;IACb,aAAa;IACb,qBAAqB;IACrB,uBAAuB;AAC3B;;AAEA;IACI,YAAY;IACZ,aAAa;IACb,mBAAmB;IACnB,sCAAsC;AAC1C;;AAEA;IACI,YAAY;IACZ,aAAa;IACb,iBAAiB;AACrB;;AAEA;IACI,eAAe;IACf,gDAAgD;AACpD;;AAEA;;;;IAII,SAAS;IACT,aAAa;IACb,eAAe;IACf,gBAAgB;AACpB;;AAEA;IACI,aAAa;IACb,eAAe;IACf,gDAAgD;IAChD,oBAAoB;IACpB,gBAAgB;AACpB;;AAEA;;;;;IAKI,SAAS;AACb;;AAEA;;;;;IAKI,SAAS;IACT,gBAAgB;AACpB;;AAEA;IACI,iBAAiB;IACjB,eAAe;IACf,SAAS;AACb;;AAEA;IACI,WAAW;IACX,oBAAoB;IACpB,aAAa;IACb,sBAAsB;IACtB,mBAAmB;IACnB,uBAAuB;IACvB,gBAAgB;IAChB,+BAA+B;IAC/B,8BAA8B;AAClC;;AAEA;IACI,aAAa;IACb,sBAAsB;IACtB,mBAAmB;AACvB","sourcesContent":[".modal-window {\n    width: 100%;\n    height: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    position: fixed;\n    left: 0;\n    top: 0;\n    background-color: rgba(0, 0, 0, 0.6);\n}\n\n.modal-content {\n    width: 900px;\n    height: 570px;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    background-color: gainsboro;\n    border-radius: 5px;\n}\n\n.modal-header-block {\n    width: 100%;\n    display: flex;\n    background-color: var(--yellow-color);\n    border-top-right-radius: 5px;\n    border-top-left-radius: 5px;\n}\n\n.modal-header {\n    height: 50px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    width: 100%;\n    font-weight: 300;\n    color: white;\n    margin: 0;\n}\n\n.close-icon {\n    width: 20px;\n    height: 20px;\n    cursor: pointer;\n}\n\n.modal-tabs-block {\n    height: 50px;\n    margin-top: 15px;\n}\n\n.modal-tabs {\n    width: 800px;\n    height: 50px;\n    display: flex;\n    justify-content: center;\n    background-color: white;\n    cursor: pointer;\n    border-radius: 5px;\n    overflow: hidden;\n}\n\n.tab {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    width: 100%;\n    height: 100%;\n    margin: 0;\n    padding-left: 30px;\n    padding-right: 30px;\n}\n\n.tab-active {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    width: 100%;\n    height: 100%;\n    margin: 0;\n    padding-left: 30px;\n    padding-right: 30px;\n    color: white;\n    background-color: #D96746;\n}\n\n.arrows-block {\n    display: flex;  \n    justify-content: space-between;\n    width: 800px;\n    margin-top: 10px;\n    margin-bottom: 10px;\n}\n\n.arrow {\n    cursor: pointer;\n    width: 100px;\n    height: 30px;\n    background-color: #D96746;\n    color: white;\n    border: none;\n    border-radius: 5px;\n    font-size: 16px;\n}\n\n.tab-content-block {\n    background-color: gainsboro;\n    width: 85%;\n    display: grid;\n    grid-template-columns: repeat(3, 1fr);\n    overflow: auto;\n}\n\n.modal-item {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    margin-bottom: 40px;\n}\n\n.modal-item-active {\n    cursor: pointer;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    margin-bottom: 40px;\n    background-color: var(--yellow-color);\n}\n\n.modal-item:hover {\n    cursor: pointer;\n    background-color: #F6D846;\n}\n\n.image-block {\n    width: 200px;\n    height: 270px;\n    display: flex;\n    align-items: flex-end;\n    justify-content: center;\n}\n\n.result-image {\n    width: 150px;\n    height: 150px;\n    border-radius: 100%;\n    border: 10px solid var(--yellow-color);\n}\n\n.final-order-block {\n    width: 450px;\n    height: 270px;\n    margin-left: 30px;\n}\n\n.final-order-ready {\n    font-size: 20px;\n    border-bottom: 2px solid var(--light-gray-color);\n}\n\n.final-order-size,\n.final-order-bread,\n.final-order-vegetables,\n.final-order-sauces {\n    margin: 0;\n    display: flex;\n    font-size: 14px;\n    margin-top: 10px;\n}\n\n.final-order-filling {\n    display: flex;\n    font-size: 14px;\n    border-bottom: 2px solid var(--light-gray-color);\n    padding-bottom: 20px;\n    margin-top: 10px;\n}\n\n.final-order-size-text,\n.final-order-bread-text,\n.final-order-vegetables-text,\n.final-order-sauces-text,\n.final-order-filling-text {\n    margin: 0;\n}\n\n.final-order-size-value,\n.final-order-bread-value,\n.final-order-vegetables-value,\n.final-order-sauces-value,\n.final-order-filling-value  {\n    margin: 0;\n    margin-left: 5px;\n}\n\n.final-order-title {\n    padding-top: 20px;\n    font-size: 20px;\n    margin: 0;\n}\n\n.modal-footer {\n    width: 100%;\n    padding-bottom: 20px;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    background-color: white;\n    margin-top: auto;\n    border-bottom-right-radius: 5px;\n    border-bottom-left-radius: 5px;\n}\n\n.modal-order-block {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ".modal-window {\n    width: 100%;\n    height: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    position: fixed;\n    left: 0;\n    top: 0;\n    background-color: rgba(0, 0, 0, 0.6);\n}\n\n.modal-content {\n    width: 900px;\n    height: 570px;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    background-color: gainsboro;\n    border-radius: 5px;\n}\n\n.modal-header-block {\n    width: 100%;\n    display: flex;\n    background-color: var(--yellow-color);\n    border-top-right-radius: 5px;\n    border-top-left-radius: 5px;\n}\n\n.modal-header {\n    height: 50px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    width: 100%;\n    font-weight: 300;\n    color: white;\n    margin: 0;\n}\n\n.close-icon {\n    width: 20px;\n    height: 20px;\n    cursor: pointer;\n}\n\n.modal-tabs-block {\n    height: 50px;\n    margin-top: 15px;\n}\n\n.modal-tabs {\n    width: 800px;\n    height: 50px;\n    display: flex;\n    justify-content: center;\n    background-color: white;\n    cursor: pointer;\n    border-radius: 5px;\n    overflow: hidden;\n}\n\n.tab {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    width: 100%;\n    height: 100%;\n    margin: 0;\n    padding-left: 30px;\n    padding-right: 30px;\n}\n\n.tab-active {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    width: 100%;\n    height: 100%;\n    margin: 0;\n    padding-left: 30px;\n    padding-right: 30px;\n    color: white;\n    background-color: #D96746;\n}\n\n.arrows-block {\n    display: flex;  \n    justify-content: space-between;\n    width: 800px;\n    margin-top: 10px;\n    margin-bottom: 10px;\n}\n\n.arrow {\n    cursor: pointer;\n    width: 100px;\n    height: 30px;\n    background-color: #D96746;\n    color: white;\n    border: none;\n    border-radius: 5px;\n    font-size: 16px;\n}\n\n.tab-content-block {\n    background-color: gainsboro;\n    width: 85%;\n    display: grid;\n    grid-template-columns: repeat(3, 1fr);\n    overflow: auto;\n}\n\n.modal-item {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    margin-bottom: 40px;\n}\n\n.modal-item-active {\n    cursor: pointer;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    margin-bottom: 40px;\n    background-color: var(--yellow-color);\n}\n\n.modal-item:hover {\n    cursor: pointer;\n    background-color: #F6D846;\n}\n\n.image-block {\n    width: 200px;\n    height: 270px;\n    display: flex;\n    align-items: flex-end;\n    justify-content: center;\n}\n\n.result-image {\n    width: 150px;\n    height: 150px;\n    border-radius: 100%;\n    border: 10px solid var(--yellow-color);\n}\n\n.final-order-block {\n    width: 450px;\n    height: 270px;\n    margin-left: 30px;\n}\n\n.final-order-ready {\n    font-size: 20px;\n    border-bottom: 2px solid var(--light-gray-color);\n}\n\n.final-order-size,\n.final-order-bread,\n.final-order-vegetables,\n.final-order-sauces {\n    margin: 0;\n    display: flex;\n    font-size: 14px;\n    margin-top: 10px;\n}\n\n.final-order-filling {\n    display: flex;\n    font-size: 14px;\n    border-bottom: 2px solid var(--light-gray-color);\n    padding-bottom: 20px;\n    margin-top: 10px;\n}\n\n.final-order-size-text,\n.final-order-bread-text,\n.final-order-vegetables-text,\n.final-order-sauces-text,\n.final-order-filling-text {\n    margin: 0;\n}\n\n.final-order-size-value,\n.final-order-bread-value,\n.final-order-vegetables-value,\n.final-order-sauces-value,\n.final-order-filling-value  {\n    margin: 0;\n    margin-left: 5px;\n}\n\n.final-order-title {\n    padding-top: 20px;\n    font-size: 20px;\n    margin: 0;\n}\n\n.modal-footer {\n    width: 100%;\n    padding-bottom: 20px;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    background-color: white;\n    margin-top: auto;\n    border-bottom-right-radius: 5px;\n    border-bottom-left-radius: 5px;\n}\n\n.modal-order-block {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n}", "",{"version":3,"sources":["webpack://./src/ModalWindowSandwich/ModalWindowSandwich.css"],"names":[],"mappings":"AAAA;IACI,WAAW;IACX,YAAY;IACZ,aAAa;IACb,mBAAmB;IACnB,uBAAuB;IACvB,eAAe;IACf,OAAO;IACP,MAAM;IACN,oCAAoC;AACxC;;AAEA;IACI,YAAY;IACZ,aAAa;IACb,aAAa;IACb,sBAAsB;IACtB,mBAAmB;IACnB,2BAA2B;IAC3B,kBAAkB;AACtB;;AAEA;IACI,WAAW;IACX,aAAa;IACb,qCAAqC;IACrC,4BAA4B;IAC5B,2BAA2B;AAC/B;;AAEA;IACI,YAAY;IACZ,aAAa;IACb,mBAAmB;IACnB,uBAAuB;IACvB,WAAW;IACX,gBAAgB;IAChB,YAAY;IACZ,SAAS;AACb;;AAEA;IACI,WAAW;IACX,YAAY;IACZ,eAAe;AACnB;;AAEA;IACI,YAAY;IACZ,gBAAgB;AACpB;;AAEA;IACI,YAAY;IACZ,YAAY;IACZ,aAAa;IACb,uBAAuB;IACvB,uBAAuB;IACvB,eAAe;IACf,kBAAkB;IAClB,gBAAgB;AACpB;;AAEA;IACI,aAAa;IACb,mBAAmB;IACnB,uBAAuB;IACvB,WAAW;IACX,YAAY;IACZ,SAAS;IACT,kBAAkB;IAClB,mBAAmB;AACvB;;AAEA;IACI,aAAa;IACb,mBAAmB;IACnB,uBAAuB;IACvB,WAAW;IACX,YAAY;IACZ,SAAS;IACT,kBAAkB;IAClB,mBAAmB;IACnB,YAAY;IACZ,yBAAyB;AAC7B;;AAEA;IACI,aAAa;IACb,8BAA8B;IAC9B,YAAY;IACZ,gBAAgB;IAChB,mBAAmB;AACvB;;AAEA;IACI,eAAe;IACf,YAAY;IACZ,YAAY;IACZ,yBAAyB;IACzB,YAAY;IACZ,YAAY;IACZ,kBAAkB;IAClB,eAAe;AACnB;;AAEA;IACI,2BAA2B;IAC3B,UAAU;IACV,aAAa;IACb,qCAAqC;IACrC,cAAc;AAClB;;AAEA;IACI,aAAa;IACb,sBAAsB;IACtB,mBAAmB;IACnB,mBAAmB;AACvB;;AAEA;IACI,eAAe;IACf,aAAa;IACb,sBAAsB;IACtB,mBAAmB;IACnB,mBAAmB;IACnB,qCAAqC;AACzC;;AAEA;IACI,eAAe;IACf,yBAAyB;AAC7B;;AAEA;IACI,YAAY;IACZ,aAAa;IACb,aAAa;IACb,qBAAqB;IACrB,uBAAuB;AAC3B;;AAEA;IACI,YAAY;IACZ,aAAa;IACb,mBAAmB;IACnB,sCAAsC;AAC1C;;AAEA;IACI,YAAY;IACZ,aAAa;IACb,iBAAiB;AACrB;;AAEA;IACI,eAAe;IACf,gDAAgD;AACpD;;AAEA;;;;IAII,SAAS;IACT,aAAa;IACb,eAAe;IACf,gBAAgB;AACpB;;AAEA;IACI,aAAa;IACb,eAAe;IACf,gDAAgD;IAChD,oBAAoB;IACpB,gBAAgB;AACpB;;AAEA;;;;;IAKI,SAAS;AACb;;AAEA;;;;;IAKI,SAAS;IACT,gBAAgB;AACpB;;AAEA;IACI,iBAAiB;IACjB,eAAe;IACf,SAAS;AACb;;AAEA;IACI,WAAW;IACX,oBAAoB;IACpB,aAAa;IACb,sBAAsB;IACtB,mBAAmB;IACnB,uBAAuB;IACvB,gBAAgB;IAChB,+BAA+B;IAC/B,8BAA8B;AAClC;;AAEA;IACI,aAAa;IACb,sBAAsB;IACtB,mBAAmB;AACvB","sourcesContent":[".modal-window {\n    width: 100%;\n    height: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    position: fixed;\n    left: 0;\n    top: 0;\n    background-color: rgba(0, 0, 0, 0.6);\n}\n\n.modal-content {\n    width: 900px;\n    height: 570px;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    background-color: gainsboro;\n    border-radius: 5px;\n}\n\n.modal-header-block {\n    width: 100%;\n    display: flex;\n    background-color: var(--yellow-color);\n    border-top-right-radius: 5px;\n    border-top-left-radius: 5px;\n}\n\n.modal-header {\n    height: 50px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    width: 100%;\n    font-weight: 300;\n    color: white;\n    margin: 0;\n}\n\n.close-icon {\n    width: 20px;\n    height: 20px;\n    cursor: pointer;\n}\n\n.modal-tabs-block {\n    height: 50px;\n    margin-top: 15px;\n}\n\n.modal-tabs {\n    width: 800px;\n    height: 50px;\n    display: flex;\n    justify-content: center;\n    background-color: white;\n    cursor: pointer;\n    border-radius: 5px;\n    overflow: hidden;\n}\n\n.tab {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    width: 100%;\n    height: 100%;\n    margin: 0;\n    padding-left: 30px;\n    padding-right: 30px;\n}\n\n.tab-active {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    width: 100%;\n    height: 100%;\n    margin: 0;\n    padding-left: 30px;\n    padding-right: 30px;\n    color: white;\n    background-color: #D96746;\n}\n\n.arrows-block {\n    display: flex;  \n    justify-content: space-between;\n    width: 800px;\n    margin-top: 10px;\n    margin-bottom: 10px;\n}\n\n.arrow {\n    cursor: pointer;\n    width: 100px;\n    height: 30px;\n    background-color: #D96746;\n    color: white;\n    border: none;\n    border-radius: 5px;\n    font-size: 16px;\n}\n\n.tab-content-block {\n    background-color: gainsboro;\n    width: 85%;\n    display: grid;\n    grid-template-columns: repeat(3, 1fr);\n    overflow: auto;\n}\n\n.modal-item {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    margin-bottom: 40px;\n}\n\n.modal-item-active {\n    cursor: pointer;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    margin-bottom: 40px;\n    background-color: var(--yellow-color);\n}\n\n.modal-item:hover {\n    cursor: pointer;\n    background-color: #F6D846;\n}\n\n.image-block {\n    width: 200px;\n    height: 270px;\n    display: flex;\n    align-items: flex-end;\n    justify-content: center;\n}\n\n.result-image {\n    width: 150px;\n    height: 150px;\n    border-radius: 100%;\n    border: 10px solid var(--yellow-color);\n}\n\n.final-order-block {\n    width: 450px;\n    height: 270px;\n    margin-left: 30px;\n}\n\n.final-order-ready {\n    font-size: 20px;\n    border-bottom: 2px solid var(--light-gray-color);\n}\n\n.final-order-size,\n.final-order-bread,\n.final-order-vegetables,\n.final-order-sauces {\n    margin: 0;\n    display: flex;\n    font-size: 14px;\n    margin-top: 10px;\n}\n\n.final-order-filling {\n    display: flex;\n    font-size: 14px;\n    border-bottom: 2px solid var(--light-gray-color);\n    padding-bottom: 20px;\n    margin-top: 10px;\n}\n\n.final-order-size-text,\n.final-order-bread-text,\n.final-order-vegetables-text,\n.final-order-sauces-text,\n.final-order-filling-text {\n    margin: 0;\n}\n\n.final-order-size-value,\n.final-order-bread-value,\n.final-order-vegetables-value,\n.final-order-sauces-value,\n.final-order-filling-value  {\n    margin: 0;\n    margin-left: 5px;\n}\n\n.final-order-title {\n    padding-top: 20px;\n    font-size: 20px;\n    margin: 0;\n}\n\n.modal-footer {\n    width: 100%;\n    padding-bottom: 20px;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    background-color: white;\n    margin-top: auto;\n    border-bottom-right-radius: 5px;\n    border-bottom-left-radius: 5px;\n}\n\n.modal-order-block {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -3152,10 +3152,10 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
-/***/ "./src/ModalWindow/ModalWindow.css":
-/*!*****************************************!*\
-  !*** ./src/ModalWindow/ModalWindow.css ***!
-  \*****************************************/
+/***/ "./src/ModalWindowSandwich/ModalWindowSandwich.css":
+/*!*********************************************************!*\
+  !*** ./src/ModalWindowSandwich/ModalWindowSandwich.css ***!
+  \*********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -3175,7 +3175,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ModalWindow_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../node_modules/css-loader/dist/cjs.js!./ModalWindow.css */ "./node_modules/css-loader/dist/cjs.js!./src/ModalWindow/ModalWindow.css");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ModalWindowSandwich_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../node_modules/css-loader/dist/cjs.js!./ModalWindowSandwich.css */ "./node_modules/css-loader/dist/cjs.js!./src/ModalWindowSandwich/ModalWindowSandwich.css");
 
       
       
@@ -3197,12 +3197,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ModalWindow_css__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ModalWindowSandwich_css__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ModalWindow_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ModalWindow_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ModalWindow_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ModalWindowSandwich_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ModalWindowSandwich_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ModalWindowSandwich_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -3675,7 +3675,10 @@ class MainHeader extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"]{
     }
     render() {
         return (/*html*/`
-            <h1 class="main-header">СДЕЛАЙТЕ ЗАКАЗ НАПРЯМУЮ ИЗ РЕСТОРАНА</h1>
+            <div class="header">
+            <button class="login_and_register-button">Войти/Зарегистироваться</button>
+            </div>
+            <h1 class="headline">СДЕЛАЙТЕ ЗАКАЗ НАПРЯМУЮ ИЗ РЕСТОРАНА</h1>
       `)
     }
 }
@@ -3930,10 +3933,10 @@ class MenuItem extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"]{
 
 /***/ }),
 
-/***/ "./src/ModalWindow/ModalWindow.js":
-/*!****************************************!*\
-  !*** ./src/ModalWindow/ModalWindow.js ***!
-  \****************************************/
+/***/ "./src/ModalWindowSandwich/ModalWindowSandwich.js":
+/*!********************************************************!*\
+  !*** ./src/ModalWindowSandwich/ModalWindowSandwich.js ***!
+  \********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -3943,7 +3946,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
 /* harmony import */ var _Ingredient_Ingredient__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Ingredient/Ingredient */ "./src/Ingredient/Ingredient.js");
-/* harmony import */ var _ModalWindow_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ModalWindow.css */ "./src/ModalWindow/ModalWindow.css");
+/* harmony import */ var _ModalWindowSandwich_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ModalWindowSandwich.css */ "./src/ModalWindowSandwich/ModalWindowSandwich.css");
 /* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
 
 
@@ -3961,7 +3964,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
+class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(props) {
         super();
 
@@ -4274,7 +4277,7 @@ class ModalWindow extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     }
 }
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ModalWindow);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ModalWindowSandwich);
 
 /***/ }),
 
@@ -4489,6 +4492,7 @@ const storage = new Storage({
     totalPrice: 0,
     modalWindowAddShow: false,
     modalWindowEditShow: false,
+    modalWindowAuthorizationShow: false,
     modalContent: {},
     sandwiches: [],
     changeableOrderItem: {
@@ -4659,7 +4663,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _MainHeader_MainHeader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MainHeader/MainHeader */ "./src/MainHeader/MainHeader.js");
 /* harmony import */ var _MenuBlock_MenuBlock__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MenuBlock/MenuBlock */ "./src/MenuBlock/MenuBlock.js");
 /* harmony import */ var _MenuCategories_MenuCategories__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MenuCategories/MenuCategories */ "./src/MenuCategories/MenuCategories.js");
-/* harmony import */ var _ModalWindow_ModalWindow__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ModalWindow/ModalWindow */ "./src/ModalWindow/ModalWindow.js");
+/* harmony import */ var _ModalWindowSandwich_ModalWindowSandwich__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ModalWindowSandwich/ModalWindowSandwich */ "./src/ModalWindowSandwich/ModalWindowSandwich.js");
 /* harmony import */ var _Order_Order__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Order/Order */ "./src/Order/Order.js");
 /* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./storage */ "./src/storage.js");
 /* harmony import */ var _App_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./App.css */ "./src/App.css");
@@ -4674,15 +4678,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor() {
-       
         super()
-
         this.rerenderMenuBlock = this.rerenderMenuBlock.bind(this);
         this.rerenderMenuCategories = this.rerenderMenuCategories.bind(this);
         this.rerenderOrder = this.rerenderOrder.bind(this);
-        this.rerenderModalWindow = this.rerenderModalWindow.bind(this);
+        this.rerenderModalWindowSandwich = this.rerenderModalWindowSandwich.bind(this);
+        
     }
 
     createChildren() {
@@ -4696,8 +4700,8 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         this.menuBlock = new _MenuBlock_MenuBlock__WEBPACK_IMPORTED_MODULE_2__["default"]({
             rerender: this.rerenderMenuBlock,
         });
-        this.modalWindow = new _ModalWindow_ModalWindow__WEBPACK_IMPORTED_MODULE_4__["default"]({
-            rerender: this.rerenderModalWindow,
+        this.modalWindowSandwich = new _ModalWindowSandwich_ModalWindowSandwich__WEBPACK_IMPORTED_MODULE_4__["default"]({
+            rerender: this.rerenderModalWindowSandwich,
         });
     }
 
@@ -4706,7 +4710,7 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
         this.order.enable();
         if (this.data.modalWindowAddShow || this.data.modalWindowEditShow) {
-            this.modalWindow.enable();
+            this.modalWindowSandwich.enable();
         }
         const itemsInfo = await (0,_api__WEBPACK_IMPORTED_MODULE_8__.getItemsInfo)();
         (0,_storage__WEBPACK_IMPORTED_MODULE_6__.setItemsInfo)(itemsInfo)
@@ -4727,16 +4731,21 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         this.menuBlock.enable();
     }
 
-    rerenderModalWindow() {
+    rerenderModalWindowSandwich() {
         if (_storage__WEBPACK_IMPORTED_MODULE_6__.storage.data.modalWindowAddShow || _storage__WEBPACK_IMPORTED_MODULE_6__.storage.data.modalWindowEditShow) {
-            document.getElementsByClassName("modal-block")[0].innerHTML = this.modalWindow.render();
-            this.modalWindow.enable();
+            document.getElementsByClassName("modal-block")[0].innerHTML = this.modalWindowSandwich.render();
+            this.modalWindowSandwich.enable();
         } else {
             document.getElementsByClassName("modal-block")[0].innerHTML = "";
         }
     }
 
+    rerenderModalWindowAuthorization() {
+        
+    }
+
     render() {
+        console.log(window.history);
         this.createChildren();
         return (/*html*/`
             ${this.mainHeader.render()}

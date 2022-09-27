@@ -2,21 +2,21 @@ import Component from "./Component";
 import MainHeader from "./MainHeader/MainHeader";
 import MenuBlock from "./MenuBlock/MenuBlock";
 import MenuCategories from "./MenuCategories/MenuCategories";
-import ModalWindow from "./ModalWindow/ModalWindow";
+import ModalWindow from "./ModalWindowSandwich/ModalWindowSandwich";
 import Order from "./Order/Order";
 import { storage, setItemsInfo } from "./storage";
 import './App.css';
 import { getItemsInfo } from "./api";
+import ModalWindowSandwich from "./ModalWindowSandwich/ModalWindowSandwich";
 
 class App extends Component {
     constructor() {
-       
         super()
-
         this.rerenderMenuBlock = this.rerenderMenuBlock.bind(this);
         this.rerenderMenuCategories = this.rerenderMenuCategories.bind(this);
         this.rerenderOrder = this.rerenderOrder.bind(this);
-        this.rerenderModalWindow = this.rerenderModalWindow.bind(this);
+        this.rerenderModalWindowSandwich = this.rerenderModalWindowSandwich.bind(this);
+        
     }
 
     createChildren() {
@@ -30,8 +30,8 @@ class App extends Component {
         this.menuBlock = new MenuBlock({
             rerender: this.rerenderMenuBlock,
         });
-        this.modalWindow = new ModalWindow({
-            rerender: this.rerenderModalWindow,
+        this.modalWindowSandwich = new ModalWindowSandwich({
+            rerender: this.rerenderModalWindowSandwich,
         });
     }
 
@@ -40,7 +40,7 @@ class App extends Component {
 
         this.order.enable();
         if (this.data.modalWindowAddShow || this.data.modalWindowEditShow) {
-            this.modalWindow.enable();
+            this.modalWindowSandwich.enable();
         }
         const itemsInfo = await getItemsInfo();
         setItemsInfo(itemsInfo)
@@ -61,16 +61,21 @@ class App extends Component {
         this.menuBlock.enable();
     }
 
-    rerenderModalWindow() {
+    rerenderModalWindowSandwich() {
         if (storage.data.modalWindowAddShow || storage.data.modalWindowEditShow) {
-            document.getElementsByClassName("modal-block")[0].innerHTML = this.modalWindow.render();
-            this.modalWindow.enable();
+            document.getElementsByClassName("modal-block")[0].innerHTML = this.modalWindowSandwich.render();
+            this.modalWindowSandwich.enable();
         } else {
             document.getElementsByClassName("modal-block")[0].innerHTML = "";
         }
     }
 
+    rerenderModalWindowAuthorization() {
+        
+    }
+
     render() {
+        console.log(window.history);
         this.createChildren();
         return (/*html*/`
             ${this.mainHeader.render()}

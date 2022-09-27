@@ -36,6 +36,7 @@ export const storage = new Storage({
     totalPrice: 0,
     modalWindowAddShow: false,
     modalWindowEditShow: false,
+    modalWindowAuthorizationShow: false,
     modalContent: {},
     sandwiches: [],
     changeableOrderItem: {

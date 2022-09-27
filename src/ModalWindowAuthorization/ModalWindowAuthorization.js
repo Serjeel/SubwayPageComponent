@@ -1,6 +1,6 @@
 import Component from "../Component";
 import Ingredient from "../Ingredient/Ingredient";
-import './ModalWindow.css';
+import './ModalWindowSandwich.css';
 
 import { storage } from "../storage";
 import { setOrderItems } from "../storage";
