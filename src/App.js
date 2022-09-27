@@ -2,12 +2,12 @@ import Component from "./Component";
 import MainHeader from "./MainHeader/MainHeader";
 import MenuBlock from "./MenuBlock/MenuBlock";
 import MenuCategories from "./MenuCategories/MenuCategories";
-import ModalWindow from "./ModalWindowSandwich/ModalWindowSandwich";
+import ModalWindowSandwich from "./ModalWindowSandwich/ModalWindowSandwich";
+import ModalWindowAuthorization from "./ModalWindowAuthorization/ModalWindowAuthorization";
 import Order from "./Order/Order";
 import { storage, setItemsInfo } from "./storage";
 import './App.css';
 import { getItemsInfo } from "./api";
-import ModalWindowSandwich from "./ModalWindowSandwich/ModalWindowSandwich";
 
 class App extends Component {
     constructor() {
@@ -16,26 +16,31 @@ class App extends Component {
         this.rerenderMenuCategories = this.rerenderMenuCategories.bind(this);
         this.rerenderOrder = this.rerenderOrder.bind(this);
         this.rerenderModalWindowSandwich = this.rerenderModalWindowSandwich.bind(this);
-        
+        this.rerenderModalWindowAuthorization = this.rerenderModalWindowAuthorization.bind(this)
     }
 
     createChildren() {
         this.mainHeader = new MainHeader();
         this.menuCategories = new MenuCategories({
-            rerender: this.rerenderMenuCategories,
+            rerender: this.rerenderMenuCategories
         });
         this.order = new Order({
-            rerender: this.rerenderOrder,
+            rerender: this.rerenderOrder
         });
         this.menuBlock = new MenuBlock({
-            rerender: this.rerenderMenuBlock,
+            rerender: this.rerenderMenuBlock
         });
         this.modalWindowSandwich = new ModalWindowSandwich({
-            rerender: this.rerenderModalWindowSandwich,
+            rerender: this.rerenderModalWindowSandwich
         });
+
+        this.modalWindowAuthorization = new ModalWindowAuthorization({
+            rerender: this.rerenderModalWindowAuthorization
+        })
     }
 
     async enable() {
+        this.mainHeader.enable();
         this.menuCategories.enable();
 
         this.order.enable();
@@ -71,7 +76,12 @@ class App extends Component {
     }
 
     rerenderModalWindowAuthorization() {
-        
+         if (storage.data.modalWindowAuthorizationShow) {
+            document.getElementsByClassName("modal-block")[0].innerHTML = this.modalWindowSandwich.render();
+            this.modalWindowSandwich.enable();
+        } else {
+            document.getElementsByClassName("modal-block")[0].innerHTML = "";
+        }
     }
 
     render() {

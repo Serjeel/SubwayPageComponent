@@ -82,6 +82,10 @@ export function setModalWindowEditShow(modalWindowEditShow) {
     storage.data.modalWindowEditShow = modalWindowEditShow;
 }
 
+export function setModalWindowAuthorizationShow(modalWindowAuthorizationShow) {
+    storage.data.modalWindowAuthorizationShow = modalWindowAuthorizationShow;
+}
+
 export function setModalContent(modalContent) {
     storage.data.modalContent = modalContent;
 }
