@@ -299,8 +299,8 @@ class ModalWindowSandwich extends Component {
                 id="${i}">${this.tabs[i]}</p>`
         }
         return (/*html*/`
-        <div class="modal-window">
-            <div class="modal-content">
+        <div class="modal-sandwich-window">
+            <div class="modal-sandwich-content">
                 <div class="modal-header-block">
                     <h3 class="modal-header">Проверьте и добавьте в корзину</h3>
                     <img class="close-icon" src="i/close-icon.svg"/>

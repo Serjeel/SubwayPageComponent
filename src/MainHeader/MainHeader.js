@@ -2,21 +2,22 @@ import Component from "../Component";
 import './MainHeader.css';
 
 import { storage } from "../storage";
-import { setModalWindowAuthorizationShow} from "../storage";
+import { setModalWindowAuthorizationShow } from "../storage";
 
-class MainHeader extends Component{
-    constructor() {
+class MainHeader extends Component {
+    constructor(props) {
         super();
-        this.subscribers = ["countersValue", "items", "selectedTab"];
-        for (let i in this.subscribers) {
-            storage.addSubscriber("modalWindowAuthorizationShow", );
-        }
+        storage.addSubscriber("modalWindowAuthorizationShow", props.rerender);
     }
 
     enable() {
-        document.getElementsByClassName("modal-block")[0].addEventListener("click", setModalWindowAuthorizationShow(true))
+        const loginButtonClick = () => {
+            setModalWindowAuthorizationShow(true)
+        }
+
+        document.getElementsByClassName("login_and_register-button")[0].addEventListener("click", setModalWindowAuthorizationShow(true))
     }
-    
+
     render() {
         return (/*html*/`
             <div class="header">

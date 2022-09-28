@@ -20,7 +20,9 @@ class App extends Component {
     }
 
     createChildren() {
-        this.mainHeader = new MainHeader();
+        this.mainHeader = new MainHeader({
+            rerender: this.rerenderModalWindowAuthorization
+        });
         this.menuCategories = new MenuCategories({
             rerender: this.rerenderMenuCategories
         });
@@ -46,6 +48,10 @@ class App extends Component {
         this.order.enable();
         if (this.data.modalWindowAddShow || this.data.modalWindowEditShow) {
             this.modalWindowSandwich.enable();
+        }
+
+        if (this.data.modalWindowAuthorizationShow) {
+            this.modalWindowAuthorization.enable();
         }
         const itemsInfo = await getItemsInfo();
         setItemsInfo(itemsInfo)
@@ -77,8 +83,8 @@ class App extends Component {
 
     rerenderModalWindowAuthorization() {
          if (storage.data.modalWindowAuthorizationShow) {
-            document.getElementsByClassName("modal-block")[0].innerHTML = this.modalWindowSandwich.render();
-            this.modalWindowSandwich.enable();
+            document.getElementsByClassName("modal-block")[0].innerHTML = this.modalWindowAuthorization.render();
+            this.modalWindowAuthorization.enable();
         } else {
             document.getElementsByClassName("modal-block")[0].innerHTML = "";
         }

@@ -1,4 +1,4 @@
-.modal-window {
+.modal-sandwich-window {
     width: 100%;
     height: 100%;
     display: flex;
@@ -10,7 +10,7 @@
     background-color: rgba(0, 0, 0, 0.6);
 }
 
-.modal-content {
+.modal-sandwich-content {
     width: 900px;
     height: 570px;
     display: flex;
