@@ -91,7 +91,6 @@ class App extends Component {
     }
 
     render() {
-        console.log(window.history);
         this.createChildren();
         return (/*html*/`
             ${this.mainHeader.render()}

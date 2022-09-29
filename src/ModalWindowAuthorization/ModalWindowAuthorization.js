@@ -42,49 +42,53 @@ class ModalWindowAuthorization extends Component {
         document.getElementById("registration").addEventListener("click", registrationTabClick)
         document.getElementsByClassName("close-icon")[0].addEventListener("click", closeIconClick)
 
-    // Продумать логику изменения инпутов. Скорее всего навешать разные id на инпуты логина и пароля
 
         const logUserOnChange = () => {
             this.inputsContent.logUsername = document.getElementById("username").value;
+            console.log(this.inputsContent);
         }
 
         const logPasswordOnChange = () => {
             this.inputsContent.logPassword = document.getElementById("password").value;
+            console.log(this.inputsContent);
         }
 
         const regUserOnChange = () => {
             this.inputsContent.regUsername = document.getElementById("username").value;
+            console.log(this.inputsContent);
         }
 
         const regPasswordOnChange = () => {
             this.inputsContent.regPassword = document.getElementById("password").value;
+            console.log(this.inputsContent);
         }
 
         const regRepPasswordOnChange = () => {
             this.inputsContent.regRepPassword = document.getElementById("repPassword").value;
+            console.log(this.inputsContent);
         }
 
         if (storage.data.selectedAuthorizationTab === "login") {
-
+            document.getElementById("username").addEventListener("change", logUserOnChange)
+            document.getElementById("password").addEventListener("change", logPasswordOnChange)
         }
-        document.getElementById("username").addEventListener("change", logUserOnChange)
-        document.getElementById("password").addEventListener("change", logPasswordOnChange)
-        document.getElementById("username").addEventListener("change", regUserOnChange)
-        document.getElementById("password").addEventListener("change", regPasswordOnChange)
-        document.getElementById("repPassword").addEventListener("change", regRepPasswordOnChange)
+        if (storage.data.selectedAuthorizationTab === "registration") {
+            document.getElementById("username").addEventListener("change", regUserOnChange)
+            document.getElementById("password").addEventListener("change", regPasswordOnChange)
+            document.getElementById("repPassword").addEventListener("change", regRepPasswordOnChange)
+        }
 
         const logButtonClick = async () => {
 
         }
 
+        // А теперь запросы на сервер
+
         const regButtonClick = async () => {
-            if (!patient !== '' && doctor !== '' && date !== '' && complaints !== '') {
+            if (username !== '' && password !== '') {
                 await axios.post('http://localhost:8000/appointment/createAppointment', {
-                    patient,
-                    doctor,
-                    date,
-                    complaints,
-                    userId
+                    username,
+                    password
                 }).then(res => {
                     setDefaultAppointments(res.data.data);
                     setPatient('');
@@ -112,7 +116,8 @@ class ModalWindowAuthorization extends Component {
                 id="${i}">${tabs[i]}</p>`
         }
 
-        const repeatPasswordInput = `<input class="authorization-input" type="password" id="repPassword" placeholder="Repeat Password">`
+        const repeatPasswordInput = `<input class="authorization-input" type="password"
+         id="repPassword" placeholder="Повторите пароль" value=${this.inputsContent.regRepPassword}>`
 
         return (/*html*/`
         <div class="modal-authorization-window">
@@ -122,17 +127,17 @@ class ModalWindowAuthorization extends Component {
                     <img class="close-icon" src="i/close-icon.svg"/>
                 </div>
                 <div class="modal-tabs-authorization-block">
-                    <div class="modal-tabs">
+                    <div class="modal-authorization-tabs ">
                         ${modalTabs}
                     </div>
                 </div>
                 <div class="input-block">
                     <input class="authorization-input" id="username" type="text" placeholder=
-                    "Enter Email" value=${storage.data.selectedAuthorizationTab === "login"
+                    "Имя пользователя" value=${storage.data.selectedAuthorizationTab === "login"
                     ? this.inputsContent.logUsername : this.inputsContent.regUsername}>
                     <input class="authorization-input" type="password" id="password" placeholder=
-                    "Enter Password" value=${storage.data.selectedAuthorizationTab === "login"
-                    ? this.inputsContent.regPassword : this.inputsContent.regPassword} >
+                    "Пароль" value=${storage.data.selectedAuthorizationTab === "login"
+                    ? this.inputsContent.logPassword : this.inputsContent.regPassword} >
                     ${storage.data.selectedAuthorizationTab === "registration" ? repeatPasswordInput : ""}
                 </div>
                 <button class="authorization-button">${storage.data.selectedAuthorizationTab ===

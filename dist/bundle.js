@@ -2644,7 +2644,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".modal-authorization-window {\n    width: 100%;\n    height: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    position: fixed;\n    left: 0;\n    top: 0;\n    background-color: rgba(0, 0, 0, 0.6);\n}\n\n.modal-authorization-content {\n    width: 350px;\n    height: 470px;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    background-color: gainsboro;\n    border-radius: 5px;\n}\n\n.modal-header-block {\n    width: 100%;\n    display: flex;\n    background-color: var(--yellow-color);\n    border-top-right-radius: 5px;\n    border-top-left-radius: 5px;\n}\n\n.modal-authorization-header {\n    height: 50px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    width: 100%;\n    font-size: 28px;\n    font-weight: 300;\n    color: white;\n    margin: 0;\n}\n\n.close-icon {\n    width: 20px;\n    height: 20px;\n    cursor: pointer;\n}\n\n.modal-tabs-authorization-block {\n    height: 50px;\n    margin-top: 15px;\n}\n\n.modal-tabs {\n    width: 250px;\n    height: 30px;\n    display: flex;\n    justify-content: center;\n    background-color: white;\n    cursor: pointer;\n    border-radius: 5px;\n    overflow: hidden;\n}\n\n.input-block {\n    display: flex;\n    flex-direction: column;\n}\n\n.authorization-input {\n    width: 300px;\n    height: 35px;\n    font-size: 18px;\n    margin-top: 30px;\n    border-radius: 5px;\n    border: none;\n}\n\n.authorization-button {\n    background-color: #F5C300;\n    width: 80%;\n    height: 40px;\n    font-size: 23px;\n    color: white;\n    margin-top: auto;\n    margin-bottom: 30px;\n    border-radius: 5px;\n    border: none;\n}\n\n.authorization-button:hover {\n    cursor: pointer;\n}", "",{"version":3,"sources":["webpack://./src/ModalWindowAuthorization/ModalWindowAuthorization.css"],"names":[],"mappings":"AAAA;IACI,WAAW;IACX,YAAY;IACZ,aAAa;IACb,mBAAmB;IACnB,uBAAuB;IACvB,eAAe;IACf,OAAO;IACP,MAAM;IACN,oCAAoC;AACxC;;AAEA;IACI,YAAY;IACZ,aAAa;IACb,aAAa;IACb,sBAAsB;IACtB,mBAAmB;IACnB,2BAA2B;IAC3B,kBAAkB;AACtB;;AAEA;IACI,WAAW;IACX,aAAa;IACb,qCAAqC;IACrC,4BAA4B;IAC5B,2BAA2B;AAC/B;;AAEA;IACI,YAAY;IACZ,aAAa;IACb,mBAAmB;IACnB,uBAAuB;IACvB,WAAW;IACX,eAAe;IACf,gBAAgB;IAChB,YAAY;IACZ,SAAS;AACb;;AAEA;IACI,WAAW;IACX,YAAY;IACZ,eAAe;AACnB;;AAEA;IACI,YAAY;IACZ,gBAAgB;AACpB;;AAEA;IACI,YAAY;IACZ,YAAY;IACZ,aAAa;IACb,uBAAuB;IACvB,uBAAuB;IACvB,eAAe;IACf,kBAAkB;IAClB,gBAAgB;AACpB;;AAEA;IACI,aAAa;IACb,sBAAsB;AAC1B;;AAEA;IACI,YAAY;IACZ,YAAY;IACZ,eAAe;IACf,gBAAgB;IAChB,kBAAkB;IAClB,YAAY;AAChB;;AAEA;IACI,yBAAyB;IACzB,UAAU;IACV,YAAY;IACZ,eAAe;IACf,YAAY;IACZ,gBAAgB;IAChB,mBAAmB;IACnB,kBAAkB;IAClB,YAAY;AAChB;;AAEA;IACI,eAAe;AACnB","sourcesContent":[".modal-authorization-window {\n    width: 100%;\n    height: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    position: fixed;\n    left: 0;\n    top: 0;\n    background-color: rgba(0, 0, 0, 0.6);\n}\n\n.modal-authorization-content {\n    width: 350px;\n    height: 470px;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    background-color: gainsboro;\n    border-radius: 5px;\n}\n\n.modal-header-block {\n    width: 100%;\n    display: flex;\n    background-color: var(--yellow-color);\n    border-top-right-radius: 5px;\n    border-top-left-radius: 5px;\n}\n\n.modal-authorization-header {\n    height: 50px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    width: 100%;\n    font-size: 28px;\n    font-weight: 300;\n    color: white;\n    margin: 0;\n}\n\n.close-icon {\n    width: 20px;\n    height: 20px;\n    cursor: pointer;\n}\n\n.modal-tabs-authorization-block {\n    height: 50px;\n    margin-top: 15px;\n}\n\n.modal-tabs {\n    width: 250px;\n    height: 30px;\n    display: flex;\n    justify-content: center;\n    background-color: white;\n    cursor: pointer;\n    border-radius: 5px;\n    overflow: hidden;\n}\n\n.input-block {\n    display: flex;\n    flex-direction: column;\n}\n\n.authorization-input {\n    width: 300px;\n    height: 35px;\n    font-size: 18px;\n    margin-top: 30px;\n    border-radius: 5px;\n    border: none;\n}\n\n.authorization-button {\n    background-color: #F5C300;\n    width: 80%;\n    height: 40px;\n    font-size: 23px;\n    color: white;\n    margin-top: auto;\n    margin-bottom: 30px;\n    border-radius: 5px;\n    border: none;\n}\n\n.authorization-button:hover {\n    cursor: pointer;\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ".modal-authorization-window {\n    width: 100%;\n    height: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    position: fixed;\n    left: 0;\n    top: 0;\n    background-color: rgba(0, 0, 0, 0.6);\n}\n\n.modal-authorization-content {\n    width: 350px;\n    height: 470px;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    background-color: gainsboro;\n    border-radius: 5px;\n}\n\n.modal-header-block {\n    width: 100%;\n    display: flex;\n    background-color: var(--yellow-color);\n    border-top-right-radius: 5px;\n    border-top-left-radius: 5px;\n}\n\n.modal-authorization-header {\n    height: 50px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    width: 100%;\n    font-size: 28px;\n    font-weight: 300;\n    color: white;\n    margin: 0;\n}\n\n.close-icon {\n    width: 20px;\n    height: 20px;\n    cursor: pointer;\n}\n\n.modal-tabs-authorization-block {\n    height: 50px;\n    margin-top: 15px;\n}\n\n.modal-authorization-tabs {\n    width: 250px;\n    height: 30px;\n    display: flex;\n    justify-content: center;\n    background-color: white;\n    cursor: pointer;\n    border-radius: 5px;\n    overflow: hidden;\n}\n\n.input-block {\n    display: flex;\n    flex-direction: column;\n}\n\n.authorization-input {\n    width: 300px;\n    height: 35px;\n    font-size: 18px;\n    margin-top: 30px;\n    border-radius: 5px;\n    border: none;\n}\n\n.authorization-button {\n    background-color: #F5C300;\n    width: 80%;\n    height: 40px;\n    font-size: 23px;\n    color: white;\n    margin-top: auto;\n    margin-bottom: 30px;\n    border-radius: 5px;\n    border: none;\n}\n\n.authorization-button:hover {\n    cursor: pointer;\n}", "",{"version":3,"sources":["webpack://./src/ModalWindowAuthorization/ModalWindowAuthorization.css"],"names":[],"mappings":"AAAA;IACI,WAAW;IACX,YAAY;IACZ,aAAa;IACb,mBAAmB;IACnB,uBAAuB;IACvB,eAAe;IACf,OAAO;IACP,MAAM;IACN,oCAAoC;AACxC;;AAEA;IACI,YAAY;IACZ,aAAa;IACb,aAAa;IACb,sBAAsB;IACtB,mBAAmB;IACnB,2BAA2B;IAC3B,kBAAkB;AACtB;;AAEA;IACI,WAAW;IACX,aAAa;IACb,qCAAqC;IACrC,4BAA4B;IAC5B,2BAA2B;AAC/B;;AAEA;IACI,YAAY;IACZ,aAAa;IACb,mBAAmB;IACnB,uBAAuB;IACvB,WAAW;IACX,eAAe;IACf,gBAAgB;IAChB,YAAY;IACZ,SAAS;AACb;;AAEA;IACI,WAAW;IACX,YAAY;IACZ,eAAe;AACnB;;AAEA;IACI,YAAY;IACZ,gBAAgB;AACpB;;AAEA;IACI,YAAY;IACZ,YAAY;IACZ,aAAa;IACb,uBAAuB;IACvB,uBAAuB;IACvB,eAAe;IACf,kBAAkB;IAClB,gBAAgB;AACpB;;AAEA;IACI,aAAa;IACb,sBAAsB;AAC1B;;AAEA;IACI,YAAY;IACZ,YAAY;IACZ,eAAe;IACf,gBAAgB;IAChB,kBAAkB;IAClB,YAAY;AAChB;;AAEA;IACI,yBAAyB;IACzB,UAAU;IACV,YAAY;IACZ,eAAe;IACf,YAAY;IACZ,gBAAgB;IAChB,mBAAmB;IACnB,kBAAkB;IAClB,YAAY;AAChB;;AAEA;IACI,eAAe;AACnB","sourcesContent":[".modal-authorization-window {\n    width: 100%;\n    height: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    position: fixed;\n    left: 0;\n    top: 0;\n    background-color: rgba(0, 0, 0, 0.6);\n}\n\n.modal-authorization-content {\n    width: 350px;\n    height: 470px;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    background-color: gainsboro;\n    border-radius: 5px;\n}\n\n.modal-header-block {\n    width: 100%;\n    display: flex;\n    background-color: var(--yellow-color);\n    border-top-right-radius: 5px;\n    border-top-left-radius: 5px;\n}\n\n.modal-authorization-header {\n    height: 50px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    width: 100%;\n    font-size: 28px;\n    font-weight: 300;\n    color: white;\n    margin: 0;\n}\n\n.close-icon {\n    width: 20px;\n    height: 20px;\n    cursor: pointer;\n}\n\n.modal-tabs-authorization-block {\n    height: 50px;\n    margin-top: 15px;\n}\n\n.modal-authorization-tabs {\n    width: 250px;\n    height: 30px;\n    display: flex;\n    justify-content: center;\n    background-color: white;\n    cursor: pointer;\n    border-radius: 5px;\n    overflow: hidden;\n}\n\n.input-block {\n    display: flex;\n    flex-direction: column;\n}\n\n.authorization-input {\n    width: 300px;\n    height: 35px;\n    font-size: 18px;\n    margin-top: 30px;\n    border-radius: 5px;\n    border: none;\n}\n\n.authorization-button {\n    background-color: #F5C300;\n    width: 80%;\n    height: 40px;\n    font-size: 23px;\n    color: white;\n    margin-top: auto;\n    margin-bottom: 30px;\n    border-radius: 5px;\n    border: none;\n}\n\n.authorization-button:hover {\n    cursor: pointer;\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -4088,49 +4088,53 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_1__["
         document.getElementById("registration").addEventListener("click", registrationTabClick)
         document.getElementsByClassName("close-icon")[0].addEventListener("click", closeIconClick)
 
-    // Продумать логику изменения инпутов. Скорее всего навешать разные id на инпуты логина и пароля
 
         const logUserOnChange = () => {
             this.inputsContent.logUsername = document.getElementById("username").value;
+            console.log(this.inputsContent);
         }
 
         const logPasswordOnChange = () => {
             this.inputsContent.logPassword = document.getElementById("password").value;
+            console.log(this.inputsContent);
         }
 
         const regUserOnChange = () => {
             this.inputsContent.regUsername = document.getElementById("username").value;
+            console.log(this.inputsContent);
         }
 
         const regPasswordOnChange = () => {
             this.inputsContent.regPassword = document.getElementById("password").value;
+            console.log(this.inputsContent);
         }
 
         const regRepPasswordOnChange = () => {
             this.inputsContent.regRepPassword = document.getElementById("repPassword").value;
+            console.log(this.inputsContent);
         }
 
         if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === "login") {
-
+            document.getElementById("username").addEventListener("change", logUserOnChange)
+            document.getElementById("password").addEventListener("change", logPasswordOnChange)
         }
-        document.getElementById("username").addEventListener("change", logUserOnChange)
-        document.getElementById("password").addEventListener("change", logPasswordOnChange)
-        document.getElementById("username").addEventListener("change", regUserOnChange)
-        document.getElementById("password").addEventListener("change", regPasswordOnChange)
-        document.getElementById("repPassword").addEventListener("change", regRepPasswordOnChange)
+        if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === "registration") {
+            document.getElementById("username").addEventListener("change", regUserOnChange)
+            document.getElementById("password").addEventListener("change", regPasswordOnChange)
+            document.getElementById("repPassword").addEventListener("change", regRepPasswordOnChange)
+        }
 
         const logButtonClick = async () => {
 
         }
 
+        // А теперь запросы на сервер
+
         const regButtonClick = async () => {
-            if (!patient !== '' && doctor !== '' && date !== '' && complaints !== '') {
+            if (username !== '' && password !== '') {
                 await axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://localhost:8000/appointment/createAppointment', {
-                    patient,
-                    doctor,
-                    date,
-                    complaints,
-                    userId
+                    username,
+                    password
                 }).then(res => {
                     setDefaultAppointments(res.data.data);
                     setPatient('');
@@ -4158,7 +4162,8 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_1__["
                 id="${i}">${tabs[i]}</p>`
         }
 
-        const repeatPasswordInput = `<input class="authorization-input" type="password" id="repPassword" placeholder="Repeat Password">`
+        const repeatPasswordInput = `<input class="authorization-input" type="password"
+         id="repPassword" placeholder="Повторите пароль" value=${this.inputsContent.regRepPassword}>`
 
         return (/*html*/`
         <div class="modal-authorization-window">
@@ -4168,17 +4173,17 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_1__["
                     <img class="close-icon" src="i/close-icon.svg"/>
                 </div>
                 <div class="modal-tabs-authorization-block">
-                    <div class="modal-tabs">
+                    <div class="modal-authorization-tabs ">
                         ${modalTabs}
                     </div>
                 </div>
                 <div class="input-block">
                     <input class="authorization-input" id="username" type="text" placeholder=
-                    "Enter Email" value=${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === "login"
+                    "Имя пользователя" value=${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === "login"
                     ? this.inputsContent.logUsername : this.inputsContent.regUsername}>
                     <input class="authorization-input" type="password" id="password" placeholder=
-                    "Enter Password" value=${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === "login"
-                    ? this.inputsContent.regPassword : this.inputsContent.regPassword} >
+                    "Пароль" value=${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === "login"
+                    ? this.inputsContent.logPassword : this.inputsContent.regPassword} >
                     ${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === "registration" ? repeatPasswordInput : ""}
                 </div>
                 <button class="authorization-button">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab ===
@@ -4679,11 +4684,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 
-async function getItemsInfo () {
+async function getItemsInfo() {
     let data = {};
     await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`http://localhost:8000/food/getAllFood`)
-        .then(res => {data = res.data[0];
-        console.log(res.data[0]);});
+        .then(res => { data = res.data[0] });
 
     return data;
 }
@@ -5033,7 +5037,6 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     }
 
     render() {
-        console.log(window.history);
         this.createChildren();
         return (/*html*/`
             ${this.mainHeader.render()}
