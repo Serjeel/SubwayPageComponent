@@ -4,9 +4,12 @@
 }
 
 .login_and_register-button {
+    cursor: pointer;
     height: 30px;
     font-family: Noto Sans, sans-serif;
     background-color: white;
+    border-radius: 5px;
+    border: 1px solid black[];
 }
 
 .login_and_register-button:hover {

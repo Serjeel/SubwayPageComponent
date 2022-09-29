@@ -28,12 +28,13 @@
     border-top-left-radius: 5px;
 }
 
-.modal-header {
+.modal-authorization-header {
     height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
+    font-size: 28px;
     font-weight: 300;
     color: white;
     margin: 0;
@@ -45,7 +46,7 @@
     cursor: pointer;
 }
 
-.modal-tabs-block {
+.modal-tabs-authorization-block {
     height: 50px;
     margin-top: 15px;
 }
@@ -59,4 +60,34 @@
     cursor: pointer;
     border-radius: 5px;
     overflow: hidden;
+}
+
+.input-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.authorization-input {
+    width: 300px;
+    height: 35px;
+    font-size: 18px;
+    margin-top: 30px;
+    border-radius: 5px;
+    border: none;
+}
+
+.authorization-button {
+    background-color: #F5C300;
+    width: 80%;
+    height: 40px;
+    font-size: 23px;
+    color: white;
+    margin-top: auto;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    border: none;
+}
+
+.authorization-button:hover {
+    cursor: pointer;
 }

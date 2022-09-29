@@ -29,6 +29,7 @@ class Storage {
 export const storage = new Storage({
     selectedTab: "sandwiches",
     selectedModalTab: "sizes",
+    selectedAuthorizationTab: "login",
     items: [],
     ingredients: [],
     countersValue: [],
@@ -60,6 +61,10 @@ export const storage = new Storage({
 
 export function setSelectedTab(selectedTab) {
     storage.data.selectedTab = selectedTab;
+}
+
+export function setSelectedAuthorizationTab(selectedAuthorizationTab) {
+    storage.data.selectedAuthorizationTab = selectedAuthorizationTab;
 }
 
 export function setOrderItems(orderItems) {

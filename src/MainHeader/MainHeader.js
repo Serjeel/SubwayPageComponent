@@ -7,7 +7,6 @@ import { setModalWindowAuthorizationShow } from "../storage";
 class MainHeader extends Component {
     constructor(props) {
         super();
-        storage.addSubscriber("modalWindowAuthorizationShow", props.rerender);
     }
 
     enable() {
@@ -15,7 +14,7 @@ class MainHeader extends Component {
             setModalWindowAuthorizationShow(true)
         }
 
-        document.getElementsByClassName("login_and_register-button")[0].addEventListener("click", setModalWindowAuthorizationShow(true))
+        document.getElementsByClassName("login_and_register-button")[0].addEventListener("click", loginButtonClick)
     }
 
     render() {
