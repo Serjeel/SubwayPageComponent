@@ -39,9 +39,7 @@ export const storage = new Storage({
     modalWindowEditShow: false,
     modalWindowAuthorizationShow: false,
     modalContent: {},
-    modalContentPreliminary: {},
     sandwiches: [],
-    tabReadyContentPreliminary: {},
     tabReadyContent: {
         sizes: "15 См",
         breads: "Белый итальянский",
@@ -97,20 +95,12 @@ export function setModalContent(modalContent) {
     storage.data.modalContent = modalContent;
 }
 
-export function setModalContentPreliminary(modalContentPreliminary) {
-    storage.data.modalContentPreliminary = modalContentPreliminary;
-}
-
 export function setSelectedModalTab(selectedModalTab) {
     storage.data.selectedModalTab = selectedModalTab;
 }
 
 export function setTabReadyContent(tabReadyContent) {
     storage.data.tabReadyContent = tabReadyContent;
-}
-
-export function setTabReadyContentPreliminary(tabReadyContentPreliminary) {
-    storage.data.tabReadyContentPreliminary = tabReadyContentPreliminary;
 }
 
 export function setChangeableOrderItem(changeableOrderItem) {

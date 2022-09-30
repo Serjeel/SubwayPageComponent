@@ -10,8 +10,8 @@ import { setModalWindowEditShow } from "../storage";
 import { setSandwiches } from "../storage";
 import { setTotalPrice } from "../storage";
 import { setSelectedModalTab } from "../storage";
-import { setModalContentPreliminary } from "../storage";
-import { setTabReadyContentPreliminary } from "../storage";
+import { setPreviousValues } from "../storage";
+
 
 class Order extends Component {
     constructor(props) {
@@ -71,11 +71,7 @@ class Order extends Component {
                     setChangeableOrderItem(storage.data.changeableOrderItem)
                     setSelectedModalTab("sizes");
                     setModalWindowEditShow(true);
-                    setTabReadyContent(storage.data.sandwiches[i]);
-                    setModalContent(storage.data.sandwiches[i]);
-                    // Баг: при за изменении выбранных ингредиентов и закрытии они запоминаются. 
-                    // Сделать так, что при закрытии не менялись ингредиенты
-                    setModalContentPreliminary({
+                    setTabReadyContent({
                         amount: storage.data.sandwiches[i].amount,
                         breads: storage.data.sandwiches[i].breads,
                         fillings: storage.data.sandwiches[i].fillings,
@@ -86,7 +82,7 @@ class Order extends Component {
                         title: storage.data.sandwiches[i].title,
                         vegetables: storage.data.sandwiches[i].vegetables,
                     });
-                    setTabReadyContentPreliminary({
+                    setModalContent({
                         amount: storage.data.sandwiches[i].amount,
                         breads: storage.data.sandwiches[i].breads,
                         fillings: storage.data.sandwiches[i].fillings,
@@ -97,10 +93,19 @@ class Order extends Component {
                         title: storage.data.sandwiches[i].title,
                         vegetables: storage.data.sandwiches[i].vegetables,
                     });
-                    console.log(storage.data.modalContent);
-                    console.log(storage.data.tabReadyContent);
-                    console.log(storage.data.modalContentPreliminary);
-                    console.log(storage.data.tabReadyContentPreliminary);
+                    let n = 0;
+                    for (let j in storage.data.ingredients.sizes) {
+                        if (storage.data.sandwiches[i].sizes === storage.data.ingredients.sizes[j].name) {
+                            n = storage.data.ingredients.sizes[j].price;
+                        }
+                    }
+                    console.log(n);
+                    console.log(storage.data.ingredients.sizes);
+                    setPreviousValues({
+                        sizes: n,
+                        breads: 0
+                    })
+                    console.log(storage.data.previousValues);
                 }
                 document.getElementById("sandwich-" + (i + 1)).addEventListener("click", handleOrderClick);
             }

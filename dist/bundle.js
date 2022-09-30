@@ -4286,15 +4286,9 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_0__["defau
             fillings: "Начинка",
             ready: "Готово!"
         };
-
-        this.modalContentPreliminary = {};
-        this.tabReadyContentPreliminary = {};
     }
 
     enable() {
-        this.modalContentPreliminary = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent;
-        this.tabReadyContentPreliminary = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent;
-
         let tabReadyContent = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent;
         let modalContent = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent;
         let previousValues = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.previousValues;
@@ -4329,10 +4323,6 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_0__["defau
             } else {
                 (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowEditShow)(false);
             }
-            console.log(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent);
-            console.log(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContentPreliminary);
-            (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContentPreliminary);
-            (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContentPreliminary);
         }
 
         document.getElementById("sizes").addEventListener("click", sizesTabClick)
@@ -4360,8 +4350,6 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_0__["defau
 
                     (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setPreviousValues)(previousValues);
                     (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)(tabReadyContent);
-                    console.log(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent);
-                    console.log(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContentPreliminary);
                 } else {
                     if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].includes(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].name)) {
                         let n = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].indexOf(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].name);
@@ -4684,11 +4672,7 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                     (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setChangeableOrderItem)(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.changeableOrderItem)
                     ;(0,_storage__WEBPACK_IMPORTED_MODULE_2__.setSelectedModalTab)("sizes");
                     (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setModalWindowEditShow)(true);
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setTabReadyContent)(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i]);
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i]);
-                    // Баг: при за изменении выбранных ингредиентов и закрытии они запоминаются. 
-                    // Сделать так, что при закрытии не менялись ингредиенты
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setModalContentPreliminary)({
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setTabReadyContent)({
                         amount: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].amount,
                         breads: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].breads,
                         fillings: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].fillings,
@@ -4699,7 +4683,7 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                         title: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].title,
                         vegetables: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].vegetables,
                     });
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setTabReadyContentPreliminary)({
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setModalContent)({
                         amount: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].amount,
                         breads: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].breads,
                         fillings: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].fillings,
@@ -4710,10 +4694,19 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                         title: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].title,
                         vegetables: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].vegetables,
                     });
-                    console.log(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.modalContent);
-                    console.log(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent);
-                    console.log(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.modalContentPreliminary);
-                    console.log(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContentPreliminary);
+                    let n = 0;
+                    for (let j in _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.ingredients.sizes) {
+                        if (_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].sizes === _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.ingredients.sizes[j].name) {
+                            n = _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.ingredients.sizes[j].price;
+                        }
+                    }
+                    console.log(n);
+                    console.log(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.ingredients.sizes);
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setPreviousValues)({
+                        sizes: n,
+                        breads: 0
+                    })
+                    console.log(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.previousValues);
                 }
                 document.getElementById("sandwich-" + (i + 1)).addEventListener("click", handleOrderClick);
             }
@@ -4788,7 +4781,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "setCountersValue": () => (/* binding */ setCountersValue),
 /* harmony export */   "setItemsInfo": () => (/* binding */ setItemsInfo),
 /* harmony export */   "setModalContent": () => (/* binding */ setModalContent),
-/* harmony export */   "setModalContentPreliminary": () => (/* binding */ setModalContentPreliminary),
 /* harmony export */   "setModalWindowAddShow": () => (/* binding */ setModalWindowAddShow),
 /* harmony export */   "setModalWindowAuthorizationShow": () => (/* binding */ setModalWindowAuthorizationShow),
 /* harmony export */   "setModalWindowEditShow": () => (/* binding */ setModalWindowEditShow),
@@ -4799,7 +4791,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "setSelectedModalTab": () => (/* binding */ setSelectedModalTab),
 /* harmony export */   "setSelectedTab": () => (/* binding */ setSelectedTab),
 /* harmony export */   "setTabReadyContent": () => (/* binding */ setTabReadyContent),
-/* harmony export */   "setTabReadyContentPreliminary": () => (/* binding */ setTabReadyContentPreliminary),
 /* harmony export */   "setTotalPrice": () => (/* binding */ setTotalPrice),
 /* harmony export */   "storage": () => (/* binding */ storage)
 /* harmony export */ });
@@ -4844,9 +4835,7 @@ const storage = new Storage({
     modalWindowEditShow: false,
     modalWindowAuthorizationShow: false,
     modalContent: {},
-    modalContentPreliminary: {},
     sandwiches: [],
-    tabReadyContentPreliminary: {},
     tabReadyContent: {
         sizes: "15 См",
         breads: "Белый итальянский",
@@ -4902,20 +4891,12 @@ function setModalContent(modalContent) {
     storage.data.modalContent = modalContent;
 }
 
-function setModalContentPreliminary(modalContentPreliminary) {
-    storage.data.modalContentPreliminary = modalContentPreliminary;
-}
-
 function setSelectedModalTab(selectedModalTab) {
     storage.data.selectedModalTab = selectedModalTab;
 }
 
 function setTabReadyContent(tabReadyContent) {
     storage.data.tabReadyContent = tabReadyContent;
-}
-
-function setTabReadyContentPreliminary(tabReadyContentPreliminary) {
-    storage.data.tabReadyContentPreliminary = tabReadyContentPreliminary;
 }
 
 function setChangeableOrderItem(changeableOrderItem) {
