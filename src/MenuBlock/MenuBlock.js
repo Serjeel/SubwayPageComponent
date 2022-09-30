@@ -1,7 +1,7 @@
 import Component from "../Component";
 import MenuItem from "../MenuItem/MenuItem";
 import './MenuBlock.css';
-import { storage } from "../storage";
+import { setTabReadyContent, storage } from "../storage";
 import { setSelectedModalTab } from "../storage";
 import { setModalContent } from "../storage";
 import { setModalWindowAddShow } from "../storage";
@@ -59,6 +59,14 @@ class MenuBlock extends Component {
                         amount: storage.data.countersValue[i],
                         price: storage.data.items[i].price
                     });
+                    const tabReadyContent = {
+                        sizes: "15 См",
+                        breads: "Белый итальянский",
+                        vegetables: [],
+                        sauces: [],
+                        fillings: []
+                    };
+                    setTabReadyContent(tabReadyContent)
                 } else {
                     let orderItems = storage.data.orderItems;
                     orderItems.push({

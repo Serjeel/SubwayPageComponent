@@ -3858,6 +3858,14 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                         amount: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue[i],
                         price: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items[i].price
                     });
+                    const tabReadyContent = {
+                        sizes: "15 См",
+                        breads: "Белый итальянский",
+                        vegetables: [],
+                        sauces: [],
+                        fillings: []
+                    };
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)(tabReadyContent)
                 } else {
                     let orderItems = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems;
                     orderItems.push({
@@ -4041,10 +4049,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/dist/js.cookie.mjs");
-/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
-/* harmony import */ var _ModalWindowAuthorization_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ModalWindowAuthorization.css */ "./src/ModalWindowAuthorization/ModalWindowAuthorization.css");
-/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
+/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
+/* harmony import */ var _ModalWindowAuthorization_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ModalWindowAuthorization.css */ "./src/ModalWindowAuthorization/ModalWindowAuthorization.css");
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
 
 
 
@@ -4055,7 +4062,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_2__["default"] {
+class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
     constructor(props) {
         super();
 
@@ -4069,22 +4076,22 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_2__["
 
         this.subscribers = ["modalWindowAuthorizationShow", "selectedAuthorizationTab"];
         for (let i in this.subscribers) {
-            _storage__WEBPACK_IMPORTED_MODULE_4__.storage.addSubscriber(this.subscribers[i], props.rerender);
+            _storage__WEBPACK_IMPORTED_MODULE_3__.storage.addSubscriber(this.subscribers[i], props.rerender);
         }
     }
 
     enable() {
         const loginTabClick = () => {
-            (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedAuthorizationTab)("login")
+            (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedAuthorizationTab)("login")
         }
 
         const registrationTabClick = () => {
-            ;(0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedAuthorizationTab)("registration")
+            ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedAuthorizationTab)("registration")
         }
 
         const closeIconClick = () => {
-            ;(0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowAuthorizationShow)(false);
-            (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedAuthorizationTab)("login")
+            ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowAuthorizationShow)(false);
+            (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedAuthorizationTab)("login")
             for (let i in this.inputsContent) {
                 this.inputsContent[i] = '';
             }
@@ -4129,8 +4136,7 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_2__["
                                 this.inputsContent[i] = '';
                             }
 
-                            (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowAuthorizationShow)(false)
-                            js_cookie__WEBPACK_IMPORTED_MODULE_1__["default"].set('token', res.data.token);
+                            (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowAuthorizationShow)(false)
                             alert('Вы успешно авторизовались!');
                         } else {
                             alert(res.data.message)
@@ -4157,7 +4163,7 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_2__["
                                 this.inputsContent[i] = '';
                             }
 
-                            (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedAuthorizationTab)("login");
+                            (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedAuthorizationTab)("login");
                             alert('Вы успешно зарегистрировались!');
                         } else {
                             alert(res.data.message)
@@ -4170,12 +4176,12 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_2__["
                 alert('Введены не все значения!');
             }
         }
-        if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab === "login") {
+        if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === "login") {
             document.getElementById("username").addEventListener("change", logUserOnChange)
             document.getElementById("password").addEventListener("change", logPasswordOnChange)
             document.getElementsByClassName("authorization-button")[0].addEventListener("click", logButtonClick)
         }
-        if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab === "registration") {
+        if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === "registration") {
             document.getElementById("username").addEventListener("change", regUserOnChange)
             document.getElementById("password").addEventListener("change", regPasswordOnChange)
             document.getElementById("repPassword").addEventListener("change", regRepPasswordOnChange)
@@ -4191,7 +4197,7 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_2__["
         let modalTabs = ``;
 
         for (let i in tabs) {
-            modalTabs += `<p class="${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab === i ? "tab-active" : "tab"}"
+            modalTabs += `<p class="${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === i ? "tab-active" : "tab"}"
                 id="${i}">${tabs[i]}</p>`
         }
 
@@ -4212,14 +4218,14 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_2__["
                 </div>
                 <div class="input-block">
                     <input class="authorization-input" id="username" type="text" placeholder=
-                    "Имя пользователя" value=${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab === "login"
+                    "Имя пользователя" value=${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === "login"
                 ? this.inputsContent.logUsername : this.inputsContent.regUsername}>
                     <input class="authorization-input" type="password" id="password" placeholder=
-                    "Пароль" value=${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab === "login"
+                    "Пароль" value=${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === "login"
                 ? this.inputsContent.logPassword : this.inputsContent.regPassword} >
-                    ${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab === "registration" ? repeatPasswordInput : ""}
+                    ${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === "registration" ? repeatPasswordInput : ""}
                 </div>
-                <button class="authorization-button">${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab ===
+                <button class="authorization-button">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab ===
                 "login" ? "Войти" : "Зарегистрироваться"}</button>
             </div>
         </div>
@@ -4280,9 +4286,15 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_0__["defau
             fillings: "Начинка",
             ready: "Готово!"
         };
+
+        this.modalContentPreliminary = {};
+        this.tabReadyContentPreliminary = {};
     }
 
     enable() {
+        this.modalContentPreliminary = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent;
+        this.tabReadyContentPreliminary = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent;
+
         let tabReadyContent = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent;
         let modalContent = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent;
         let previousValues = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.previousValues;
@@ -4317,6 +4329,10 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_0__["defau
             } else {
                 (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowEditShow)(false);
             }
+            console.log(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent);
+            console.log(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContentPreliminary);
+            (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContentPreliminary);
+            (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContentPreliminary);
         }
 
         document.getElementById("sizes").addEventListener("click", sizesTabClick)
@@ -4344,6 +4360,8 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_0__["defau
 
                     (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setPreviousValues)(previousValues);
                     (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)(tabReadyContent);
+                    console.log(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent);
+                    console.log(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContentPreliminary);
                 } else {
                     if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].includes(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].name)) {
                         let n = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].indexOf(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].name);
@@ -4606,6 +4624,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(props) {
         super()
@@ -4666,6 +4686,34 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                     (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setModalWindowEditShow)(true);
                     (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setTabReadyContent)(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i]);
                     (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i]);
+                    // Баг: при за изменении выбранных ингредиентов и закрытии они запоминаются. 
+                    // Сделать так, что при закрытии не менялись ингредиенты
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setModalContentPreliminary)({
+                        amount: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].amount,
+                        breads: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].breads,
+                        fillings: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].fillings,
+                        id: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].id,
+                        price: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].price,
+                        sauces: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].sauces,
+                        sizes: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].sizes,
+                        title: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].title,
+                        vegetables: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].vegetables,
+                    });
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setTabReadyContentPreliminary)({
+                        amount: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].amount,
+                        breads: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].breads,
+                        fillings: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].fillings,
+                        id: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].id,
+                        price: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].price,
+                        sauces: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].sauces,
+                        sizes: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].sizes,
+                        title: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].title,
+                        vegetables: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].vegetables,
+                    });
+                    console.log(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.modalContent);
+                    console.log(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent);
+                    console.log(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.modalContentPreliminary);
+                    console.log(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContentPreliminary);
                 }
                 document.getElementById("sandwich-" + (i + 1)).addEventListener("click", handleOrderClick);
             }
@@ -4740,6 +4788,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "setCountersValue": () => (/* binding */ setCountersValue),
 /* harmony export */   "setItemsInfo": () => (/* binding */ setItemsInfo),
 /* harmony export */   "setModalContent": () => (/* binding */ setModalContent),
+/* harmony export */   "setModalContentPreliminary": () => (/* binding */ setModalContentPreliminary),
 /* harmony export */   "setModalWindowAddShow": () => (/* binding */ setModalWindowAddShow),
 /* harmony export */   "setModalWindowAuthorizationShow": () => (/* binding */ setModalWindowAuthorizationShow),
 /* harmony export */   "setModalWindowEditShow": () => (/* binding */ setModalWindowEditShow),
@@ -4750,6 +4799,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "setSelectedModalTab": () => (/* binding */ setSelectedModalTab),
 /* harmony export */   "setSelectedTab": () => (/* binding */ setSelectedTab),
 /* harmony export */   "setTabReadyContent": () => (/* binding */ setTabReadyContent),
+/* harmony export */   "setTabReadyContentPreliminary": () => (/* binding */ setTabReadyContentPreliminary),
 /* harmony export */   "setTotalPrice": () => (/* binding */ setTotalPrice),
 /* harmony export */   "storage": () => (/* binding */ storage)
 /* harmony export */ });
@@ -4794,17 +4844,19 @@ const storage = new Storage({
     modalWindowEditShow: false,
     modalWindowAuthorizationShow: false,
     modalContent: {},
+    modalContentPreliminary: {},
     sandwiches: [],
-    changeableOrderItem: {
-        orderId: 0,
-        sandwichId: 0
-    },
+    tabReadyContentPreliminary: {},
     tabReadyContent: {
         sizes: "15 См",
         breads: "Белый итальянский",
         vegetables: [],
         sauces: [],
         fillings: []
+    },
+    changeableOrderItem: {
+        orderId: 0,
+        sandwichId: 0
     },
     previousValues: {
         sizes: 0,
@@ -4850,12 +4902,20 @@ function setModalContent(modalContent) {
     storage.data.modalContent = modalContent;
 }
 
+function setModalContentPreliminary(modalContentPreliminary) {
+    storage.data.modalContentPreliminary = modalContentPreliminary;
+}
+
 function setSelectedModalTab(selectedModalTab) {
     storage.data.selectedModalTab = selectedModalTab;
 }
 
 function setTabReadyContent(tabReadyContent) {
     storage.data.tabReadyContent = tabReadyContent;
+}
+
+function setTabReadyContentPreliminary(tabReadyContentPreliminary) {
+    storage.data.tabReadyContentPreliminary = tabReadyContentPreliminary;
 }
 
 function setChangeableOrderItem(changeableOrderItem) {
@@ -4883,155 +4943,6 @@ function setItemsInfo(data) {
         fillings: data.fillings
     }
 }
-
-/***/ }),
-
-/***/ "./node_modules/js-cookie/dist/js.cookie.mjs":
-/*!***************************************************!*\
-  !*** ./node_modules/js-cookie/dist/js.cookie.mjs ***!
-  \***************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/*! js-cookie v3.0.1 | MIT */
-/* eslint-disable no-var */
-function assign (target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i];
-    for (var key in source) {
-      target[key] = source[key];
-    }
-  }
-  return target
-}
-/* eslint-enable no-var */
-
-/* eslint-disable no-var */
-var defaultConverter = {
-  read: function (value) {
-    if (value[0] === '"') {
-      value = value.slice(1, -1);
-    }
-    return value.replace(/(%[\dA-F]{2})+/gi, decodeURIComponent)
-  },
-  write: function (value) {
-    return encodeURIComponent(value).replace(
-      /%(2[346BF]|3[AC-F]|40|5[BDE]|60|7[BCD])/g,
-      decodeURIComponent
-    )
-  }
-};
-/* eslint-enable no-var */
-
-/* eslint-disable no-var */
-
-function init (converter, defaultAttributes) {
-  function set (key, value, attributes) {
-    if (typeof document === 'undefined') {
-      return
-    }
-
-    attributes = assign({}, defaultAttributes, attributes);
-
-    if (typeof attributes.expires === 'number') {
-      attributes.expires = new Date(Date.now() + attributes.expires * 864e5);
-    }
-    if (attributes.expires) {
-      attributes.expires = attributes.expires.toUTCString();
-    }
-
-    key = encodeURIComponent(key)
-      .replace(/%(2[346B]|5E|60|7C)/g, decodeURIComponent)
-      .replace(/[()]/g, escape);
-
-    var stringifiedAttributes = '';
-    for (var attributeName in attributes) {
-      if (!attributes[attributeName]) {
-        continue
-      }
-
-      stringifiedAttributes += '; ' + attributeName;
-
-      if (attributes[attributeName] === true) {
-        continue
-      }
-
-      // Considers RFC 6265 section 5.2:
-      // ...
-      // 3.  If the remaining unparsed-attributes contains a %x3B (";")
-      //     character:
-      // Consume the characters of the unparsed-attributes up to,
-      // not including, the first %x3B (";") character.
-      // ...
-      stringifiedAttributes += '=' + attributes[attributeName].split(';')[0];
-    }
-
-    return (document.cookie =
-      key + '=' + converter.write(value, key) + stringifiedAttributes)
-  }
-
-  function get (key) {
-    if (typeof document === 'undefined' || (arguments.length && !key)) {
-      return
-    }
-
-    // To prevent the for loop in the first place assign an empty array
-    // in case there are no cookies at all.
-    var cookies = document.cookie ? document.cookie.split('; ') : [];
-    var jar = {};
-    for (var i = 0; i < cookies.length; i++) {
-      var parts = cookies[i].split('=');
-      var value = parts.slice(1).join('=');
-
-      try {
-        var foundKey = decodeURIComponent(parts[0]);
-        jar[foundKey] = converter.read(value, foundKey);
-
-        if (key === foundKey) {
-          break
-        }
-      } catch (e) {}
-    }
-
-    return key ? jar[key] : jar
-  }
-
-  return Object.create(
-    {
-      set: set,
-      get: get,
-      remove: function (key, attributes) {
-        set(
-          key,
-          '',
-          assign({}, attributes, {
-            expires: -1
-          })
-        );
-      },
-      withAttributes: function (attributes) {
-        return init(this.converter, assign({}, this.attributes, attributes))
-      },
-      withConverter: function (converter) {
-        return init(assign({}, this.converter, converter), this.attributes)
-      }
-    },
-    {
-      attributes: { value: Object.freeze(defaultAttributes) },
-      converter: { value: Object.freeze(converter) }
-    }
-  )
-}
-
-var api = init(defaultConverter, { path: '/' });
-/* eslint-enable no-var */
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (api);
-
 
 /***/ })
 

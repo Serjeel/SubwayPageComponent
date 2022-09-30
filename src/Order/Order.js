@@ -10,6 +10,8 @@ import { setModalWindowEditShow } from "../storage";
 import { setSandwiches } from "../storage";
 import { setTotalPrice } from "../storage";
 import { setSelectedModalTab } from "../storage";
+import { setModalContentPreliminary } from "../storage";
+import { setTabReadyContentPreliminary } from "../storage";
 
 class Order extends Component {
     constructor(props) {
@@ -71,6 +73,34 @@ class Order extends Component {
                     setModalWindowEditShow(true);
                     setTabReadyContent(storage.data.sandwiches[i]);
                     setModalContent(storage.data.sandwiches[i]);
+                    // Баг: при за изменении выбранных ингредиентов и закрытии они запоминаются. 
+                    // Сделать так, что при закрытии не менялись ингредиенты
+                    setModalContentPreliminary({
+                        amount: storage.data.sandwiches[i].amount,
+                        breads: storage.data.sandwiches[i].breads,
+                        fillings: storage.data.sandwiches[i].fillings,
+                        id: storage.data.sandwiches[i].id,
+                        price: storage.data.sandwiches[i].price,
+                        sauces: storage.data.sandwiches[i].sauces,
+                        sizes: storage.data.sandwiches[i].sizes,
+                        title: storage.data.sandwiches[i].title,
+                        vegetables: storage.data.sandwiches[i].vegetables,
+                    });
+                    setTabReadyContentPreliminary({
+                        amount: storage.data.sandwiches[i].amount,
+                        breads: storage.data.sandwiches[i].breads,
+                        fillings: storage.data.sandwiches[i].fillings,
+                        id: storage.data.sandwiches[i].id,
+                        price: storage.data.sandwiches[i].price,
+                        sauces: storage.data.sandwiches[i].sauces,
+                        sizes: storage.data.sandwiches[i].sizes,
+                        title: storage.data.sandwiches[i].title,
+                        vegetables: storage.data.sandwiches[i].vegetables,
+                    });
+                    console.log(storage.data.modalContent);
+                    console.log(storage.data.tabReadyContent);
+                    console.log(storage.data.modalContentPreliminary);
+                    console.log(storage.data.tabReadyContentPreliminary);
                 }
                 document.getElementById("sandwich-" + (i + 1)).addEventListener("click", handleOrderClick);
             }

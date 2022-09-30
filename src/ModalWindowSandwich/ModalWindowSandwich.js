@@ -32,9 +32,15 @@ class ModalWindowSandwich extends Component {
             fillings: "Начинка",
             ready: "Готово!"
         };
+
+        this.modalContentPreliminary = {};
+        this.tabReadyContentPreliminary = {};
     }
 
     enable() {
+        this.modalContentPreliminary = storage.data.modalContent;
+        this.tabReadyContentPreliminary = storage.data.tabReadyContent;
+
         let tabReadyContent = storage.data.tabReadyContent;
         let modalContent = storage.data.modalContent;
         let previousValues = storage.data.previousValues;
@@ -69,6 +75,10 @@ class ModalWindowSandwich extends Component {
             } else {
                 setModalWindowEditShow(false);
             }
+            console.log(storage.data.modalContent);
+            console.log(storage.data.modalContentPreliminary);
+            setModalContent(storage.data.modalContentPreliminary);
+            setTabReadyContent(storage.data.tabReadyContentPreliminary);
         }
 
         document.getElementById("sizes").addEventListener("click", sizesTabClick)
@@ -98,6 +108,8 @@ class ModalWindowSandwich extends Component {
 
                     setPreviousValues(previousValues);
                     setTabReadyContent(tabReadyContent);
+                    console.log(storage.data.modalContent);
+                    console.log(storage.data.modalContentPreliminary);
                 } else {
                     if (storage.data.tabReadyContent[storage.data.selectedModalTab].includes(storage.data.
                         ingredients[storage.data.selectedModalTab][key].name)) {
