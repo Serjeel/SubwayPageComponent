@@ -4041,9 +4041,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
-/* harmony import */ var _ModalWindowAuthorization_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ModalWindowAuthorization.css */ "./src/ModalWindowAuthorization/ModalWindowAuthorization.css");
-/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
+/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/dist/js.cookie.mjs");
+/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
+/* harmony import */ var _ModalWindowAuthorization_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ModalWindowAuthorization.css */ "./src/ModalWindowAuthorization/ModalWindowAuthorization.css");
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
 
 
 
@@ -4053,7 +4054,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
+
+class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_2__["default"] {
     constructor(props) {
         super();
 
@@ -4067,21 +4069,25 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_1__["
 
         this.subscribers = ["modalWindowAuthorizationShow", "selectedAuthorizationTab"];
         for (let i in this.subscribers) {
-            _storage__WEBPACK_IMPORTED_MODULE_3__.storage.addSubscriber(this.subscribers[i], props.rerender);
+            _storage__WEBPACK_IMPORTED_MODULE_4__.storage.addSubscriber(this.subscribers[i], props.rerender);
         }
     }
 
     enable() {
         const loginTabClick = () => {
-            (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedAuthorizationTab)("login")
+            (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedAuthorizationTab)("login")
         }
 
         const registrationTabClick = () => {
-            ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedAuthorizationTab)("registration")
+            ;(0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedAuthorizationTab)("registration")
         }
 
         const closeIconClick = () => {
-            ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowAuthorizationShow)(false);
+            ;(0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowAuthorizationShow)(false);
+            (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedAuthorizationTab)("login")
+            for (let i in this.inputsContent) {
+                this.inputsContent[i] = '';
+            }
         }
 
         document.getElementById("login").addEventListener("click", loginTabClick)
@@ -4091,62 +4097,89 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_1__["
 
         const logUserOnChange = () => {
             this.inputsContent.logUsername = document.getElementById("username").value;
-            console.log(this.inputsContent);
         }
 
         const logPasswordOnChange = () => {
             this.inputsContent.logPassword = document.getElementById("password").value;
-            console.log(this.inputsContent);
         }
 
         const regUserOnChange = () => {
             this.inputsContent.regUsername = document.getElementById("username").value;
-            console.log(this.inputsContent);
         }
 
         const regPasswordOnChange = () => {
             this.inputsContent.regPassword = document.getElementById("password").value;
-            console.log(this.inputsContent);
         }
 
         const regRepPasswordOnChange = () => {
             this.inputsContent.regRepPassword = document.getElementById("repPassword").value;
-            console.log(this.inputsContent);
-        }
-
-        if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === "login") {
-            document.getElementById("username").addEventListener("change", logUserOnChange)
-            document.getElementById("password").addEventListener("change", logPasswordOnChange)
-        }
-        if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === "registration") {
-            document.getElementById("username").addEventListener("change", regUserOnChange)
-            document.getElementById("password").addEventListener("change", regPasswordOnChange)
-            document.getElementById("repPassword").addEventListener("change", regRepPasswordOnChange)
         }
 
         const logButtonClick = async () => {
+            try {
+                if (this.inputsContent.logUsername !== '' && this.inputsContent.logPassword !== '') {
+                    await axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://localhost:8000/user/login', {
+                        username: this.inputsContent.logUsername.toLowerCase(),
+                        password: this.inputsContent.logPassword
+                    }).then(res => {
+                        console.log(res.data.token);;
+                        if (res.data.success === true) {
 
+                            for (let i in this.inputsContent) {
+                                this.inputsContent[i] = '';
+                            }
+
+                            (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowAuthorizationShow)(false)
+                            js_cookie__WEBPACK_IMPORTED_MODULE_1__["default"].set('token', res.data.token);
+                            alert('Вы успешно авторизовались!');
+                        } else {
+                            alert(res.data.message)
+                        }
+                    });
+                } else {
+                    alert('Введены не все значения!');
+                }
+            } catch {
+                alert("Неверный логин или пароль")
+            }
         }
 
-        // А теперь запросы на сервер
-
         const regButtonClick = async () => {
-            if (username !== '' && password !== '') {
-                await axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://localhost:8000/appointment/createAppointment', {
-                    username,
-                    password
-                }).then(res => {
-                    setDefaultAppointments(res.data.data);
-                    setPatient('');
-                    setDoctor('');
-                    setDate('');
-                    setComplaints('');
-                });
-            } else {
-                alert('Введены не все значения');
-            }
+            if (this.inputsContent.regUsername !== '' && this.inputsContent.regPassword !== '') {
+                if (this.inputsContent.regPassword === this.inputsContent.regRepPassword) {
+                    await axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://localhost:8000/user/register', {
+                        username: this.inputsContent.regUsername.toLowerCase(),
+                        password: this.inputsContent.regPassword
+                    }).then(res => {
+                        if (res.data.success === true) {
 
-            //addEventListener
+                            for (let i in this.inputsContent) {
+                                this.inputsContent[i] = '';
+                            }
+
+                            (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedAuthorizationTab)("login");
+                            alert('Вы успешно зарегистрировались!');
+                        } else {
+                            alert(res.data.message)
+                        }
+                    });
+                } else {
+                    alert('Пароли не совпадают!')
+                }
+            } else {
+                alert('Введены не все значения!');
+            }
+        }
+        if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab === "login") {
+            document.getElementById("username").addEventListener("change", logUserOnChange)
+            document.getElementById("password").addEventListener("change", logPasswordOnChange)
+            document.getElementsByClassName("authorization-button")[0].addEventListener("click", logButtonClick)
+        }
+        if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab === "registration") {
+            document.getElementById("username").addEventListener("change", regUserOnChange)
+            document.getElementById("password").addEventListener("change", regPasswordOnChange)
+            document.getElementById("repPassword").addEventListener("change", regRepPasswordOnChange)
+            document.getElementsByClassName("authorization-button")[0].addEventListener("click", regButtonClick)
         }
     }
 
@@ -4158,12 +4191,12 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_1__["
         let modalTabs = ``;
 
         for (let i in tabs) {
-            modalTabs += `<p class="${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === i ? "tab-active" : "tab"}"
+            modalTabs += `<p class="${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab === i ? "tab-active" : "tab"}"
                 id="${i}">${tabs[i]}</p>`
         }
 
         const repeatPasswordInput = `<input class="authorization-input" type="password"
-         id="repPassword" placeholder="Повторите пароль" value=${this.inputsContent.regRepPassword}>`
+        id="repPassword" placeholder="Повторите пароль" value=${this.inputsContent.regRepPassword}>`
 
         return (/*html*/`
         <div class="modal-authorization-window">
@@ -4179,14 +4212,14 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_1__["
                 </div>
                 <div class="input-block">
                     <input class="authorization-input" id="username" type="text" placeholder=
-                    "Имя пользователя" value=${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === "login"
-                    ? this.inputsContent.logUsername : this.inputsContent.regUsername}>
+                    "Имя пользователя" value=${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab === "login"
+                ? this.inputsContent.logUsername : this.inputsContent.regUsername}>
                     <input class="authorization-input" type="password" id="password" placeholder=
-                    "Пароль" value=${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === "login"
-                    ? this.inputsContent.logPassword : this.inputsContent.regPassword} >
-                    ${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === "registration" ? repeatPasswordInput : ""}
+                    "Пароль" value=${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab === "login"
+                ? this.inputsContent.logPassword : this.inputsContent.regPassword} >
+                    ${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab === "registration" ? repeatPasswordInput : ""}
                 </div>
-                <button class="authorization-button">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab ===
+                <button class="authorization-button">${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab ===
                 "login" ? "Войти" : "Зарегистрироваться"}</button>
             </div>
         </div>
@@ -4850,6 +4883,155 @@ function setItemsInfo(data) {
         fillings: data.fillings
     }
 }
+
+/***/ }),
+
+/***/ "./node_modules/js-cookie/dist/js.cookie.mjs":
+/*!***************************************************!*\
+  !*** ./node_modules/js-cookie/dist/js.cookie.mjs ***!
+  \***************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/*! js-cookie v3.0.1 | MIT */
+/* eslint-disable no-var */
+function assign (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
+    for (var key in source) {
+      target[key] = source[key];
+    }
+  }
+  return target
+}
+/* eslint-enable no-var */
+
+/* eslint-disable no-var */
+var defaultConverter = {
+  read: function (value) {
+    if (value[0] === '"') {
+      value = value.slice(1, -1);
+    }
+    return value.replace(/(%[\dA-F]{2})+/gi, decodeURIComponent)
+  },
+  write: function (value) {
+    return encodeURIComponent(value).replace(
+      /%(2[346BF]|3[AC-F]|40|5[BDE]|60|7[BCD])/g,
+      decodeURIComponent
+    )
+  }
+};
+/* eslint-enable no-var */
+
+/* eslint-disable no-var */
+
+function init (converter, defaultAttributes) {
+  function set (key, value, attributes) {
+    if (typeof document === 'undefined') {
+      return
+    }
+
+    attributes = assign({}, defaultAttributes, attributes);
+
+    if (typeof attributes.expires === 'number') {
+      attributes.expires = new Date(Date.now() + attributes.expires * 864e5);
+    }
+    if (attributes.expires) {
+      attributes.expires = attributes.expires.toUTCString();
+    }
+
+    key = encodeURIComponent(key)
+      .replace(/%(2[346B]|5E|60|7C)/g, decodeURIComponent)
+      .replace(/[()]/g, escape);
+
+    var stringifiedAttributes = '';
+    for (var attributeName in attributes) {
+      if (!attributes[attributeName]) {
+        continue
+      }
+
+      stringifiedAttributes += '; ' + attributeName;
+
+      if (attributes[attributeName] === true) {
+        continue
+      }
+
+      // Considers RFC 6265 section 5.2:
+      // ...
+      // 3.  If the remaining unparsed-attributes contains a %x3B (";")
+      //     character:
+      // Consume the characters of the unparsed-attributes up to,
+      // not including, the first %x3B (";") character.
+      // ...
+      stringifiedAttributes += '=' + attributes[attributeName].split(';')[0];
+    }
+
+    return (document.cookie =
+      key + '=' + converter.write(value, key) + stringifiedAttributes)
+  }
+
+  function get (key) {
+    if (typeof document === 'undefined' || (arguments.length && !key)) {
+      return
+    }
+
+    // To prevent the for loop in the first place assign an empty array
+    // in case there are no cookies at all.
+    var cookies = document.cookie ? document.cookie.split('; ') : [];
+    var jar = {};
+    for (var i = 0; i < cookies.length; i++) {
+      var parts = cookies[i].split('=');
+      var value = parts.slice(1).join('=');
+
+      try {
+        var foundKey = decodeURIComponent(parts[0]);
+        jar[foundKey] = converter.read(value, foundKey);
+
+        if (key === foundKey) {
+          break
+        }
+      } catch (e) {}
+    }
+
+    return key ? jar[key] : jar
+  }
+
+  return Object.create(
+    {
+      set: set,
+      get: get,
+      remove: function (key, attributes) {
+        set(
+          key,
+          '',
+          assign({}, attributes, {
+            expires: -1
+          })
+        );
+      },
+      withAttributes: function (attributes) {
+        return init(this.converter, assign({}, this.attributes, attributes))
+      },
+      withConverter: function (converter) {
+        return init(assign({}, this.converter, converter), this.attributes)
+      }
+    },
+    {
+      attributes: { value: Object.freeze(defaultAttributes) },
+      converter: { value: Object.freeze(converter) }
+    }
+  )
+}
+
+var api = init(defaultConverter, { path: '/' });
+/* eslint-enable no-var */
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (api);
+
 
 /***/ })
 

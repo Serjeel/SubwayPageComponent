@@ -12,7 +12,7 @@ module.exports.getAllUsers = async (req, res, next) => {
 
 module.exports.register = async (req, res, next) => {
     const user = new User({
-        username: req.body.username,
+        username: req.body.username.toLowerCase(),
         password: hashSync(req.body.password, 10)
     })
 
