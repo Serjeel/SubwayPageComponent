@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import Component from "./Component";
 import MainHeader from "./MainHeader/MainHeader";
 import MenuBlock from "./MenuBlock/MenuBlock";
@@ -17,6 +19,23 @@ class App extends Component {
         this.rerenderOrder = this.rerenderOrder.bind(this);
         this.rerenderModalWindowSandwich = this.rerenderModalWindowSandwich.bind(this);
         this.rerenderModalWindowAuthorization = this.rerenderModalWindowAuthorization.bind(this)
+
+        const authorization = async () => {
+            try {
+                await axios.get(`http://localhost:8000/user/protected`, {
+                    headers: { // Прописать получение токена из куков
+                        Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBldGVyIiwiaWQiOiI2MzM2YjVkZjdhNTE5ZmJlZTY2NGIwNjMiLCJpYXQiOjE2NjQ4MDk4ODUsImV4cCI6MTY2NDgxNTg4NX0.1BJNAK5BxlEAiLoJ0t0fWq6xVE5djCXMK-wPd3RLSZ8"
+                    }
+                })
+                    .then(res => {
+                        storage.data.isAuthorized = res.data.success;
+                        console.log(res.data);
+                        console.log(storage.data.isAuthorized);
+                    });
+            } catch { storage.data.isAuthorized = false }
+        }
+
+        authorization();
     }
 
     createChildren() {
@@ -82,7 +101,7 @@ class App extends Component {
     }
 
     rerenderModalWindowAuthorization() {
-         if (storage.data.modalWindowAuthorizationShow) {
+        if (storage.data.modalWindowAuthorizationShow) {
             document.getElementsByClassName("modal-block")[0].innerHTML = this.modalWindowAuthorization.render();
             this.modalWindowAuthorization.enable();
         } else {

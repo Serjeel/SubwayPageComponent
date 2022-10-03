@@ -4818,6 +4818,7 @@ class Storage {
 }
 
 const storage = new Storage({
+    isAuthorized: false,
     selectedTab: "sandwiches",
     selectedModalTab: "sizes",
     selectedAuthorizationTab: "login",
@@ -5001,16 +5002,18 @@ var __webpack_exports__ = {};
   !*** ./src/App.js ***!
   \********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Component */ "./src/Component.js");
-/* harmony import */ var _MainHeader_MainHeader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MainHeader/MainHeader */ "./src/MainHeader/MainHeader.js");
-/* harmony import */ var _MenuBlock_MenuBlock__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MenuBlock/MenuBlock */ "./src/MenuBlock/MenuBlock.js");
-/* harmony import */ var _MenuCategories_MenuCategories__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MenuCategories/MenuCategories */ "./src/MenuCategories/MenuCategories.js");
-/* harmony import */ var _ModalWindowSandwich_ModalWindowSandwich__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ModalWindowSandwich/ModalWindowSandwich */ "./src/ModalWindowSandwich/ModalWindowSandwich.js");
-/* harmony import */ var _ModalWindowAuthorization_ModalWindowAuthorization__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ModalWindowAuthorization/ModalWindowAuthorization */ "./src/ModalWindowAuthorization/ModalWindowAuthorization.js");
-/* harmony import */ var _Order_Order__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Order/Order */ "./src/Order/Order.js");
-/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./storage */ "./src/storage.js");
-/* harmony import */ var _App_css__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./App.css */ "./src/App.css");
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./api */ "./src/api/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Component */ "./src/Component.js");
+/* harmony import */ var _MainHeader_MainHeader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MainHeader/MainHeader */ "./src/MainHeader/MainHeader.js");
+/* harmony import */ var _MenuBlock_MenuBlock__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MenuBlock/MenuBlock */ "./src/MenuBlock/MenuBlock.js");
+/* harmony import */ var _MenuCategories_MenuCategories__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./MenuCategories/MenuCategories */ "./src/MenuCategories/MenuCategories.js");
+/* harmony import */ var _ModalWindowSandwich_ModalWindowSandwich__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ModalWindowSandwich/ModalWindowSandwich */ "./src/ModalWindowSandwich/ModalWindowSandwich.js");
+/* harmony import */ var _ModalWindowAuthorization_ModalWindowAuthorization__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ModalWindowAuthorization/ModalWindowAuthorization */ "./src/ModalWindowAuthorization/ModalWindowAuthorization.js");
+/* harmony import */ var _Order_Order__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Order/Order */ "./src/Order/Order.js");
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./storage */ "./src/storage.js");
+/* harmony import */ var _App_css__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./App.css */ "./src/App.css");
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./api */ "./src/api/index.js");
 
 
 
@@ -5022,7 +5025,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
+
+
+class App extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
     constructor() {
         super()
         this.rerenderMenuBlock = this.rerenderMenuBlock.bind(this);
@@ -5030,26 +5035,43 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         this.rerenderOrder = this.rerenderOrder.bind(this);
         this.rerenderModalWindowSandwich = this.rerenderModalWindowSandwich.bind(this);
         this.rerenderModalWindowAuthorization = this.rerenderModalWindowAuthorization.bind(this)
+
+        const authorization = async () => {
+            try {
+                await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`http://localhost:8000/user/protected`, {
+                    headers: { // Прописать получение токена из куков
+                        Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBldGVyIiwiaWQiOiI2MzM2YjVkZjdhNTE5ZmJlZTY2NGIwNjMiLCJpYXQiOjE2NjQ4MDk4ODUsImV4cCI6MTY2NDgxNTg4NX0.1BJNAK5BxlEAiLoJ0t0fWq6xVE5djCXMK-wPd3RLSZ8"
+                    }
+                })
+                    .then(res => {
+                        _storage__WEBPACK_IMPORTED_MODULE_8__.storage.data.isAuthorized = res.data.success;
+                        console.log(res.data);
+                        console.log(_storage__WEBPACK_IMPORTED_MODULE_8__.storage.data.isAuthorized);
+                    });
+            } catch { _storage__WEBPACK_IMPORTED_MODULE_8__.storage.data.isAuthorized = false }
+        }
+
+        authorization();
     }
 
     createChildren() {
-        this.mainHeader = new _MainHeader_MainHeader__WEBPACK_IMPORTED_MODULE_1__["default"]({
+        this.mainHeader = new _MainHeader_MainHeader__WEBPACK_IMPORTED_MODULE_2__["default"]({
             rerender: this.rerenderModalWindowAuthorization
         });
-        this.menuCategories = new _MenuCategories_MenuCategories__WEBPACK_IMPORTED_MODULE_3__["default"]({
+        this.menuCategories = new _MenuCategories_MenuCategories__WEBPACK_IMPORTED_MODULE_4__["default"]({
             rerender: this.rerenderMenuCategories
         });
-        this.order = new _Order_Order__WEBPACK_IMPORTED_MODULE_6__["default"]({
+        this.order = new _Order_Order__WEBPACK_IMPORTED_MODULE_7__["default"]({
             rerender: this.rerenderOrder
         });
-        this.menuBlock = new _MenuBlock_MenuBlock__WEBPACK_IMPORTED_MODULE_2__["default"]({
+        this.menuBlock = new _MenuBlock_MenuBlock__WEBPACK_IMPORTED_MODULE_3__["default"]({
             rerender: this.rerenderMenuBlock
         });
-        this.modalWindowSandwich = new _ModalWindowSandwich_ModalWindowSandwich__WEBPACK_IMPORTED_MODULE_4__["default"]({
+        this.modalWindowSandwich = new _ModalWindowSandwich_ModalWindowSandwich__WEBPACK_IMPORTED_MODULE_5__["default"]({
             rerender: this.rerenderModalWindowSandwich
         });
 
-        this.modalWindowAuthorization = new _ModalWindowAuthorization_ModalWindowAuthorization__WEBPACK_IMPORTED_MODULE_5__["default"]({
+        this.modalWindowAuthorization = new _ModalWindowAuthorization_ModalWindowAuthorization__WEBPACK_IMPORTED_MODULE_6__["default"]({
             rerender: this.rerenderModalWindowAuthorization
         })
     }
@@ -5066,8 +5088,8 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         if (this.data.modalWindowAuthorizationShow) {
             this.modalWindowAuthorization.enable();
         }
-        const itemsInfo = await (0,_api__WEBPACK_IMPORTED_MODULE_9__.getItemsInfo)();
-        (0,_storage__WEBPACK_IMPORTED_MODULE_7__.setItemsInfo)(itemsInfo)
+        const itemsInfo = await (0,_api__WEBPACK_IMPORTED_MODULE_10__.getItemsInfo)();
+        (0,_storage__WEBPACK_IMPORTED_MODULE_8__.setItemsInfo)(itemsInfo)
     }
 
     rerenderMenuCategories() {
@@ -5086,7 +5108,7 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     }
 
     rerenderModalWindowSandwich() {
-        if (_storage__WEBPACK_IMPORTED_MODULE_7__.storage.data.modalWindowAddShow || _storage__WEBPACK_IMPORTED_MODULE_7__.storage.data.modalWindowEditShow) {
+        if (_storage__WEBPACK_IMPORTED_MODULE_8__.storage.data.modalWindowAddShow || _storage__WEBPACK_IMPORTED_MODULE_8__.storage.data.modalWindowEditShow) {
             document.getElementsByClassName("modal-block")[0].innerHTML = this.modalWindowSandwich.render();
             this.modalWindowSandwich.enable();
         } else {
@@ -5095,7 +5117,7 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     }
 
     rerenderModalWindowAuthorization() {
-         if (_storage__WEBPACK_IMPORTED_MODULE_7__.storage.data.modalWindowAuthorizationShow) {
+        if (_storage__WEBPACK_IMPORTED_MODULE_8__.storage.data.modalWindowAuthorizationShow) {
             document.getElementsByClassName("modal-block")[0].innerHTML = this.modalWindowAuthorization.render();
             this.modalWindowAuthorization.enable();
         } else {

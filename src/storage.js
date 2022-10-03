@@ -27,6 +27,7 @@ class Storage {
 }
 
 export const storage = new Storage({
+    isAuthorized: false,
     selectedTab: "sandwiches",
     selectedModalTab: "sizes",
     selectedAuthorizationTab: "login",
