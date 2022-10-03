@@ -71,27 +71,19 @@ class Order extends Component {
                     setChangeableOrderItem(storage.data.changeableOrderItem)
                     setSelectedModalTab("sizes");
                     setModalWindowEditShow(true);
+
                     setTabReadyContent({
-                        amount: storage.data.sandwiches[i].amount,
                         breads: storage.data.sandwiches[i].breads,
-                        fillings: storage.data.sandwiches[i].fillings,
-                        id: storage.data.sandwiches[i].id,
-                        price: storage.data.sandwiches[i].price,
-                        sauces: storage.data.sandwiches[i].sauces,
+                        fillings: storage.data.sandwiches[i].fillings.slice(0),
+                        sauces: storage.data.sandwiches[i].sauces.slice(0),
                         sizes: storage.data.sandwiches[i].sizes,
-                        title: storage.data.sandwiches[i].title,
-                        vegetables: storage.data.sandwiches[i].vegetables,
+                        vegetables: storage.data.sandwiches[i].vegetables.slice(0),
                     });
                     setModalContent({
                         amount: storage.data.sandwiches[i].amount,
-                        breads: storage.data.sandwiches[i].breads,
-                        fillings: storage.data.sandwiches[i].fillings,
                         id: storage.data.sandwiches[i].id,
                         price: storage.data.sandwiches[i].price,
-                        sauces: storage.data.sandwiches[i].sauces,
-                        sizes: storage.data.sandwiches[i].sizes,
-                        title: storage.data.sandwiches[i].title,
-                        vegetables: storage.data.sandwiches[i].vegetables,
+                        title: storage.data.sandwiches[i].title
                     });
                     let n = 0;
                     for (let j in storage.data.ingredients.sizes) {
@@ -99,13 +91,10 @@ class Order extends Component {
                             n = storage.data.ingredients.sizes[j].price;
                         }
                     }
-                    console.log(n);
-                    console.log(storage.data.ingredients.sizes);
                     setPreviousValues({
                         sizes: n,
                         breads: 0
                     })
-                    console.log(storage.data.previousValues);
                 }
                 document.getElementById("sandwich-" + (i + 1)).addEventListener("click", handleOrderClick);
             }

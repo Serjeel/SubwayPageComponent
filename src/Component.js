@@ -9,6 +9,7 @@ class Component {
     handleDataChange(item, property, value) {
         item[property] = value;
         this.rerender(this.data);
+        console.log("Component");
         return true;
     }
 

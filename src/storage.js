@@ -57,8 +57,6 @@ export const storage = new Storage({
     }
 });
 
-
-
 export function setSelectedTab(selectedTab) {
     storage.data.selectedTab = selectedTab;
 }

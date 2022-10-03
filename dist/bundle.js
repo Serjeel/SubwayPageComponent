@@ -3678,6 +3678,7 @@ class Component {
     handleDataChange(item, property, value) {
         item[property] = value;
         this.rerender(this.data);
+        console.log("Component");
         return true;
     }
 
@@ -4294,6 +4295,7 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_0__["defau
         let previousValues = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.previousValues;
         let sandwiches = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches;
         let orderItems = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems;
+
         const sizesTabClick = () => {
             (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedModalTab)("sizes")
         }
@@ -4314,6 +4316,7 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_0__["defau
         }
 
         const closeIconClick = () => {
+            // По какой то причине при sandwiches меняется сразу после нажатия на итемы. Исправить
             ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setPreviousValues)({
                 sizes: 0,
                 breads: 0
@@ -4354,14 +4357,17 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_0__["defau
                     if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].includes(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].name)) {
                         let n = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].indexOf(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].name);
                         modalContent.price -= _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].price;
+
                         tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].splice(n, 1);
+
                         (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(modalContent);
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent);
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)(tabReadyContent);
                     } else {
                         tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].push(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].name);
+
                         modalContent.price += _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].price;
                         (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(modalContent);
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent);
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)(tabReadyContent);
                     }
                 }
                 document.getElementsByClassName("tab-content-block")[0].scrollTo(0, scrollPosition)
@@ -4672,27 +4678,19 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                     (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setChangeableOrderItem)(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.changeableOrderItem)
                     ;(0,_storage__WEBPACK_IMPORTED_MODULE_2__.setSelectedModalTab)("sizes");
                     (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setModalWindowEditShow)(true);
+
                     (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setTabReadyContent)({
-                        amount: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].amount,
                         breads: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].breads,
-                        fillings: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].fillings,
-                        id: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].id,
-                        price: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].price,
-                        sauces: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].sauces,
+                        fillings: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].fillings.slice(0),
+                        sauces: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].sauces.slice(0),
                         sizes: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].sizes,
-                        title: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].title,
-                        vegetables: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].vegetables,
+                        vegetables: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].vegetables.slice(0),
                     });
                     (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setModalContent)({
                         amount: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].amount,
-                        breads: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].breads,
-                        fillings: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].fillings,
                         id: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].id,
                         price: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].price,
-                        sauces: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].sauces,
-                        sizes: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].sizes,
-                        title: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].title,
-                        vegetables: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].vegetables,
+                        title: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].title
                     });
                     let n = 0;
                     for (let j in _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.ingredients.sizes) {
@@ -4700,13 +4698,10 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                             n = _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.ingredients.sizes[j].price;
                         }
                     }
-                    console.log(n);
-                    console.log(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.ingredients.sizes);
                     (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setPreviousValues)({
                         sizes: n,
                         breads: 0
                     })
-                    console.log(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.previousValues);
                 }
                 document.getElementById("sandwich-" + (i + 1)).addEventListener("click", handleOrderClick);
             }
@@ -4852,8 +4847,6 @@ const storage = new Storage({
         breads: 0
     }
 });
-
-
 
 function setSelectedTab(selectedTab) {
     storage.data.selectedTab = selectedTab;

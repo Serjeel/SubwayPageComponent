@@ -40,6 +40,7 @@ class ModalWindowSandwich extends Component {
         let previousValues = storage.data.previousValues;
         let sandwiches = storage.data.sandwiches;
         let orderItems = storage.data.orderItems;
+
         const sizesTabClick = () => {
             setSelectedModalTab("sizes")
         }
@@ -60,6 +61,7 @@ class ModalWindowSandwich extends Component {
         }
 
         const closeIconClick = () => {
+            // По какой то причине при sandwiches меняется сразу после нажатия на итемы. Исправить
             setPreviousValues({
                 sizes: 0,
                 breads: 0
@@ -104,15 +106,18 @@ class ModalWindowSandwich extends Component {
                         let n = storage.data.tabReadyContent[storage.data.selectedModalTab].indexOf(storage.data.
                             ingredients[storage.data.selectedModalTab][key].name);
                         modalContent.price -= storage.data.ingredients[storage.data.selectedModalTab][key].price;
+
                         tabReadyContent[storage.data.selectedModalTab].splice(n, 1);
+
                         setModalContent(modalContent);
-                        setTabReadyContent(storage.data.tabReadyContent);
+                        setTabReadyContent(tabReadyContent);
                     } else {
-                        tabReadyContent[storage.data.selectedModalTab].push(storage.data.ingredients[storage.data.
-                            selectedModalTab][key].name);
+                        tabReadyContent[storage.data.selectedModalTab].push(storage.data.
+                            ingredients[storage.data.selectedModalTab][key].name);
+
                         modalContent.price += storage.data.ingredients[storage.data.selectedModalTab][key].price;
                         setModalContent(modalContent);
-                        setTabReadyContent(storage.data.tabReadyContent);
+                        setTabReadyContent(tabReadyContent);
                     }
                 }
                 document.getElementsByClassName("tab-content-block")[0].scrollTo(0, scrollPosition)

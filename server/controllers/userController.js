@@ -65,7 +65,7 @@ module.exports.login = async (req, res, next) => {
             id: user._id
         }
 
-        const token = jwt.sign(payload, "Random string", { expiresIn: "1d" })
+        const token = jwt.sign(payload, "Random string", { expiresIn: "1m" })
 
         return res.status(200).send({
             success: true,
