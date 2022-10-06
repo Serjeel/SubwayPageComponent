@@ -12,9 +12,11 @@ app.use(cors());
 app.use(passport.initialize());
 
 const foodRoute = require("./routes/foodRoute");
-const userRoute = require("./routes/userRoute")
+const userRoute = require("./routes/userRoute");
+const orderRoute = require("./routes/orderRoute");
 
 app.use("/food", foodRoute);
-app.use("/user", userRoute)
+app.use("/user", userRoute);
+app.use("/order", orderRoute);
 
 module.exports = app;

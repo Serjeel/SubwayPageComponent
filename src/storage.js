@@ -27,6 +27,7 @@ class Storage {
 }
 
 export const storage = new Storage({
+    username: "",
     isAuthorized: false,
     selectedTab: "sandwiches",
     selectedModalTab: "sizes",
@@ -126,4 +127,10 @@ export function setItemsInfo(data) {
         sauces: data.sauces,
         fillings: data.fillings
     }
+}
+
+export function setAuthorization(data) {
+    storage.data.isAuthorized = data.success;
+    storage.data.username = data.user.username;
+    console.log(data);
 }

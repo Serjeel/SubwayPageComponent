@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import Cookies from 'js-cookie';
 import Component from "../Component";
 import './ModalWindowAuthorization.css';
 
@@ -81,9 +81,9 @@ class ModalWindowAuthorization extends Component {
                             for (let i in this.inputsContent) {
                                 this.inputsContent[i] = '';
                             }
-
                             setModalWindowAuthorizationShow(false)
-                            alert('Вы успешно авторизовались!');
+                            Cookies.set('token', res.data.token);
+                            window.location.reload();
                         } else {
                             alert(res.data.message)
                         }

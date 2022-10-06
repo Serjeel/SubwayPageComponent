@@ -2536,7 +2536,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".header {\n    display: flex;\n    justify-content: end;\n}\n\n.login_and_register-button {\n    cursor: pointer;\n    height: 30px;\n    font-family: Noto Sans, sans-serif;\n    background-color: white;\n    border-radius: 5px;\n    border: 1px solid black[];\n}\n\n.login_and_register-button:hover {\n    background-color: #F5C300;\n}\n\n.headline {\n    height: 30px;\n    margin-top: 15px;\n    text-align: center;\n}", "",{"version":3,"sources":["webpack://./src/MainHeader/MainHeader.css"],"names":[],"mappings":"AAAA;IACI,aAAa;IACb,oBAAoB;AACxB;;AAEA;IACI,eAAe;IACf,YAAY;IACZ,kCAAkC;IAClC,uBAAuB;IACvB,kBAAkB;IAClB,yBAAyB;AAC7B;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,YAAY;IACZ,gBAAgB;IAChB,kBAAkB;AACtB","sourcesContent":[".header {\n    display: flex;\n    justify-content: end;\n}\n\n.login_and_register-button {\n    cursor: pointer;\n    height: 30px;\n    font-family: Noto Sans, sans-serif;\n    background-color: white;\n    border-radius: 5px;\n    border: 1px solid black[];\n}\n\n.login_and_register-button:hover {\n    background-color: #F5C300;\n}\n\n.headline {\n    height: 30px;\n    margin-top: 15px;\n    text-align: center;\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ".header {\n    display: flex;\n    flex-direction: column;\n    align-items: flex-end;\n}\n\n.button-block {\n    display: flex;\n    align-items: center;\n}\n\n.username {\n    font-family: Noto Sans, sans-serif;\n    margin: 0;\n    margin-right: 10px;\n}\n\n.login_and_register-button {\n    cursor: pointer;\n    width: auto;\n    height: 30px;\n    font-family: Noto Sans, sans-serif;\n    background-color: white;\n    border-radius: 5px;\n    border: 1px solid black[];\n}\n\n.login_and_register-button:hover {\n    background-color: #F5C300;\n}\n\n.headline {\n    width: 100%;\n    margin-top: 15px;\n    text-align: center;\n}", "",{"version":3,"sources":["webpack://./src/MainHeader/MainHeader.css"],"names":[],"mappings":"AAAA;IACI,aAAa;IACb,sBAAsB;IACtB,qBAAqB;AACzB;;AAEA;IACI,aAAa;IACb,mBAAmB;AACvB;;AAEA;IACI,kCAAkC;IAClC,SAAS;IACT,kBAAkB;AACtB;;AAEA;IACI,eAAe;IACf,WAAW;IACX,YAAY;IACZ,kCAAkC;IAClC,uBAAuB;IACvB,kBAAkB;IAClB,yBAAyB;AAC7B;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,WAAW;IACX,gBAAgB;IAChB,kBAAkB;AACtB","sourcesContent":[".header {\n    display: flex;\n    flex-direction: column;\n    align-items: flex-end;\n}\n\n.button-block {\n    display: flex;\n    align-items: center;\n}\n\n.username {\n    font-family: Noto Sans, sans-serif;\n    margin: 0;\n    margin-right: 10px;\n}\n\n.login_and_register-button {\n    cursor: pointer;\n    width: auto;\n    height: 30px;\n    font-family: Noto Sans, sans-serif;\n    background-color: white;\n    border-radius: 5px;\n    border: 1px solid black[];\n}\n\n.login_and_register-button:hover {\n    background-color: #F5C300;\n}\n\n.headline {\n    width: 100%;\n    margin-top: 15px;\n    text-align: center;\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -3747,33 +3747,54 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
-/* harmony import */ var _MainHeader_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MainHeader.css */ "./src/MainHeader/MainHeader.css");
-/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
+/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/dist/js.cookie.mjs");
+/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
+/* harmony import */ var _MainHeader_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MainHeader.css */ "./src/MainHeader/MainHeader.css");
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
 
 
 
 
 
 
-class MainHeader extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
+
+
+class MainHeader extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
     constructor(props) {
         super();
+
+        this.subscribers = ["isAuthorized", "username"];
+        for (let i in this.subscribers) {
+            _storage__WEBPACK_IMPORTED_MODULE_3__.storage.addSubscriber(this.subscribers[i], props.rerender);
+        }
+
     }
 
     enable() {
-        const loginButtonClick = () => {
-            (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setModalWindowAuthorizationShow)(true)
+        console.log(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.isAuthorized);
+        if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.isAuthorized === true) {
+            const loginButtonClick = () => {
+                console.log(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.isAuthorized);
+                js_cookie__WEBPACK_IMPORTED_MODULE_0__["default"].remove("token");
+                window.location.reload();
+            }
+            document.getElementsByClassName("login_and_register-button")[0].addEventListener("click", loginButtonClick)
+        } else {
+            const loginButtonClick = () => {
+                console.log(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.isAuthorized);
+                (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowAuthorizationShow)(true)
+            }
+            document.getElementsByClassName("login_and_register-button")[0].addEventListener("click", loginButtonClick)
         }
-
-        document.getElementsByClassName("login_and_register-button")[0].addEventListener("click", loginButtonClick)
     }
 
     render() {
         return (/*html*/`
-            <div class="header">
-            <button class="login_and_register-button">Войти/Зарегистироваться</button>
-            </div>
+        <div class="button-block">
+            ${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.isAuthorized ? `<p class="username">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.username}</p>
+            <button class="login_and_register-button">Выход</button>`
+                : `<button class="login_and_register-button">Войти/Зарегистироваться</button>`}
+                </div>
             <h1 class="headline">СДЕЛАЙТЕ ЗАКАЗ НАПРЯМУЮ ИЗ РЕСТОРАНА</h1>
       `)
     }
@@ -4050,9 +4071,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
-/* harmony import */ var _ModalWindowAuthorization_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ModalWindowAuthorization.css */ "./src/ModalWindowAuthorization/ModalWindowAuthorization.css");
-/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
+/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/dist/js.cookie.mjs");
+/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
+/* harmony import */ var _ModalWindowAuthorization_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ModalWindowAuthorization.css */ "./src/ModalWindowAuthorization/ModalWindowAuthorization.css");
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
 
 
 
@@ -4063,7 +4085,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
+class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_2__["default"] {
     constructor(props) {
         super();
 
@@ -4077,22 +4099,22 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_1__["
 
         this.subscribers = ["modalWindowAuthorizationShow", "selectedAuthorizationTab"];
         for (let i in this.subscribers) {
-            _storage__WEBPACK_IMPORTED_MODULE_3__.storage.addSubscriber(this.subscribers[i], props.rerender);
+            _storage__WEBPACK_IMPORTED_MODULE_4__.storage.addSubscriber(this.subscribers[i], props.rerender);
         }
     }
 
     enable() {
         const loginTabClick = () => {
-            (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedAuthorizationTab)("login")
+            (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedAuthorizationTab)("login")
         }
 
         const registrationTabClick = () => {
-            ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedAuthorizationTab)("registration")
+            ;(0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedAuthorizationTab)("registration")
         }
 
         const closeIconClick = () => {
-            ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowAuthorizationShow)(false);
-            (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedAuthorizationTab)("login")
+            ;(0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowAuthorizationShow)(false);
+            (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedAuthorizationTab)("login")
             for (let i in this.inputsContent) {
                 this.inputsContent[i] = '';
             }
@@ -4136,9 +4158,9 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_1__["
                             for (let i in this.inputsContent) {
                                 this.inputsContent[i] = '';
                             }
-
-                            (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowAuthorizationShow)(false)
-                            alert('Вы успешно авторизовались!');
+                            (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowAuthorizationShow)(false)
+                            js_cookie__WEBPACK_IMPORTED_MODULE_1__["default"].set('token', res.data.token);
+                            window.location.reload();
                         } else {
                             alert(res.data.message)
                         }
@@ -4164,7 +4186,7 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_1__["
                                 this.inputsContent[i] = '';
                             }
 
-                            (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedAuthorizationTab)("login");
+                            (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedAuthorizationTab)("login");
                             alert('Вы успешно зарегистрировались!');
                         } else {
                             alert(res.data.message)
@@ -4177,12 +4199,12 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_1__["
                 alert('Введены не все значения!');
             }
         }
-        if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === "login") {
+        if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab === "login") {
             document.getElementById("username").addEventListener("change", logUserOnChange)
             document.getElementById("password").addEventListener("change", logPasswordOnChange)
             document.getElementsByClassName("authorization-button")[0].addEventListener("click", logButtonClick)
         }
-        if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === "registration") {
+        if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab === "registration") {
             document.getElementById("username").addEventListener("change", regUserOnChange)
             document.getElementById("password").addEventListener("change", regPasswordOnChange)
             document.getElementById("repPassword").addEventListener("change", regRepPasswordOnChange)
@@ -4198,7 +4220,7 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_1__["
         let modalTabs = ``;
 
         for (let i in tabs) {
-            modalTabs += `<p class="${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === i ? "tab-active" : "tab"}"
+            modalTabs += `<p class="${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab === i ? "tab-active" : "tab"}"
                 id="${i}">${tabs[i]}</p>`
         }
 
@@ -4219,14 +4241,14 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_1__["
                 </div>
                 <div class="input-block">
                     <input class="authorization-input" id="username" type="text" placeholder=
-                    "Имя пользователя" value=${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === "login"
+                    "Имя пользователя" value=${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab === "login"
                 ? this.inputsContent.logUsername : this.inputsContent.regUsername}>
                     <input class="authorization-input" type="password" id="password" placeholder=
-                    "Пароль" value=${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === "login"
+                    "Пароль" value=${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab === "login"
                 ? this.inputsContent.logPassword : this.inputsContent.regPassword} >
-                    ${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab === "registration" ? repeatPasswordInput : ""}
+                    ${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab === "registration" ? repeatPasswordInput : ""}
                 </div>
-                <button class="authorization-button">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedAuthorizationTab ===
+                <button class="authorization-button">${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab ===
                 "login" ? "Войти" : "Зарегистрироваться"}</button>
             </div>
         </div>
@@ -4647,6 +4669,7 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     }
 
     enable() {
+        console.log(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches);
         for (let i = 0; i < _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.orderItems.length; i++) {
             const handleChangeDeleteIconClick = () => {
                 (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.totalPrice - _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.orderItems[i].price);
@@ -4747,16 +4770,41 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "getAuthorization": () => (/* binding */ getAuthorization),
 /* harmony export */   "getItemsInfo": () => (/* binding */ getItemsInfo)
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/dist/js.cookie.mjs");
+
 
 
 async function getItemsInfo() {
     let data = {};
     await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`http://localhost:8000/food/getAllFood`)
         .then(res => { data = res.data[0] });
+
+    return data;
+}
+
+async function getAuthorization() {
+    let data = {};
+    try {
+        await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`http://localhost:8000/user/protected`, {
+            headers: {
+                Authorization: js_cookie__WEBPACK_IMPORTED_MODULE_1__["default"].get("token")
+            }
+        })
+            .then(res => { data = res.data });
+    } catch {
+        data = {
+            success: false,
+            user: {
+                id: "",
+                username: ""
+            }
+        }
+    }
 
     return data;
 }
@@ -4772,6 +4820,7 @@ async function getItemsInfo() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "setAuthorization": () => (/* binding */ setAuthorization),
 /* harmony export */   "setChangeableOrderItem": () => (/* binding */ setChangeableOrderItem),
 /* harmony export */   "setCountersValue": () => (/* binding */ setCountersValue),
 /* harmony export */   "setItemsInfo": () => (/* binding */ setItemsInfo),
@@ -4818,6 +4867,7 @@ class Storage {
 }
 
 const storage = new Storage({
+    username: "",
     isAuthorized: false,
     selectedTab: "sandwiches",
     selectedModalTab: "sizes",
@@ -4919,6 +4969,161 @@ function setItemsInfo(data) {
     }
 }
 
+function setAuthorization(data) {
+    storage.data.isAuthorized = data.success;
+    storage.data.username = data.user.username;
+    console.log(data);
+}
+
+/***/ }),
+
+/***/ "./node_modules/js-cookie/dist/js.cookie.mjs":
+/*!***************************************************!*\
+  !*** ./node_modules/js-cookie/dist/js.cookie.mjs ***!
+  \***************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/*! js-cookie v3.0.1 | MIT */
+/* eslint-disable no-var */
+function assign (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
+    for (var key in source) {
+      target[key] = source[key];
+    }
+  }
+  return target
+}
+/* eslint-enable no-var */
+
+/* eslint-disable no-var */
+var defaultConverter = {
+  read: function (value) {
+    if (value[0] === '"') {
+      value = value.slice(1, -1);
+    }
+    return value.replace(/(%[\dA-F]{2})+/gi, decodeURIComponent)
+  },
+  write: function (value) {
+    return encodeURIComponent(value).replace(
+      /%(2[346BF]|3[AC-F]|40|5[BDE]|60|7[BCD])/g,
+      decodeURIComponent
+    )
+  }
+};
+/* eslint-enable no-var */
+
+/* eslint-disable no-var */
+
+function init (converter, defaultAttributes) {
+  function set (key, value, attributes) {
+    if (typeof document === 'undefined') {
+      return
+    }
+
+    attributes = assign({}, defaultAttributes, attributes);
+
+    if (typeof attributes.expires === 'number') {
+      attributes.expires = new Date(Date.now() + attributes.expires * 864e5);
+    }
+    if (attributes.expires) {
+      attributes.expires = attributes.expires.toUTCString();
+    }
+
+    key = encodeURIComponent(key)
+      .replace(/%(2[346B]|5E|60|7C)/g, decodeURIComponent)
+      .replace(/[()]/g, escape);
+
+    var stringifiedAttributes = '';
+    for (var attributeName in attributes) {
+      if (!attributes[attributeName]) {
+        continue
+      }
+
+      stringifiedAttributes += '; ' + attributeName;
+
+      if (attributes[attributeName] === true) {
+        continue
+      }
+
+      // Considers RFC 6265 section 5.2:
+      // ...
+      // 3.  If the remaining unparsed-attributes contains a %x3B (";")
+      //     character:
+      // Consume the characters of the unparsed-attributes up to,
+      // not including, the first %x3B (";") character.
+      // ...
+      stringifiedAttributes += '=' + attributes[attributeName].split(';')[0];
+    }
+
+    return (document.cookie =
+      key + '=' + converter.write(value, key) + stringifiedAttributes)
+  }
+
+  function get (key) {
+    if (typeof document === 'undefined' || (arguments.length && !key)) {
+      return
+    }
+
+    // To prevent the for loop in the first place assign an empty array
+    // in case there are no cookies at all.
+    var cookies = document.cookie ? document.cookie.split('; ') : [];
+    var jar = {};
+    for (var i = 0; i < cookies.length; i++) {
+      var parts = cookies[i].split('=');
+      var value = parts.slice(1).join('=');
+
+      try {
+        var foundKey = decodeURIComponent(parts[0]);
+        jar[foundKey] = converter.read(value, foundKey);
+
+        if (key === foundKey) {
+          break
+        }
+      } catch (e) {}
+    }
+
+    return key ? jar[key] : jar
+  }
+
+  return Object.create(
+    {
+      set: set,
+      get: get,
+      remove: function (key, attributes) {
+        set(
+          key,
+          '',
+          assign({}, attributes, {
+            expires: -1
+          })
+        );
+      },
+      withAttributes: function (attributes) {
+        return init(this.converter, assign({}, this.attributes, attributes))
+      },
+      withConverter: function (converter) {
+        return init(assign({}, this.converter, converter), this.attributes)
+      }
+    },
+    {
+      attributes: { value: Object.freeze(defaultAttributes) },
+      converter: { value: Object.freeze(converter) }
+    }
+  )
+}
+
+var api = init(defaultConverter, { path: '/' });
+/* eslint-enable no-var */
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (api);
+
+
 /***/ })
 
 /******/ 	});
@@ -5002,18 +5207,16 @@ var __webpack_exports__ = {};
   !*** ./src/App.js ***!
   \********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Component */ "./src/Component.js");
-/* harmony import */ var _MainHeader_MainHeader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MainHeader/MainHeader */ "./src/MainHeader/MainHeader.js");
-/* harmony import */ var _MenuBlock_MenuBlock__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MenuBlock/MenuBlock */ "./src/MenuBlock/MenuBlock.js");
-/* harmony import */ var _MenuCategories_MenuCategories__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./MenuCategories/MenuCategories */ "./src/MenuCategories/MenuCategories.js");
-/* harmony import */ var _ModalWindowSandwich_ModalWindowSandwich__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ModalWindowSandwich/ModalWindowSandwich */ "./src/ModalWindowSandwich/ModalWindowSandwich.js");
-/* harmony import */ var _ModalWindowAuthorization_ModalWindowAuthorization__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ModalWindowAuthorization/ModalWindowAuthorization */ "./src/ModalWindowAuthorization/ModalWindowAuthorization.js");
-/* harmony import */ var _Order_Order__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Order/Order */ "./src/Order/Order.js");
-/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./storage */ "./src/storage.js");
-/* harmony import */ var _App_css__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./App.css */ "./src/App.css");
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./api */ "./src/api/index.js");
+/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Component */ "./src/Component.js");
+/* harmony import */ var _MainHeader_MainHeader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MainHeader/MainHeader */ "./src/MainHeader/MainHeader.js");
+/* harmony import */ var _MenuBlock_MenuBlock__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MenuBlock/MenuBlock */ "./src/MenuBlock/MenuBlock.js");
+/* harmony import */ var _MenuCategories_MenuCategories__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MenuCategories/MenuCategories */ "./src/MenuCategories/MenuCategories.js");
+/* harmony import */ var _ModalWindowSandwich_ModalWindowSandwich__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ModalWindowSandwich/ModalWindowSandwich */ "./src/ModalWindowSandwich/ModalWindowSandwich.js");
+/* harmony import */ var _ModalWindowAuthorization_ModalWindowAuthorization__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ModalWindowAuthorization/ModalWindowAuthorization */ "./src/ModalWindowAuthorization/ModalWindowAuthorization.js");
+/* harmony import */ var _Order_Order__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Order/Order */ "./src/Order/Order.js");
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./storage */ "./src/storage.js");
+/* harmony import */ var _App_css__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./App.css */ "./src/App.css");
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./api */ "./src/api/index.js");
 
 
 
@@ -5025,53 +5228,35 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-class App extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
+class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor() {
         super()
+        this.rerenderMainHeader = this.rerenderMainHeader.bind(this);
         this.rerenderMenuBlock = this.rerenderMenuBlock.bind(this);
         this.rerenderMenuCategories = this.rerenderMenuCategories.bind(this);
         this.rerenderOrder = this.rerenderOrder.bind(this);
         this.rerenderModalWindowSandwich = this.rerenderModalWindowSandwich.bind(this);
         this.rerenderModalWindowAuthorization = this.rerenderModalWindowAuthorization.bind(this)
-
-        const authorization = async () => {
-            try {
-                await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`http://localhost:8000/user/protected`, {
-                    headers: { // Прописать получение токена из куков
-                        Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBldGVyIiwiaWQiOiI2MzM2YjVkZjdhNTE5ZmJlZTY2NGIwNjMiLCJpYXQiOjE2NjQ4MDk4ODUsImV4cCI6MTY2NDgxNTg4NX0.1BJNAK5BxlEAiLoJ0t0fWq6xVE5djCXMK-wPd3RLSZ8"
-                    }
-                })
-                    .then(res => {
-                        _storage__WEBPACK_IMPORTED_MODULE_8__.storage.data.isAuthorized = res.data.success;
-                        console.log(res.data);
-                        console.log(_storage__WEBPACK_IMPORTED_MODULE_8__.storage.data.isAuthorized);
-                    });
-            } catch { _storage__WEBPACK_IMPORTED_MODULE_8__.storage.data.isAuthorized = false }
-        }
-
-        authorization();
     }
 
     createChildren() {
-        this.mainHeader = new _MainHeader_MainHeader__WEBPACK_IMPORTED_MODULE_2__["default"]({
-            rerender: this.rerenderModalWindowAuthorization
+        this.mainHeader = new _MainHeader_MainHeader__WEBPACK_IMPORTED_MODULE_1__["default"]({
+            rerender: this.rerenderMainHeader
         });
-        this.menuCategories = new _MenuCategories_MenuCategories__WEBPACK_IMPORTED_MODULE_4__["default"]({
+        this.menuCategories = new _MenuCategories_MenuCategories__WEBPACK_IMPORTED_MODULE_3__["default"]({
             rerender: this.rerenderMenuCategories
         });
-        this.order = new _Order_Order__WEBPACK_IMPORTED_MODULE_7__["default"]({
+        this.order = new _Order_Order__WEBPACK_IMPORTED_MODULE_6__["default"]({
             rerender: this.rerenderOrder
         });
-        this.menuBlock = new _MenuBlock_MenuBlock__WEBPACK_IMPORTED_MODULE_3__["default"]({
+        this.menuBlock = new _MenuBlock_MenuBlock__WEBPACK_IMPORTED_MODULE_2__["default"]({
             rerender: this.rerenderMenuBlock
         });
-        this.modalWindowSandwich = new _ModalWindowSandwich_ModalWindowSandwich__WEBPACK_IMPORTED_MODULE_5__["default"]({
+        this.modalWindowSandwich = new _ModalWindowSandwich_ModalWindowSandwich__WEBPACK_IMPORTED_MODULE_4__["default"]({
             rerender: this.rerenderModalWindowSandwich
         });
 
-        this.modalWindowAuthorization = new _ModalWindowAuthorization_ModalWindowAuthorization__WEBPACK_IMPORTED_MODULE_6__["default"]({
+        this.modalWindowAuthorization = new _ModalWindowAuthorization_ModalWindowAuthorization__WEBPACK_IMPORTED_MODULE_5__["default"]({
             rerender: this.rerenderModalWindowAuthorization
         })
     }
@@ -5088,8 +5273,15 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
         if (this.data.modalWindowAuthorizationShow) {
             this.modalWindowAuthorization.enable();
         }
-        const itemsInfo = await (0,_api__WEBPACK_IMPORTED_MODULE_10__.getItemsInfo)();
-        (0,_storage__WEBPACK_IMPORTED_MODULE_8__.setItemsInfo)(itemsInfo)
+        const itemsInfo = await (0,_api__WEBPACK_IMPORTED_MODULE_9__.getItemsInfo)();
+        const auth = await (0,_api__WEBPACK_IMPORTED_MODULE_9__.getAuthorization)();
+        (0,_storage__WEBPACK_IMPORTED_MODULE_7__.setItemsInfo)(itemsInfo);
+        (0,_storage__WEBPACK_IMPORTED_MODULE_7__.setAuthorization)(auth);
+    }
+
+    rerenderMainHeader() {
+        document.getElementsByClassName("header")[0].innerHTML = this.mainHeader.render();
+        this.mainHeader.enable();
     }
 
     rerenderMenuCategories() {
@@ -5108,7 +5300,7 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
     }
 
     rerenderModalWindowSandwich() {
-        if (_storage__WEBPACK_IMPORTED_MODULE_8__.storage.data.modalWindowAddShow || _storage__WEBPACK_IMPORTED_MODULE_8__.storage.data.modalWindowEditShow) {
+        if (_storage__WEBPACK_IMPORTED_MODULE_7__.storage.data.modalWindowAddShow || _storage__WEBPACK_IMPORTED_MODULE_7__.storage.data.modalWindowEditShow) {
             document.getElementsByClassName("modal-block")[0].innerHTML = this.modalWindowSandwich.render();
             this.modalWindowSandwich.enable();
         } else {
@@ -5117,7 +5309,7 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
     }
 
     rerenderModalWindowAuthorization() {
-        if (_storage__WEBPACK_IMPORTED_MODULE_8__.storage.data.modalWindowAuthorizationShow) {
+        if (_storage__WEBPACK_IMPORTED_MODULE_7__.storage.data.modalWindowAuthorizationShow) {
             document.getElementsByClassName("modal-block")[0].innerHTML = this.modalWindowAuthorization.render();
             this.modalWindowAuthorization.enable();
         } else {
@@ -5128,7 +5320,9 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
     render() {
         this.createChildren();
         return (/*html*/`
+        <div class="header">
             ${this.mainHeader.render()}
+        </div>
         <div class="main-form">
             <div class="categories_and_orders-block">
             <div class="menu-categories">

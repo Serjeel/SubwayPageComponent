@@ -40,6 +40,7 @@ class Order extends Component {
     }
 
     enable() {
+        console.log(storage.data.sandwiches);
         for (let i = 0; i < storage.data.orderItems.length; i++) {
             const handleChangeDeleteIconClick = () => {
                 setTotalPrice(storage.data.totalPrice - storage.data.orderItems[i].price);

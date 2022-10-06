@@ -13,7 +13,7 @@ module.exports.getAllUsers = async (req, res, next) => {
 module.exports.register = async (req, res, next) => {
     const user = new User({
         username: req.body.username.toLowerCase(),
-        password: hashSync(req.body.password, 10)
+        password: hashSync(req.body.password, 10),
     })
 
     user.save().then(user => {
@@ -21,7 +21,7 @@ module.exports.register = async (req, res, next) => {
             success: true,
             message: "User created successfully.",
             user: {
-                id: user._id,
+                id: user.userId,
                 username: user.username
             }
         })
@@ -65,7 +65,7 @@ module.exports.login = async (req, res, next) => {
             id: user._id
         }
 
-        const token = jwt.sign(payload, "Random string", { expiresIn: "100m" })
+        const token = jwt.sign(payload, "SuperPuperSecret", { expiresIn: "1d" })
 
         return res.status(200).send({
             success: true,
@@ -76,7 +76,6 @@ module.exports.login = async (req, res, next) => {
 };
 
 module.exports.protected = async (req, res, next) => {
-    console.log(req.headers.authorization);
     const token = JSON.parse(Buffer.from(req.headers.authorization.split('.')[1], 'base64').toString());
     // Теперь добавить токен в куки
     // На фронте добавлять его http заголовком с запросом на сервер

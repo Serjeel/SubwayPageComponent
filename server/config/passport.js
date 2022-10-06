@@ -5,7 +5,7 @@ const User = require("../models/userModel");
 const passport = require('passport')
 
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-opts.secretOrKey = 'Random string';
+opts.secretOrKey = 'SuperPuperSecret';
 
 passport.use(new JwtStrategy(opts, function (jwt_payload, done) {
     User.findOne({ id: jwt_payload.id }, function (err, user) {

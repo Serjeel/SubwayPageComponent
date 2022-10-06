@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import Component from "./Component";
 import MainHeader from "./MainHeader/MainHeader";
 import MenuBlock from "./MenuBlock/MenuBlock";
@@ -7,40 +5,24 @@ import MenuCategories from "./MenuCategories/MenuCategories";
 import ModalWindowSandwich from "./ModalWindowSandwich/ModalWindowSandwich";
 import ModalWindowAuthorization from "./ModalWindowAuthorization/ModalWindowAuthorization";
 import Order from "./Order/Order";
-import { storage, setItemsInfo } from "./storage";
+import { storage, setItemsInfo, setAuthorization } from "./storage";
 import './App.css';
-import { getItemsInfo } from "./api";
+import { getAuthorization, getItemsInfo } from "./api";
 
 class App extends Component {
     constructor() {
         super()
+        this.rerenderMainHeader = this.rerenderMainHeader.bind(this);
         this.rerenderMenuBlock = this.rerenderMenuBlock.bind(this);
         this.rerenderMenuCategories = this.rerenderMenuCategories.bind(this);
         this.rerenderOrder = this.rerenderOrder.bind(this);
         this.rerenderModalWindowSandwich = this.rerenderModalWindowSandwich.bind(this);
         this.rerenderModalWindowAuthorization = this.rerenderModalWindowAuthorization.bind(this)
-
-        const authorization = async () => {
-            try {
-                await axios.get(`http://localhost:8000/user/protected`, {
-                    headers: { // Прописать получение токена из куков
-                        Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBldGVyIiwiaWQiOiI2MzM2YjVkZjdhNTE5ZmJlZTY2NGIwNjMiLCJpYXQiOjE2NjQ4MDk4ODUsImV4cCI6MTY2NDgxNTg4NX0.1BJNAK5BxlEAiLoJ0t0fWq6xVE5djCXMK-wPd3RLSZ8"
-                    }
-                })
-                    .then(res => {
-                        storage.data.isAuthorized = res.data.success;
-                        console.log(res.data);
-                        console.log(storage.data.isAuthorized);
-                    });
-            } catch { storage.data.isAuthorized = false }
-        }
-
-        authorization();
     }
 
     createChildren() {
         this.mainHeader = new MainHeader({
-            rerender: this.rerenderModalWindowAuthorization
+            rerender: this.rerenderMainHeader
         });
         this.menuCategories = new MenuCategories({
             rerender: this.rerenderMenuCategories
@@ -73,7 +55,14 @@ class App extends Component {
             this.modalWindowAuthorization.enable();
         }
         const itemsInfo = await getItemsInfo();
-        setItemsInfo(itemsInfo)
+        const auth = await getAuthorization();
+        setItemsInfo(itemsInfo);
+        setAuthorization(auth);
+    }
+
+    rerenderMainHeader() {
+        document.getElementsByClassName("header")[0].innerHTML = this.mainHeader.render();
+        this.mainHeader.enable();
     }
 
     rerenderMenuCategories() {
@@ -112,7 +101,9 @@ class App extends Component {
     render() {
         this.createChildren();
         return (/*html*/`
+        <div class="header">
             ${this.mainHeader.render()}
+        </div>
         <div class="main-form">
             <div class="categories_and_orders-block">
             <div class="menu-categories">
