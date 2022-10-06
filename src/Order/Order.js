@@ -26,6 +26,7 @@ class Order extends Component {
     basketRender() {
         let items = ""
         storage.data.orderItems.map((item) => {
+            console.log(item);
             items += /*html*/`
                 <div class="order-items" id="order-${item.id}">
                     <p class="${item.sandwichId ? "sandwich-title" : "order-title"}" 
@@ -40,7 +41,6 @@ class Order extends Component {
     }
 
     enable() {
-        console.log(storage.data.sandwiches);
         for (let i = 0; i < storage.data.orderItems.length; i++) {
             const handleChangeDeleteIconClick = () => {
                 setTotalPrice(storage.data.totalPrice - storage.data.orderItems[i].price);

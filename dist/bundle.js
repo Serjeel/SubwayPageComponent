@@ -4271,10 +4271,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
-/* harmony import */ var _Ingredient_Ingredient__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Ingredient/Ingredient */ "./src/Ingredient/Ingredient.js");
-/* harmony import */ var _ModalWindowSandwich_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ModalWindowSandwich.css */ "./src/ModalWindowSandwich/ModalWindowSandwich.css");
-/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
+/* harmony import */ var _Ingredient_Ingredient__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Ingredient/Ingredient */ "./src/Ingredient/Ingredient.js");
+/* harmony import */ var _ModalWindowSandwich_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ModalWindowSandwich.css */ "./src/ModalWindowSandwich/ModalWindowSandwich.css");
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
 
 
 
@@ -4291,14 +4293,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
+
+
+class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
     constructor(props) {
         super();
 
         this.subscribers = ["selectedModalTab", "modalContent", "tabReadyContent",
             "countersValue", "modalWindowAddShow", "modalWindowEditShow", "changeableOrderItem"];
         for (let i in this.subscribers) {
-            _storage__WEBPACK_IMPORTED_MODULE_3__.storage.addSubscriber(this.subscribers[i], props.rerender);
+            _storage__WEBPACK_IMPORTED_MODULE_4__.storage.addSubscriber(this.subscribers[i], props.rerender);
         }
 
         this.tabs = {
@@ -4312,41 +4316,41 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_0__["defau
     }
 
     enable() {
-        let tabReadyContent = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent;
-        let modalContent = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent;
-        let previousValues = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.previousValues;
-        let sandwiches = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches;
-        let orderItems = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems;
+        let tabReadyContent = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent;
+        let modalContent = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent;
+        let previousValues = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.previousValues;
+        let sandwiches = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches;
+        let orderItems = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.orderItems;
 
         const sizesTabClick = () => {
-            (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedModalTab)("sizes")
+            (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedModalTab)("sizes")
         }
         const breadsTabClick = () => {
-            ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedModalTab)("breads")
+            ;(0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedModalTab)("breads")
         }
         const vegetablesTabClick = () => {
-            ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedModalTab)("vegetables")
+            ;(0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedModalTab)("vegetables")
         }
         const saucesTabClick = () => {
-            ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedModalTab)("sauces")
+            ;(0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedModalTab)("sauces")
         }
         const fillingsTabClick = () => {
-            ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedModalTab)("fillings")
+            ;(0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedModalTab)("fillings")
         }
         const readyTabClick = () => {
-            ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedModalTab)("ready")
+            ;(0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedModalTab)("ready")
         }
 
         const closeIconClick = () => {
             // По какой то причине при sandwiches меняется сразу после нажатия на итемы. Исправить
-            ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setPreviousValues)({
+            ;(0,_storage__WEBPACK_IMPORTED_MODULE_4__.setPreviousValues)({
                 sizes: 0,
                 breads: 0
             })
-            if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalWindowAddShow) {
-                (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowAddShow)(false);
+            if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalWindowAddShow) {
+                (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowAddShow)(false);
             } else {
-                (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowEditShow)(false);
+                (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowEditShow)(false);
             }
         }
 
@@ -4359,37 +4363,37 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_0__["defau
 
         document.getElementsByClassName("close-icon")[0].addEventListener("click", closeIconClick)
 
-        for (let key in _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab]) {
+        for (let key in _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab]) {
             const modalItemClick = () => {
                 const scrollPosition = document.getElementsByClassName("tab-content-block")[0].scrollTop
-                if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab === "sizes" || _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab === "breads") {
+                if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab === "sizes" || _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab === "breads") {
 
-                    tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab] = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].name;
+                    tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab] = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab][key].name;
 
-                    modalContent.price += _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].price;
-                    modalContent.price -= _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.previousValues[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab];
+                    modalContent.price += _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab][key].price;
+                    modalContent.price -= _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.previousValues[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab];
 
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(modalContent);
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalContent)(modalContent);
 
-                    previousValues[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab] = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].price;
+                    previousValues[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab] = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab][key].price;
 
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setPreviousValues)(previousValues);
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)(tabReadyContent);
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setPreviousValues)(previousValues);
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTabReadyContent)(tabReadyContent);
                 } else {
-                    if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].includes(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].name)) {
-                        let n = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].indexOf(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].name);
-                        modalContent.price -= _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].price;
+                    if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab].includes(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab][key].name)) {
+                        let n = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab].indexOf(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab][key].name);
+                        modalContent.price -= _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab][key].price;
 
-                        tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].splice(n, 1);
+                        tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab].splice(n, 1);
 
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(modalContent);
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)(tabReadyContent);
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalContent)(modalContent);
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTabReadyContent)(tabReadyContent);
                     } else {
-                        tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].push(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].name);
+                        tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab].push(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab][key].name);
 
-                        modalContent.price += _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].price;
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(modalContent);
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)(tabReadyContent);
+                        modalContent.price += _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab][key].price;
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalContent)(modalContent);
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTabReadyContent)(tabReadyContent);
                     }
                 }
                 document.getElementsByClassName("tab-content-block")[0].scrollTo(0, scrollPosition)
@@ -4397,101 +4401,117 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_0__["defau
             document.getElementById("item-" + key).addEventListener("click", modalItemClick)
         }
 
-        if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab === "ready") {
-            let countersValue = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue;
+        if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab === "ready") {
+            let countersValue = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue;
             const handleModalPlusClick = () => {
                 modalContent.amount += 1;
-                (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent);
-                countersValue[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.id - 1] += 1;
-                (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setCountersValue)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue);
+                (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent);
+                countersValue[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.id - 1] += 1;
+                (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setCountersValue)(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue);
             }
             const handleModalMinusClick = () => {
-                if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount > 1) {
+                if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount > 1) {
                     modalContent.amount -= 1;
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent);
-                    countersValue[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.id - 1] -= 1;
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setCountersValue)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue);
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent);
+                    countersValue[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.id - 1] -= 1;
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setCountersValue)(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue);
                 }
             }
             const handleInputChange = () => {
                 if (document.getElementById("counter-modal").value > 0) {
                     modalContent.amount = parseInt(document.getElementById("counter-modal").value);
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent);
-                    countersValue[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.id - 1] = parseInt(document.
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent);
+                    countersValue[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.id - 1] = parseInt(document.
                         getElementById("counter-modal").value);
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setCountersValue)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue);
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setCountersValue)(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue);
                 } else {
                     modalContent.amount = 1;
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent);
-                    countersValue[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.id - 1] = 1;
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setCountersValue)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue);
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent);
+                    countersValue[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.id - 1] = 1;
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setCountersValue)(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue);
                 }
             }
 
-            const handleButtonModalClick = () => {
-                ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedModalTab)("sizes");
-                if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalWindowAddShow) {
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowAddShow)(false);
+            const handleButtonModalClick = async () => {
+                ;(0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedModalTab)("sizes");
+                if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalWindowAddShow) {
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowAddShow)(false);
 
-                    sandwiches.push({
-                        id: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.id,
-                        title: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.title,
-                        amount: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount,
-                        price: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.price,
-                        sizes: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.sizes,
-                        breads: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.breads,
-                        vegetables: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.vegetables,
-                        sauces: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.sauces,
-                        fillings: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.fillings
-                    });
+                    await axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://localhost:8000/order/createNewOrder', {
+                        title: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.title,
+                        username: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.username,
+                        amount: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount,
+                        price: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.price,
+                        sizes: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.sizes,
+                        breads: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.breads,
+                        vegetables: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.vegetables,
+                        sauces: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.sauces,
+                        fillings: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.fillings
+                    }).then(result => {
+                        sandwiches = result.data;
 
-                    orderItems.push({
-                        sandwichId: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches.length,
-                        id: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems.length + 1,
-                        title: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.title,
-                        amount: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount,
-                        price: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.price * _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount
-                    });
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSandwiches)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches);
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setOrderItems)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems);
+                        orderItems.push({ // Временно. Удалить после добавления get. Сделать отображение всех
+                                          // заказов при загрузке. Продумать логику отображения обычных
+                                          // заказов и сэндвичей. Есди уже имеющаяся будет с ошибками
+                            sandwichId: sandwiches.length,
+                            id: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.orderItems.length + 1,
+                            title: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.title,
+                            amount: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount,
+                            price: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.price * _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount
+                        });
 
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.totalPrice + (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.price * _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount));
-
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)({
-                        sizes: "15 См",
-                        breads: "Белый итальянский",
-                        vegetables: [],
-                        sauces: [],
-                        fillings: []
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSandwiches)(sandwiches);
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setOrderItems)(orderItems);
+    
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.totalPrice + (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.price * _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount));
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTabReadyContent)({
+                            sizes: "15 См",
+                            breads: "Белый итальянский",
+                            vegetables: [],
+                            sauces: [],
+                            fillings: []
+                        })
                     })
+
+                   /* sandwiches.push({
+                        id: storage.data.modalContent.id,
+                        title: storage.data.modalContent.title,
+                        amount: storage.data.modalContent.amount,
+                        price: storage.data.modalContent.price,
+                        sizes: storage.data.tabReadyContent.sizes,
+                        breads: storage.data.tabReadyContent.breads,
+                        vegetables: storage.data.tabReadyContent.vegetables,
+                        sauces: storage.data.tabReadyContent.sauces,
+                        fillings: storage.data.tabReadyContent.fillings
+                    });*/
                 }
-                if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalWindowEditShow) {
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowEditShow)(false);
+                if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalWindowEditShow) {
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowEditShow)(false);
 
-                    sandwiches[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.changeableOrderItem.sandwichId] = {
-                        id: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.id,
-                        title: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.title,
-                        amount: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount,
-                        price: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.price,
-                        sizes: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.sizes,
-                        breads: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.breads,
-                        vegetables: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.vegetables,
-                        sauces: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.sauces,
-                        fillings: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.fillings
+                    sandwiches[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.changeableOrderItem.sandwichId] = {
+                        id: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.id,
+                        title: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.title,
+                        amount: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount,
+                        price: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.price,
+                        sizes: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.sizes,
+                        breads: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.breads,
+                        vegetables: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.vegetables,
+                        sauces: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.sauces,
+                        fillings: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.fillings
                     };
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSandwiches)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches);
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSandwiches)(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches);
 
-                    let previousPrice = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.changeableOrderItem.orderId].price;
+                    let previousPrice = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.orderItems[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.changeableOrderItem.orderId].price;
 
-                    orderItems[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.changeableOrderItem.orderId].amount = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount;
-                    orderItems[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.changeableOrderItem.orderId].price =
-                        _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.price * _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount;
+                    orderItems[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.changeableOrderItem.orderId].amount = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount;
+                    orderItems[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.changeableOrderItem.orderId].price =
+                        _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.price * _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount;
 
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setOrderItems)(orderItems);
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setOrderItems)(orderItems);
 
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.totalPrice + (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.price *
-                        _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount) - previousPrice);
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)({
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.totalPrice + (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.price *
+                        _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount) - previousPrice);
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTabReadyContent)({
                         sizes: "15 См",
                         breads: "Белый итальянский",
                         vegetables: [],
@@ -4508,13 +4528,13 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_0__["defau
     }
 
     loadIngredients() {
-        const ingredient = new _Ingredient_Ingredient__WEBPACK_IMPORTED_MODULE_1__["default"]({
-            tabReadyContent: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent
+        const ingredient = new _Ingredient_Ingredient__WEBPACK_IMPORTED_MODULE_2__["default"]({
+            tabReadyContent: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent
         });
         let items = "";
 
-        for (let key in _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab]) {
-            items += ingredient.render(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key], key);
+        for (let key in _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab]) {
+            items += ingredient.render(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab][key], key);
         }
 
         return items;
@@ -4529,28 +4549,28 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_0__["defau
             <p class="final-order-ready">Ваш сендвич готов!</p>
         <div class="final-order-size">
             <p class="final-order-size-text">Размер:</p>
-            <p class="final-order-size-value">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.sizes}</p>
+            <p class="final-order-size-value">${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.sizes}</p>
         </div>
         <div class="final-order-bread">
             <p class="final-order-bread-text">Хлеб:</p>
-            <p class="final-order-bread-value">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.breads}</p>
+            <p class="final-order-bread-value">${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.breads}</p>
         </div>
         <div class="final-order-vegetables">
             <p class="final-order-vegetables-text">Овощи:</p>
-            <p class="final-order-vegetables-value">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.vegetables.length === 0
-                ? "Нет" : _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.vegetables}</p>
+            <p class="final-order-vegetables-value">${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.vegetables.length === 0
+                ? "Нет" : _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.vegetables}</p>
         </div>
         <div class="final-order-sauces">
             <p class="final-order-sauces-text">Соусы:</p>
-            <p class="final-order-sauces-value">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.sauces.length === 0
-                ? "Нет" : _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.sauces}</p>
+            <p class="final-order-sauces-value">${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.sauces.length === 0
+                ? "Нет" : _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.sauces}</p>
         </div>
         <div class="final-order-filling">
             <p class="final-order-filling-text">Начинка:</p>
-            <p class="final-order-filling-value">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.fillings.length === 0
-                ? "Нет" : _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.fillings}</p>
+            <p class="final-order-filling-value">${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.fillings.length === 0
+                ? "Нет" : _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.fillings}</p>
         </div>
-            <p class="final-order-title" id="item-name-modal">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.title}</p>
+            <p class="final-order-title" id="item-name-modal">${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.title}</p>
         </div>
         `
         return content
@@ -4561,18 +4581,18 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_0__["defau
         <p class="item-amount">Количество</p>
         <div class="amount-block">
             <img class="minus-icon" id="minus-modal" src="i/minus.svg">
-            <input class="item-counter" type="text" id="counter-modal" value=${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount}>
+            <input class="item-counter" type="text" id="counter-modal" value=${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount}>
             <img class="plus-icon" id="plus-modal" src="i/plus.svg">
         </div>
-        <button class="item-button" id="button-modal">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalWindowAddShow ?
-                "В КОРЗИНУ" : (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalWindowEditShow ? "ИЗМЕНИТЬ" : [])}</button>
+        <button class="item-button" id="button-modal">${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalWindowAddShow ?
+                "В КОРЗИНУ" : (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalWindowEditShow ? "ИЗМЕНИТЬ" : [])}</button>
         `)
     }
 
     render() {
         let modalTabs = ``;
         for (let i in this.tabs) {
-            modalTabs += `<p class="${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab === i ? "tab-active" : "tab"}"
+            modalTabs += `<p class="${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab === i ? "tab-active" : "tab"}"
                 id="${i}">${this.tabs[i]}</p>`
         }
         return (/*html*/`
@@ -4590,17 +4610,17 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_0__["defau
                 <div class="arrows-block">
                 </div>
                 <div class="tab-content-block">
-                ${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab === "ready" ? this.loadReadyPage() : this.loadIngredients()}
+                ${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab === "ready" ? this.loadReadyPage() : this.loadIngredients()}
                 </div>
                 <div class="modal-footer">
                     <div class="item-price-block">
                         <p class="price-text">Цена:</p>
-                        <p class="price-value" id="price-modal">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab === "ready" ?
-                _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.price * _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount : _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.price}</p>
+                        <p class="price-value" id="price-modal">${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab === "ready" ?
+                _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.price * _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount : _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.price}</p>
                         <p class="price-currency">руб.</p>
                     </div>
                     <div class="modal-order-block">
-                    ${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab === "ready" ? this.loadModalOrder() : []}
+                    ${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedModalTab === "ready" ? this.loadModalOrder() : []}
                     </div>
                 </div>
             </div>
@@ -4655,6 +4675,7 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     basketRender() {
         let items = ""
         _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.orderItems.map((item) => {
+            console.log(item);
             items += /*html*/`
                 <div class="order-items" id="order-${item.id}">
                     <p class="${item.sandwichId ? "sandwich-title" : "order-title"}" 
@@ -4669,7 +4690,6 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     }
 
     enable() {
-        console.log(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches);
         for (let i = 0; i < _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.orderItems.length; i++) {
             const handleChangeDeleteIconClick = () => {
                 (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.totalPrice - _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.orderItems[i].price);
@@ -4972,7 +4992,7 @@ function setItemsInfo(data) {
 function setAuthorization(data) {
     storage.data.isAuthorized = data.success;
     storage.data.username = data.user.username;
-    console.log(data);
+   // console.log(data);
 }
 
 /***/ }),

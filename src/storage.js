@@ -132,5 +132,5 @@ export function setItemsInfo(data) {
 export function setAuthorization(data) {
     storage.data.isAuthorized = data.success;
     storage.data.username = data.user.username;
-    console.log(data);
+   // console.log(data);
 }

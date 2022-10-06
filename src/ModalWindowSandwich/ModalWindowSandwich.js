@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import Component from "../Component";
 import Ingredient from "../Ingredient/Ingredient";
 import './ModalWindowSandwich.css';
@@ -156,12 +158,48 @@ class ModalWindowSandwich extends Component {
                 }
             }
 
-            const handleButtonModalClick = () => {
+            const handleButtonModalClick = async () => {
                 setSelectedModalTab("sizes");
                 if (storage.data.modalWindowAddShow) {
                     setModalWindowAddShow(false);
 
-                    sandwiches.push({
+                    await axios.post('http://localhost:8000/order/createNewOrder', {
+                        title: storage.data.modalContent.title,
+                        username: storage.data.username,
+                        amount: storage.data.modalContent.amount,
+                        price: storage.data.modalContent.price,
+                        sizes: storage.data.tabReadyContent.sizes,
+                        breads: storage.data.tabReadyContent.breads,
+                        vegetables: storage.data.tabReadyContent.vegetables,
+                        sauces: storage.data.tabReadyContent.sauces,
+                        fillings: storage.data.tabReadyContent.fillings
+                    }).then(result => {
+                        sandwiches = result.data;
+
+                        orderItems.push({ // Временно. Удалить после добавления get. Сделать отображение всех
+                                          // заказов при загрузке. Продумать логику отображения обычных
+                                          // заказов и сэндвичей. Есди уже имеющаяся будет с ошибками
+                            sandwichId: sandwiches.length,
+                            id: storage.data.orderItems.length + 1,
+                            title: storage.data.modalContent.title,
+                            amount: storage.data.modalContent.amount,
+                            price: storage.data.modalContent.price * storage.data.modalContent.amount
+                        });
+
+                        setSandwiches(sandwiches);
+                        setOrderItems(orderItems);
+    
+                        setTotalPrice(storage.data.totalPrice + (storage.data.modalContent.price * storage.data.modalContent.amount));
+                        setTabReadyContent({
+                            sizes: "15 См",
+                            breads: "Белый итальянский",
+                            vegetables: [],
+                            sauces: [],
+                            fillings: []
+                        })
+                    })
+
+                   /* sandwiches.push({
                         id: storage.data.modalContent.id,
                         title: storage.data.modalContent.title,
                         amount: storage.data.modalContent.amount,
@@ -171,27 +209,7 @@ class ModalWindowSandwich extends Component {
                         vegetables: storage.data.tabReadyContent.vegetables,
                         sauces: storage.data.tabReadyContent.sauces,
                         fillings: storage.data.tabReadyContent.fillings
-                    });
-
-                    orderItems.push({
-                        sandwichId: storage.data.sandwiches.length,
-                        id: storage.data.orderItems.length + 1,
-                        title: storage.data.modalContent.title,
-                        amount: storage.data.modalContent.amount,
-                        price: storage.data.modalContent.price * storage.data.modalContent.amount
-                    });
-                    setSandwiches(storage.data.sandwiches);
-                    setOrderItems(storage.data.orderItems);
-
-                    setTotalPrice(storage.data.totalPrice + (storage.data.modalContent.price * storage.data.modalContent.amount));
-
-                    setTabReadyContent({
-                        sizes: "15 См",
-                        breads: "Белый итальянский",
-                        vegetables: [],
-                        sauces: [],
-                        fillings: []
-                    })
+                    });*/
                 }
                 if (storage.data.modalWindowEditShow) {
                     setModalWindowEditShow(false);
