@@ -1,6 +1,9 @@
+import axios from 'axios';
+
 import Component from "../Component";
 import MenuItem from "../MenuItem/MenuItem";
 import './MenuBlock.css';
+
 import { setTabReadyContent, storage } from "../storage";
 import { setSelectedModalTab } from "../storage";
 import { setModalContent } from "../storage";
@@ -49,7 +52,7 @@ class MenuBlock extends Component {
                 setCountersValue(countersValue);
             }
 
-            const handleButtonClick = () => {
+            const handleButtonClick = async() => {
                 if (storage.data.selectedTab === "sandwiches") {
                     setSelectedModalTab("sizes");
                     setModalWindowAddShow(true);
@@ -68,16 +71,25 @@ class MenuBlock extends Component {
                     };
                     setTabReadyContent(tabReadyContent)
                 } else {
-                    let orderItems = storage.data.orderItems;
-                    orderItems.push({
-                        id: storage.data.orderItems.length + 1,
-                        title: storage.data.items[i].name,
-                        amount: storage.data.countersValue[i],
-                        price: storage.data.items[i].price * storage.data.countersValue[i]
-                    });
-                    setOrderItems(orderItems);
-                    setTotalPrice(storage.data.totalPrice + (storage.data.items[i].price
-                        * storage.data.countersValue[i]))
+                    await axios.post('http://localhost:8000/order/createNewOrder', {
+                        // 1. Здесь продумать откуда доставать нужные данные.
+                        // 2. Как удалять и изменять конкретный сэндвич, если ид самого сэндвича
+                        // и заказа не совпадают?
+                        // 3. Спросить у Саши, как не включать в базу массивы, если они в схеме(хотя, 
+                        // возможно, для них просто сделать вторую схему и всё, типа sandwichOrderSchema 
+                        // и просто orderSchema)
+                        title: storage.data.modalContent.title,
+                        username: storage.data.username,
+                        amount: storage.data.modalContent.amount,
+                        price: storage.data.modalContent.price,
+                    }).then(result => {
+                        console.log(result.data);
+                        let orderItems = result.data;
+                        
+                        setOrderItems(orderItems);
+                        setTotalPrice(storage.data.totalPrice + (storage.data.items[i].price
+                            * storage.data.countersValue[i]))
+                    })
                 }
             }
 

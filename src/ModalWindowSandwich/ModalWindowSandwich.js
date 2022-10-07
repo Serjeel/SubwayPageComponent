@@ -174,20 +174,27 @@ class ModalWindowSandwich extends Component {
                         sauces: storage.data.tabReadyContent.sauces,
                         fillings: storage.data.tabReadyContent.fillings
                     }).then(result => {
-                        sandwiches = result.data;
+                        sandwiches = result.data.filter(item => item.breads);
+                        orderItems = result.data;
 
-                        orderItems.push({ // Временно. Удалить после добавления get. Сделать отображение всех
+                        console.log(orderItems);
+
+                       /* orderItems.push({ // Временно. Удалить после добавления get. Сделать отображение всех
                                           // заказов при загрузке. Продумать логику отображения обычных
-                                          // заказов и сэндвичей. Есди уже имеющаяся будет с ошибками
+                                          // заказов и сэндвичей. Есди уже имеющаяся будет с ошибками.
+                                          // Удалять из orderItems или должно удаляться само при ререндеринге?
                             sandwichId: sandwiches.length,
                             id: storage.data.orderItems.length + 1,
                             title: storage.data.modalContent.title,
+                            breads: result.data.breads,
                             amount: storage.data.modalContent.amount,
                             price: storage.data.modalContent.price * storage.data.modalContent.amount
-                        });
+                        });*/
 
-                        setSandwiches(sandwiches);
+                        console.log(result.data);
+
                         setOrderItems(orderItems);
+                        setSandwiches(sandwiches);
     
                         setTotalPrice(storage.data.totalPrice + (storage.data.modalContent.price * storage.data.modalContent.amount));
                         setTabReadyContent({

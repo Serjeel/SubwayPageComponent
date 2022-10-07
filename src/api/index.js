@@ -1,6 +1,8 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
+import { storage } from "../storage";
+
 export async function getItemsInfo() {
     let data = {};
     await axios.get(`http://localhost:8000/food/getAllFood`)
@@ -27,6 +29,15 @@ export async function getAuthorization() {
             }
         }
     }
+
+    return data;
+}
+
+export async function getAllOrders() {
+    let data = {};
+    console.log(storage.data.username);
+    await axios.get(`http://localhost:8000/order/getAllOrders?username=${storage.data.username}`)
+        .then(res => { data = res.data });
 
     return data;
 }

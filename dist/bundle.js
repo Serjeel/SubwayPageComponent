@@ -3776,6 +3776,7 @@ class MainHeader extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
             const loginButtonClick = () => {
                 console.log(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.isAuthorized);
                 js_cookie__WEBPACK_IMPORTED_MODULE_0__["default"].remove("token");
+                js_cookie__WEBPACK_IMPORTED_MODULE_0__["default"].remove("username");
                 window.location.reload();
             }
             document.getElementsByClassName("login_and_register-button")[0].addEventListener("click", loginButtonClick)
@@ -3815,10 +3816,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
-/* harmony import */ var _MenuItem_MenuItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../MenuItem/MenuItem */ "./src/MenuItem/MenuItem.js");
-/* harmony import */ var _MenuBlock_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MenuBlock.css */ "./src/MenuBlock/MenuBlock.css");
-/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
+/* harmony import */ var _MenuItem_MenuItem__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../MenuItem/MenuItem */ "./src/MenuItem/MenuItem.js");
+/* harmony import */ var _MenuBlock_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MenuBlock.css */ "./src/MenuBlock/MenuBlock.css");
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
 
 
 
@@ -3830,55 +3833,58 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
+
+
+
+class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
     constructor(props) {
         super()
 
         this.subscribers = ["countersValue", "items", "selectedTab"];
         for (let i in this.subscribers) {
-            _storage__WEBPACK_IMPORTED_MODULE_3__.storage.addSubscriber(this.subscribers[i], props.rerender);
+            _storage__WEBPACK_IMPORTED_MODULE_4__.storage.addSubscriber(this.subscribers[i], props.rerender);
         }
     }
 
     enable() {
-        for (let i = 0; i < _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items.length; i++) {
-            if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items[i] && _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items[i].category !== _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedTab) {
+        for (let i = 0; i < _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items.length; i++) {
+            if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i] && _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].category !== _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedTab) {
                 continue;
             }
 
             const handlePlusClick = () => {
-                let countersValue = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue;
+                let countersValue = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue;
                 countersValue[i] += 1; 
-                (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setCountersValue)(countersValue)
+                (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setCountersValue)(countersValue)
             }
 
             const handleMinusClick = () => {
-                if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue[i] > 1) {
-                    let countersValue = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue;
+                if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue[i] > 1) {
+                    let countersValue = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue;
                     countersValue[i] -= 1;
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setCountersValue)(countersValue)
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setCountersValue)(countersValue)
                 }
             }
 
             const handleInputChange = () => {
-                let countersValue = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue;
+                let countersValue = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue;
                 if (document.getElementById("counter-" + (i + 1)).value > 0) {
                     countersValue[i] = parseInt(document.getElementById("counter-" + (i + 1)).value);
                 } else {
                     countersValue[i] = 1;
                 }
-                (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setCountersValue)(countersValue);
+                (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setCountersValue)(countersValue);
             }
 
-            const handleButtonClick = () => {
-                if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedTab === "sandwiches") {
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedModalTab)("sizes");
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowAddShow)(true);
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)({
+            const handleButtonClick = async() => {
+                if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedTab === "sandwiches") {
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedModalTab)("sizes");
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowAddShow)(true);
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalContent)({
                         id: i + 1,
-                        title: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items[i].name,
-                        amount: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue[i],
-                        price: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items[i].price
+                        title: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].name,
+                        amount: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue[i],
+                        price: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].price
                     });
                     const tabReadyContent = {
                         sizes: "15 См",
@@ -3887,18 +3893,27 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                         sauces: [],
                         fillings: []
                     };
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)(tabReadyContent)
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTabReadyContent)(tabReadyContent)
                 } else {
-                    let orderItems = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems;
-                    orderItems.push({
-                        id: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems.length + 1,
-                        title: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items[i].name,
-                        amount: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue[i],
-                        price: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items[i].price * _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue[i]
-                    });
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setOrderItems)(orderItems);
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.totalPrice + (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items[i].price
-                        * _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue[i]))
+                    await axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://localhost:8000/order/createNewOrder', {
+                        // 1. Здесь продумать откуда доставать нужные данные.
+                        // 2. Как удалять и изменять конкретный сэндвич, если ид самого сэндвича
+                        // и заказа не совпадают?
+                        // 3. Спросить у Саши, как не включать в базу массивы, если они в схеме(хотя, 
+                        // возможно, для них просто сделать вторую схему и всё, типа sandwichOrderSchema 
+                        // и просто orderSchema)
+                        title: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.title,
+                        username: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.username,
+                        amount: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount,
+                        price: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.price,
+                    }).then(result => {
+                        console.log(result.data);
+                        let orderItems = result.data;
+                        
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setOrderItems)(orderItems);
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.totalPrice + (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].price
+                            * _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue[i]))
+                    })
                 }
             }
 
@@ -3910,23 +3925,23 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     }
 
     loadMenu() {
-        const menuItem = new _MenuItem_MenuItem__WEBPACK_IMPORTED_MODULE_1__["default"]();
+        const menuItem = new _MenuItem_MenuItem__WEBPACK_IMPORTED_MODULE_2__["default"]();
         let items = "";
         let logo = "";
-        for (let i in _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items) {
-            if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items[i].category !== _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedTab) {
+        for (let i in _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items) {
+            if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].category !== _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedTab) {
                 continue;
             }
 
-            if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items[i].market === "sfc") {
+            if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].market === "sfc") {
                 logo = "i/South_fried_chicken_logo.png";
-            } else if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items[i].market === "doner") {
+            } else if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].market === "doner") {
                 logo = "i/Doner_logo.png";
             } else {
                 logo = "i/Subway_logo.png";
             }
-            items += menuItem.render(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items[i], parseInt(i) + 1, logo,
-                _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue);
+            items += menuItem.render(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i], parseInt(i) + 1, logo,
+                _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue);
         }
 
         return items;
@@ -4155,11 +4170,12 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_2__["
                         console.log(res.data.token);;
                         if (res.data.success === true) {
 
+                            (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowAuthorizationShow)(false)
+                            js_cookie__WEBPACK_IMPORTED_MODULE_1__["default"].set('token', res.data.token);
+                            js_cookie__WEBPACK_IMPORTED_MODULE_1__["default"].set('username', this.inputsContent.logUsername);
                             for (let i in this.inputsContent) {
                                 this.inputsContent[i] = '';
                             }
-                            (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowAuthorizationShow)(false)
-                            js_cookie__WEBPACK_IMPORTED_MODULE_1__["default"].set('token', res.data.token);
                             window.location.reload();
                         } else {
                             alert(res.data.message)
@@ -4448,20 +4464,27 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_1__["defau
                         sauces: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.sauces,
                         fillings: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.fillings
                     }).then(result => {
-                        sandwiches = result.data;
+                        sandwiches = result.data.filter(item => item.breads);
+                        orderItems = result.data;
 
-                        orderItems.push({ // Временно. Удалить после добавления get. Сделать отображение всех
+                        console.log(orderItems);
+
+                       /* orderItems.push({ // Временно. Удалить после добавления get. Сделать отображение всех
                                           // заказов при загрузке. Продумать логику отображения обычных
-                                          // заказов и сэндвичей. Есди уже имеющаяся будет с ошибками
+                                          // заказов и сэндвичей. Есди уже имеющаяся будет с ошибками.
+                                          // Удалять из orderItems или должно удаляться само при ререндеринге?
                             sandwichId: sandwiches.length,
-                            id: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.orderItems.length + 1,
-                            title: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.title,
-                            amount: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount,
-                            price: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.price * _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount
-                        });
+                            id: storage.data.orderItems.length + 1,
+                            title: storage.data.modalContent.title,
+                            breads: result.data.breads,
+                            amount: storage.data.modalContent.amount,
+                            price: storage.data.modalContent.price * storage.data.modalContent.amount
+                        });*/
 
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSandwiches)(sandwiches);
+                        console.log(result.data);
+
                         (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setOrderItems)(orderItems);
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSandwiches)(sandwiches);
     
                         (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.totalPrice + (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.price * _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount));
                         (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTabReadyContent)({
@@ -4644,9 +4667,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
-/* harmony import */ var _Order_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Order.css */ "./src/Order/Order.css");
-/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
+/* harmony import */ var _Order_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Order.css */ "./src/Order/Order.css");
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
 
 
 
@@ -4662,27 +4687,30 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
+
+
+class Order extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
     constructor(props) {
         super()
 
         this.subscribers = ["orderItems", "totalPrice", "sandwiches"];
         for (let i in this.subscribers) {
-            _storage__WEBPACK_IMPORTED_MODULE_2__.storage.addSubscriber(this.subscribers[i], props.rerender);
+            _storage__WEBPACK_IMPORTED_MODULE_3__.storage.addSubscriber(this.subscribers[i], props.rerender);
         }
     }
 
     basketRender() {
         let items = ""
-        _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.orderItems.map((item) => {
-            console.log(item);
+        console.log(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems);
+        console.log(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches);
+        _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems.map((item, i) => {
             items += /*html*/`
-                <div class="order-items" id="order-${item.id}">
-                    <p class="${item.sandwichId ? "sandwich-title" : "order-title"}" 
-                    id="${item.sandwichId ? "sandwich-" + item.sandwichId : []}">${item.title}</p>
+                <div class="order-items" id="order-${i + 1}">
+                <p class="${item.breads ? "sandwich-title" : "order-title"}" 
+                id="${item.breads ? "sandwich-" + (i + 1) : []}">${item.title}</p>
                     <p class="order-amount">${item.amount}</p>
                     <p class="order-price">${item.price} руб.</p>
-                    <img class="delete-icon" id="delete-${item.id}" src="i/trash.svg"/>
+                    <img class="delete-icon" id="delete-${i + 1}" src="i/trash.svg"/>
                 </div>
             `
         })
@@ -4690,58 +4718,61 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     }
 
     enable() {
-        for (let i = 0; i < _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.orderItems.length; i++) {
-            const handleChangeDeleteIconClick = () => {
-                (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.totalPrice - _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.orderItems[i].price);
-                if (_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.orderItems[i].sandwichId) {
-                    _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches.splice(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.orderItems[i].sandwichId - 1, 1);
-                }
-                _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.orderItems.splice(i, 1);
+        for (let i = 0; i < _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems.length; i++) {
+            const handleChangeDeleteIconClick = async () => {
 
-                let sandwichId = 1;
-                _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.orderItems.map((item, i) => {
+                await axios__WEBPACK_IMPORTED_MODULE_0___default()["delete"](
+                    `http://localhost:8000/order/deleteorder?orderId=${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems[i].orderId}`)
+                    .then(res => {
+
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.totalPrice - _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems[i].price);
+                if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems[i].breads) {
+                    _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches.splice(i, 1);
+                }
+                _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems.splice(i, 1);
+
+                _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems.map((item, i) => {
                     item.id = i + 1;
-                    if (item.sandwichId) {
-                        item.sandwichId = sandwichId;
-                        sandwichId++;
-                    }
                 })
-                ;(0,_storage__WEBPACK_IMPORTED_MODULE_2__.setSandwiches)(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches);
-                (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setOrderItems)(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.orderItems);
+                ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSandwiches)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches);
+                (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setOrderItems)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems);
+                }).catch(error => console.log(error));
+
+                
             }
             document.getElementById("delete-" + (i + 1)).addEventListener('click', handleChangeDeleteIconClick);
         }
-        if (_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches.length > 0) {
-            for (let i = 0; i < _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches.length; i++) {
+        if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches.length > 0) {
+            for (let i = 0; i < _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches.length; i++) {
                 const handleOrderClick = () => {
-                    _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.changeableOrderItem.sandwichId = i;
-                    let id = _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.orderItems.find(item => item.sandwichId ===
-                        _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.changeableOrderItem.sandwichId + 1).id - 1;
-                    _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.changeableOrderItem.orderId = id;
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setChangeableOrderItem)(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.changeableOrderItem)
-                    ;(0,_storage__WEBPACK_IMPORTED_MODULE_2__.setSelectedModalTab)("sizes");
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setModalWindowEditShow)(true);
+                    _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.changeableOrderItem.sandwichId = i;
+                    let id = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems.find(item => item.sandwichId ===
+                        _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.changeableOrderItem.sandwichId + 1).id - 1;
+                    _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.changeableOrderItem.orderId = id;
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setChangeableOrderItem)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.changeableOrderItem)
+                    ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedModalTab)("sizes");
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowEditShow)(true);
 
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setTabReadyContent)({
-                        breads: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].breads,
-                        fillings: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].fillings.slice(0),
-                        sauces: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].sauces.slice(0),
-                        sizes: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].sizes,
-                        vegetables: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].vegetables.slice(0),
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)({
+                        breads: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches[i].breads,
+                        fillings: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches[i].fillings.slice(0),
+                        sauces: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches[i].sauces.slice(0),
+                        sizes: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches[i].sizes,
+                        vegetables: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches[i].vegetables.slice(0),
                     });
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setModalContent)({
-                        amount: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].amount,
-                        id: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].id,
-                        price: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].price,
-                        title: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].title
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)({
+                        amount: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches[i].amount,
+                        id: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches[i].id,
+                        price: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches[i].price,
+                        title: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches[i].title
                     });
                     let n = 0;
-                    for (let j in _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.ingredients.sizes) {
-                        if (_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].sizes === _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.ingredients.sizes[j].name) {
-                            n = _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.ingredients.sizes[j].price;
+                    for (let j in _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients.sizes) {
+                        if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches[i].sizes === _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients.sizes[j].name) {
+                            n = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients.sizes[j].price;
                         }
                     }
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setPreviousValues)({
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setPreviousValues)({
                         sizes: n,
                         breads: 0
                     })
@@ -4768,7 +4799,7 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         <div>
             <div class="sum">
                 <p class="sum-text">Цена: </p>
-                <p class="sum-value" id="sum">${_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.totalPrice}</p>
+                <p class="sum-value" id="sum">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.totalPrice}</p>
                 <p class="sum-currency">руб.</p>
             </div>
         </div>
@@ -4790,12 +4821,16 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "getAllOrders": () => (/* binding */ getAllOrders),
 /* harmony export */   "getAuthorization": () => (/* binding */ getAuthorization),
 /* harmony export */   "getItemsInfo": () => (/* binding */ getItemsInfo)
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/dist/js.cookie.mjs");
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
+
+
 
 
 
@@ -4829,6 +4864,15 @@ async function getAuthorization() {
     return data;
 }
 
+async function getAllOrders() {
+    let data = {};
+    console.log(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.username);
+    await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`http://localhost:8000/order/getAllOrders?username=${_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.username}`)
+        .then(res => { data = res.data });
+
+    return data;
+}
+
 /***/ }),
 
 /***/ "./src/storage.js":
@@ -4849,6 +4893,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "setModalWindowAuthorizationShow": () => (/* binding */ setModalWindowAuthorizationShow),
 /* harmony export */   "setModalWindowEditShow": () => (/* binding */ setModalWindowEditShow),
 /* harmony export */   "setOrderItems": () => (/* binding */ setOrderItems),
+/* harmony export */   "setOrders": () => (/* binding */ setOrders),
 /* harmony export */   "setPreviousValues": () => (/* binding */ setPreviousValues),
 /* harmony export */   "setSandwiches": () => (/* binding */ setSandwiches),
 /* harmony export */   "setSelectedAuthorizationTab": () => (/* binding */ setSelectedAuthorizationTab),
@@ -4858,6 +4903,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "setTotalPrice": () => (/* binding */ setTotalPrice),
 /* harmony export */   "storage": () => (/* binding */ storage)
 /* harmony export */ });
+/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/dist/js.cookie.mjs");
+
+
 class Storage {
     constructor(data) {
         let handler = {
@@ -4887,7 +4935,7 @@ class Storage {
 }
 
 const storage = new Storage({
-    username: "",
+    username: js_cookie__WEBPACK_IMPORTED_MODULE_0__["default"].get('username'),
     isAuthorized: false,
     selectedTab: "sandwiches",
     selectedModalTab: "sizes",
@@ -4993,6 +5041,17 @@ function setAuthorization(data) {
     storage.data.isAuthorized = data.success;
     storage.data.username = data.user.username;
    // console.log(data);
+}
+
+function setOrders(data) {
+    console.log(data);
+    storage.data.orderItems = data;
+    storage.data.sandwiches = data.filter(item => item.breads)
+    let totalPrice = 0;
+    data.map((item) => {
+        totalPrice += item.price;
+    })
+    setTotalPrice(totalPrice)
 }
 
 /***/ }),
@@ -5294,9 +5353,13 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
             this.modalWindowAuthorization.enable();
         }
         const itemsInfo = await (0,_api__WEBPACK_IMPORTED_MODULE_9__.getItemsInfo)();
-        const auth = await (0,_api__WEBPACK_IMPORTED_MODULE_9__.getAuthorization)();
         (0,_storage__WEBPACK_IMPORTED_MODULE_7__.setItemsInfo)(itemsInfo);
-        (0,_storage__WEBPACK_IMPORTED_MODULE_7__.setAuthorization)(auth);
+        const auth = await (0,_api__WEBPACK_IMPORTED_MODULE_9__.getAuthorization)();
+        (0,_storage__WEBPACK_IMPORTED_MODULE_7__.setAuthorization)(auth)
+        if (_storage__WEBPACK_IMPORTED_MODULE_7__.storage.data.username) {
+            const orders = await (0,_api__WEBPACK_IMPORTED_MODULE_9__.getAllOrders)();
+            (0,_storage__WEBPACK_IMPORTED_MODULE_7__.setOrders)(orders)
+        }
     }
 
     rerenderMainHeader() {

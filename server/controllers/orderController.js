@@ -3,18 +3,14 @@ const { v4: uuidv4 } = require('uuid');
 const Order = require("../models/orderModel");
 
 module.exports.getAllOrders = async (req, res, next) => {
-  Order.find({ userName: req.query.userName }).then(result => {
-    res.send(result);
+  Order.find().then(result => {
+    res.send(result.filter(item => item.username === req.query.username));
   });
 };
 
 module.exports.createNewOrder = async (req, res, next) => {
   const body = req.body;
-  if (body.hasOwnProperty('sizes')
-    && body.hasOwnProperty('breads')
-    && body.hasOwnProperty('vegetables')
-    && body.hasOwnProperty('sauces')
-    && body.hasOwnProperty('fillings')) {
+  if (body.hasOwnProperty('price')) {
     const order = new Order({
       title: body.title,
       orderId: uuidv4(),

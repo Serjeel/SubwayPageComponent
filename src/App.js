@@ -5,9 +5,9 @@ import MenuCategories from "./MenuCategories/MenuCategories";
 import ModalWindowSandwich from "./ModalWindowSandwich/ModalWindowSandwich";
 import ModalWindowAuthorization from "./ModalWindowAuthorization/ModalWindowAuthorization";
 import Order from "./Order/Order";
-import { storage, setItemsInfo, setAuthorization } from "./storage";
+import { storage, setItemsInfo, setAuthorization, setOrders } from "./storage";
 import './App.css';
-import { getAuthorization, getItemsInfo } from "./api";
+import { getAuthorization, getItemsInfo, getAllOrders } from "./api";
 
 class App extends Component {
     constructor() {
@@ -55,9 +55,13 @@ class App extends Component {
             this.modalWindowAuthorization.enable();
         }
         const itemsInfo = await getItemsInfo();
-        const auth = await getAuthorization();
         setItemsInfo(itemsInfo);
-        setAuthorization(auth);
+        const auth = await getAuthorization();
+        setAuthorization(auth)
+        if (storage.data.username) {
+            const orders = await getAllOrders();
+            setOrders(orders)
+        }
     }
 
     rerenderMainHeader() {

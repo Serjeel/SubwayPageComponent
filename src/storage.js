@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 class Storage {
     constructor(data) {
         let handler = {
@@ -27,7 +29,7 @@ class Storage {
 }
 
 export const storage = new Storage({
-    username: "",
+    username: Cookies.get('username'),
     isAuthorized: false,
     selectedTab: "sandwiches",
     selectedModalTab: "sizes",
@@ -133,4 +135,15 @@ export function setAuthorization(data) {
     storage.data.isAuthorized = data.success;
     storage.data.username = data.user.username;
    // console.log(data);
+}
+
+export function setOrders(data) {
+    console.log(data);
+    storage.data.orderItems = data;
+    storage.data.sandwiches = data.filter(item => item.breads)
+    let totalPrice = 0;
+    data.map((item) => {
+        totalPrice += item.price;
+    })
+    setTotalPrice(totalPrice)
 }

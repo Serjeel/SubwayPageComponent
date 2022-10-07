@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import Component from "../Component";
 import './Order.css';
 
@@ -25,15 +27,16 @@ class Order extends Component {
 
     basketRender() {
         let items = ""
-        storage.data.orderItems.map((item) => {
-            console.log(item);
+        console.log(storage.data.orderItems);
+        console.log(storage.data.sandwiches);
+        storage.data.orderItems.map((item, i) => {
             items += /*html*/`
-                <div class="order-items" id="order-${item.id}">
-                    <p class="${item.sandwichId ? "sandwich-title" : "order-title"}" 
-                    id="${item.sandwichId ? "sandwich-" + item.sandwichId : []}">${item.title}</p>
+                <div class="order-items" id="order-${i + 1}">
+                <p class="${item.breads ? "sandwich-title" : "order-title"}" 
+                id="${item.breads ? "sandwich-" + (i + 1) : []}">${item.title}</p>
                     <p class="order-amount">${item.amount}</p>
                     <p class="order-price">${item.price} руб.</p>
-                    <img class="delete-icon" id="delete-${item.id}" src="i/trash.svg"/>
+                    <img class="delete-icon" id="delete-${i + 1}" src="i/trash.svg"/>
                 </div>
             `
         })
@@ -42,23 +45,26 @@ class Order extends Component {
 
     enable() {
         for (let i = 0; i < storage.data.orderItems.length; i++) {
-            const handleChangeDeleteIconClick = () => {
-                setTotalPrice(storage.data.totalPrice - storage.data.orderItems[i].price);
-                if (storage.data.orderItems[i].sandwichId) {
-                    storage.data.sandwiches.splice(storage.data.orderItems[i].sandwichId - 1, 1);
+            const handleChangeDeleteIconClick = async () => {
+
+                await axios.delete(
+                    `http://localhost:8000/order/deleteorder?orderId=${storage.data.orderItems[i].orderId}`)
+                    .then(res => {
+
+                    setTotalPrice(storage.data.totalPrice - storage.data.orderItems[i].price);
+                if (storage.data.orderItems[i].breads) {
+                    storage.data.sandwiches.splice(i, 1);
                 }
                 storage.data.orderItems.splice(i, 1);
 
-                let sandwichId = 1;
                 storage.data.orderItems.map((item, i) => {
                     item.id = i + 1;
-                    if (item.sandwichId) {
-                        item.sandwichId = sandwichId;
-                        sandwichId++;
-                    }
                 })
                 setSandwiches(storage.data.sandwiches);
                 setOrderItems(storage.data.orderItems);
+                }).catch(error => console.log(error));
+
+                
             }
             document.getElementById("delete-" + (i + 1)).addEventListener('click', handleChangeDeleteIconClick);
         }

@@ -78,11 +78,12 @@ class ModalWindowAuthorization extends Component {
                         console.log(res.data.token);;
                         if (res.data.success === true) {
 
+                            setModalWindowAuthorizationShow(false)
+                            Cookies.set('token', res.data.token);
+                            Cookies.set('username', this.inputsContent.logUsername);
                             for (let i in this.inputsContent) {
                                 this.inputsContent[i] = '';
                             }
-                            setModalWindowAuthorizationShow(false)
-                            Cookies.set('token', res.data.token);
                             window.location.reload();
                         } else {
                             alert(res.data.message)
