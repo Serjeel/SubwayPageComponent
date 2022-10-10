@@ -54,9 +54,9 @@ class App extends Component {
         if (this.data.modalWindowAuthorizationShow) {
             this.modalWindowAuthorization.enable();
         }
+        const auth = await getAuthorization();
         const itemsInfo = await getItemsInfo();
         setItemsInfo(itemsInfo);
-        const auth = await getAuthorization();
         setAuthorization(auth)
         if (storage.data.username) {
             const orders = await getAllOrders();

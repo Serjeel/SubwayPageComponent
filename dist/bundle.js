@@ -3896,16 +3896,13 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
                     (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTabReadyContent)(tabReadyContent)
                 } else {
                     await axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://localhost:8000/order/createNewOrder', {
-                        // 1. Здесь продумать откуда доставать нужные данные.
-                        // 2. Как удалять и изменять конкретный сэндвич, если ид самого сэндвича
-                        // и заказа не совпадают?
                         // 3. Спросить у Саши, как не включать в базу массивы, если они в схеме(хотя, 
                         // возможно, для них просто сделать вторую схему и всё, типа sandwichOrderSchema 
                         // и просто orderSchema)
-                        title: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.title,
+                        title: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].name,
                         username: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.username,
-                        amount: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount,
-                        price: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.price,
+                        amount: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue[i],
+                        price: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].price
                     }).then(result => {
                         console.log(result.data);
                         let orderItems = result.data;
@@ -4468,19 +4465,6 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_1__["defau
                         orderItems = result.data;
 
                         console.log(orderItems);
-
-                       /* orderItems.push({ // Временно. Удалить после добавления get. Сделать отображение всех
-                                          // заказов при загрузке. Продумать логику отображения обычных
-                                          // заказов и сэндвичей. Есди уже имеющаяся будет с ошибками.
-                                          // Удалять из orderItems или должно удаляться само при ререндеринге?
-                            sandwichId: sandwiches.length,
-                            id: storage.data.orderItems.length + 1,
-                            title: storage.data.modalContent.title,
-                            breads: result.data.breads,
-                            amount: storage.data.modalContent.amount,
-                            price: storage.data.modalContent.price * storage.data.modalContent.amount
-                        });*/
-
                         console.log(result.data);
 
                         (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setOrderItems)(orderItems);
@@ -4495,18 +4479,6 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_1__["defau
                             fillings: []
                         })
                     })
-
-                   /* sandwiches.push({
-                        id: storage.data.modalContent.id,
-                        title: storage.data.modalContent.title,
-                        amount: storage.data.modalContent.amount,
-                        price: storage.data.modalContent.price,
-                        sizes: storage.data.tabReadyContent.sizes,
-                        breads: storage.data.tabReadyContent.breads,
-                        vegetables: storage.data.tabReadyContent.vegetables,
-                        sauces: storage.data.tabReadyContent.sauces,
-                        fillings: storage.data.tabReadyContent.fillings
-                    });*/
                 }
                 if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalWindowEditShow) {
                     (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowEditShow)(false);
@@ -4701,13 +4673,12 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
 
     basketRender() {
         let items = ""
-        console.log(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems);
-        console.log(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches);
         _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems.map((item, i) => {
             items += /*html*/`
                 <div class="order-items" id="order-${i + 1}">
                 <p class="${item.breads ? "sandwich-title" : "order-title"}" 
-                id="${item.breads ? "sandwich-" + (i + 1) : []}">${item.title}</p>
+                id="${item.breads ? "sandwich-" + parseInt(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches.findIndex(arr =>
+                arr.orderId === item.orderId) + 1) : []}">${item.title}</p>
                     <p class="order-amount">${item.amount}</p>
                     <p class="order-price">${item.price} руб.</p>
                     <img class="delete-icon" id="delete-${i + 1}" src="i/trash.svg"/>
@@ -4725,31 +4696,34 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
                     `http://localhost:8000/order/deleteorder?orderId=${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems[i].orderId}`)
                     .then(res => {
 
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.totalPrice - _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems[i].price);
-                if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems[i].breads) {
-                    _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches.splice(i, 1);
-                }
-                _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems.splice(i, 1);
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.totalPrice - _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems[i].price);
 
-                _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems.map((item, i) => {
-                    item.id = i + 1;
-                })
-                ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSandwiches)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches);
-                (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setOrderItems)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems);
-                }).catch(error => console.log(error));
+                        const deletedSandwich = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches.find(arr => arr.orderId ===
+                            _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems[i].orderId);
+                        if (deletedSandwich) {
+                            const n = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches.findIndex(arr => arr.orderId ===
+                                deletedSandwich.orderId)
+                            _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches.splice(n, 1);
+                        }
+                        _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems.splice(i, 1);
 
-                
+                        _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems.map((item, i) => {
+                            item.id = i + 1;
+                        })
+                        ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSandwiches)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches);
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setOrderItems)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems);
+                    }).catch(error => console.log(error));
+
+
             }
             document.getElementById("delete-" + (i + 1)).addEventListener('click', handleChangeDeleteIconClick);
         }
         if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches.length > 0) {
             for (let i = 0; i < _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches.length; i++) {
                 const handleOrderClick = () => {
-                    _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.changeableOrderItem.sandwichId = i;
-                    let id = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems.find(item => item.sandwichId ===
-                        _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.changeableOrderItem.sandwichId + 1).id - 1;
-                    _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.changeableOrderItem.orderId = id;
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setChangeableOrderItem)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.changeableOrderItem)
+                    let changeableOrderItem = {};
+                    changeableOrderItem = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems[i];
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setChangeableOrderItem)(changeableOrderItem)
                     ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedModalTab)("sizes");
                     (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowEditShow)(true);
 
@@ -5044,7 +5018,7 @@ function setAuthorization(data) {
 }
 
 function setOrders(data) {
-    console.log(data);
+    //console.log(data);
     storage.data.orderItems = data;
     storage.data.sandwiches = data.filter(item => item.breads)
     let totalPrice = 0;
@@ -5352,9 +5326,9 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         if (this.data.modalWindowAuthorizationShow) {
             this.modalWindowAuthorization.enable();
         }
+        const auth = await (0,_api__WEBPACK_IMPORTED_MODULE_9__.getAuthorization)();
         const itemsInfo = await (0,_api__WEBPACK_IMPORTED_MODULE_9__.getItemsInfo)();
         (0,_storage__WEBPACK_IMPORTED_MODULE_7__.setItemsInfo)(itemsInfo);
-        const auth = await (0,_api__WEBPACK_IMPORTED_MODULE_9__.getAuthorization)();
         (0,_storage__WEBPACK_IMPORTED_MODULE_7__.setAuthorization)(auth)
         if (_storage__WEBPACK_IMPORTED_MODULE_7__.storage.data.username) {
             const orders = await (0,_api__WEBPACK_IMPORTED_MODULE_9__.getAllOrders)();

@@ -27,13 +27,12 @@ class Order extends Component {
 
     basketRender() {
         let items = ""
-        console.log(storage.data.orderItems);
-        console.log(storage.data.sandwiches);
         storage.data.orderItems.map((item, i) => {
             items += /*html*/`
                 <div class="order-items" id="order-${i + 1}">
                 <p class="${item.breads ? "sandwich-title" : "order-title"}" 
-                id="${item.breads ? "sandwich-" + (i + 1) : []}">${item.title}</p>
+                id="${item.breads ? "sandwich-" + parseInt(storage.data.sandwiches.findIndex(arr =>
+                arr.orderId === item.orderId) + 1) : []}">${item.title}</p>
                     <p class="order-amount">${item.amount}</p>
                     <p class="order-price">${item.price} руб.</p>
                     <img class="delete-icon" id="delete-${i + 1}" src="i/trash.svg"/>
@@ -51,31 +50,34 @@ class Order extends Component {
                     `http://localhost:8000/order/deleteorder?orderId=${storage.data.orderItems[i].orderId}`)
                     .then(res => {
 
-                    setTotalPrice(storage.data.totalPrice - storage.data.orderItems[i].price);
-                if (storage.data.orderItems[i].breads) {
-                    storage.data.sandwiches.splice(i, 1);
-                }
-                storage.data.orderItems.splice(i, 1);
+                        setTotalPrice(storage.data.totalPrice - storage.data.orderItems[i].price);
 
-                storage.data.orderItems.map((item, i) => {
-                    item.id = i + 1;
-                })
-                setSandwiches(storage.data.sandwiches);
-                setOrderItems(storage.data.orderItems);
-                }).catch(error => console.log(error));
+                        const deletedSandwich = storage.data.sandwiches.find(arr => arr.orderId ===
+                            storage.data.orderItems[i].orderId);
+                        if (deletedSandwich) {
+                            const n = storage.data.sandwiches.findIndex(arr => arr.orderId ===
+                                deletedSandwich.orderId)
+                            storage.data.sandwiches.splice(n, 1);
+                        }
+                        storage.data.orderItems.splice(i, 1);
 
-                
+                        storage.data.orderItems.map((item, i) => {
+                            item.id = i + 1;
+                        })
+                        setSandwiches(storage.data.sandwiches);
+                        setOrderItems(storage.data.orderItems);
+                    }).catch(error => console.log(error));
+
+
             }
             document.getElementById("delete-" + (i + 1)).addEventListener('click', handleChangeDeleteIconClick);
         }
         if (storage.data.sandwiches.length > 0) {
             for (let i = 0; i < storage.data.sandwiches.length; i++) {
                 const handleOrderClick = () => {
-                    storage.data.changeableOrderItem.sandwichId = i;
-                    let id = storage.data.orderItems.find(item => item.sandwichId ===
-                        storage.data.changeableOrderItem.sandwichId + 1).id - 1;
-                    storage.data.changeableOrderItem.orderId = id;
-                    setChangeableOrderItem(storage.data.changeableOrderItem)
+                    let changeableOrderItem = {};
+                    changeableOrderItem = storage.data.orderItems[i];
+                    setChangeableOrderItem(changeableOrderItem)
                     setSelectedModalTab("sizes");
                     setModalWindowEditShow(true);
 

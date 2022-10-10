@@ -63,7 +63,6 @@ class ModalWindowSandwich extends Component {
         }
 
         const closeIconClick = () => {
-            // По какой то причине при sandwiches меняется сразу после нажатия на итемы. Исправить
             setPreviousValues({
                 sizes: 0,
                 breads: 0
@@ -178,19 +177,6 @@ class ModalWindowSandwich extends Component {
                         orderItems = result.data;
 
                         console.log(orderItems);
-
-                       /* orderItems.push({ // Временно. Удалить после добавления get. Сделать отображение всех
-                                          // заказов при загрузке. Продумать логику отображения обычных
-                                          // заказов и сэндвичей. Есди уже имеющаяся будет с ошибками.
-                                          // Удалять из orderItems или должно удаляться само при ререндеринге?
-                            sandwichId: sandwiches.length,
-                            id: storage.data.orderItems.length + 1,
-                            title: storage.data.modalContent.title,
-                            breads: result.data.breads,
-                            amount: storage.data.modalContent.amount,
-                            price: storage.data.modalContent.price * storage.data.modalContent.amount
-                        });*/
-
                         console.log(result.data);
 
                         setOrderItems(orderItems);
@@ -205,18 +191,6 @@ class ModalWindowSandwich extends Component {
                             fillings: []
                         })
                     })
-
-                   /* sandwiches.push({
-                        id: storage.data.modalContent.id,
-                        title: storage.data.modalContent.title,
-                        amount: storage.data.modalContent.amount,
-                        price: storage.data.modalContent.price,
-                        sizes: storage.data.tabReadyContent.sizes,
-                        breads: storage.data.tabReadyContent.breads,
-                        vegetables: storage.data.tabReadyContent.vegetables,
-                        sauces: storage.data.tabReadyContent.sauces,
-                        fillings: storage.data.tabReadyContent.fillings
-                    });*/
                 }
                 if (storage.data.modalWindowEditShow) {
                     setModalWindowEditShow(false);

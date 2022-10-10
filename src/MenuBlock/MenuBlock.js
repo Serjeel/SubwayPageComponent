@@ -72,16 +72,13 @@ class MenuBlock extends Component {
                     setTabReadyContent(tabReadyContent)
                 } else {
                     await axios.post('http://localhost:8000/order/createNewOrder', {
-                        // 1. Здесь продумать откуда доставать нужные данные.
-                        // 2. Как удалять и изменять конкретный сэндвич, если ид самого сэндвича
-                        // и заказа не совпадают?
-                        // 3. Спросить у Саши, как не включать в базу массивы, если они в схеме(хотя, 
+                        // Спросить у Саши, как не включать в базу массивы, если они в схеме(хотя, 
                         // возможно, для них просто сделать вторую схему и всё, типа sandwichOrderSchema 
                         // и просто orderSchema)
-                        title: storage.data.modalContent.title,
+                        title: storage.data.items[i].name,
                         username: storage.data.username,
-                        amount: storage.data.modalContent.amount,
-                        price: storage.data.modalContent.price,
+                        amount: storage.data.countersValue[i],
+                        price: storage.data.items[i].price
                     }).then(result => {
                         console.log(result.data);
                         let orderItems = result.data;

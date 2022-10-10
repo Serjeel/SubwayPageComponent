@@ -10,7 +10,15 @@ module.exports.getAllOrders = async (req, res, next) => {
 
 module.exports.createNewOrder = async (req, res, next) => {
   const body = req.body;
-  if (body.hasOwnProperty('price')) {
+  if (body.hasOwnProperty('title')
+    && body.hasOwnProperty('amount')
+    && body.hasOwnProperty('price')
+    && body.hasOwnProperty('username')
+    && body.hasOwnProperty('sizes')
+    && body.hasOwnProperty('breads')
+    && body.hasOwnProperty('vegetables')
+    && body.hasOwnProperty('sauces')
+    && body.hasOwnProperty('fillings')) {
     const order = new Order({
       title: body.title,
       orderId: uuidv4(),
@@ -22,6 +30,19 @@ module.exports.createNewOrder = async (req, res, next) => {
       vegetables: body.vegetables,
       sauces: body.sauces,
       fillings: body.fillings
+    });
+    await order.save().then(result => Order.find({ username: body.username }))
+      .then(result => { res.send(result) });
+  } else if (body.hasOwnProperty('title')
+    && body.hasOwnProperty('amount')
+    && body.hasOwnProperty('price')
+    && body.hasOwnProperty('username')) {
+    const order = new Order({
+      title: body.title,
+      orderId: uuidv4(),
+      amount: body.amount,
+      price: body.price,
+      username: body.username
     });
     await order.save().then(result => Order.find({ username: body.username }))
       .then(result => { res.send(result) });

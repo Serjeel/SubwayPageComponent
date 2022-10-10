@@ -138,7 +138,7 @@ export function setAuthorization(data) {
 }
 
 export function setOrders(data) {
-    console.log(data);
+    //console.log(data);
     storage.data.orderItems = data;
     storage.data.sandwiches = data.filter(item => item.breads)
     let totalPrice = 0;
