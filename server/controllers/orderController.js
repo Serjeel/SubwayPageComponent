@@ -54,12 +54,16 @@ module.exports.createNewOrder = async (req, res, next) => {
 module.exports.changeOrderInfo = (req, res, next) => {
   const body = req.body;
   if (body.hasOwnProperty('orderId')
-    && (body.hasOwnProperty('sizes')
+    && (body.hasOwnProperty('amount')
+      || body.hasOwnProperty('price')
+      || body.hasOwnProperty('sizes')
       || body.hasOwnProperty('breads')
       || body.hasOwnProperty('vegetables')
       || body.hasOwnProperty('sauces')
       || body.hasOwnProperty('fillings'))) {
     Order.updateOne({ orderId: req.body.orderId }, {
+      amount: req.body.amount,
+      price: req.body.price,
       sizes: req.body.sizes,
       breads: req.body.breads,
       vegetables: req.body.vegetables,

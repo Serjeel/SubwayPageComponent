@@ -18,10 +18,8 @@ class MainHeader extends Component {
     }
 
     enable() {
-        console.log(storage.data.isAuthorized);
         if (storage.data.isAuthorized === true) {
             const loginButtonClick = () => {
-                console.log(storage.data.isAuthorized);
                 Cookies.remove("token");
                 Cookies.remove("username");
                 window.location.reload();

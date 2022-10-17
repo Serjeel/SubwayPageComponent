@@ -34,7 +34,7 @@ class Order extends Component {
                 id="${item.breads ? "sandwich-" + parseInt(storage.data.sandwiches.findIndex(arr =>
                 arr.orderId === item.orderId) + 1) : []}">${item.title}</p>
                     <p class="order-amount">${item.amount}</p>
-                    <p class="order-price">${item.price} руб.</p>
+                    <p class="order-price">${item.price * item.amount} руб.</p>
                     <img class="delete-icon" id="delete-${i + 1}" src="i/trash.svg"/>
                 </div>
             `
@@ -50,7 +50,8 @@ class Order extends Component {
                     `http://localhost:8000/order/deleteorder?orderId=${storage.data.orderItems[i].orderId}`)
                     .then(res => {
 
-                        setTotalPrice(storage.data.totalPrice - storage.data.orderItems[i].price);
+                        setTotalPrice(storage.data.totalPrice - (storage.data.orderItems[i].price * 
+                            storage.data.orderItems[i].amount));
 
                         const deletedSandwich = storage.data.sandwiches.find(arr => arr.orderId ===
                             storage.data.orderItems[i].orderId);
@@ -60,10 +61,7 @@ class Order extends Component {
                             storage.data.sandwiches.splice(n, 1);
                         }
                         storage.data.orderItems.splice(i, 1);
-
-                        storage.data.orderItems.map((item, i) => {
-                            item.id = i + 1;
-                        })
+                        
                         setSandwiches(storage.data.sandwiches);
                         setOrderItems(storage.data.orderItems);
                     }).catch(error => console.log(error));
@@ -76,7 +74,7 @@ class Order extends Component {
             for (let i = 0; i < storage.data.sandwiches.length; i++) {
                 const handleOrderClick = () => {
                     let changeableOrderItem = {};
-                    changeableOrderItem = storage.data.orderItems[i];
+                    changeableOrderItem = storage.data.sandwiches[i];
                     setChangeableOrderItem(changeableOrderItem)
                     setSelectedModalTab("sizes");
                     setModalWindowEditShow(true);

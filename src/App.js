@@ -42,7 +42,7 @@ class App extends Component {
         })
     }
 
-    async enable() {
+    enable() {
         this.mainHeader.enable();
         this.menuCategories.enable();
 
@@ -54,13 +54,27 @@ class App extends Component {
         if (this.data.modalWindowAuthorizationShow) {
             this.modalWindowAuthorization.enable();
         }
-        const auth = await getAuthorization();
-        const itemsInfo = await getItemsInfo();
-        setItemsInfo(itemsInfo);
-        setAuthorization(auth)
+        // Сделать так, чтобы функции выполнялись не по порядку, а по мере прихода данных
+        // Может это надо сделать не через async await, а обернуть в Promise?
+        const Items = async () => {
+            const itemsInfo = await getItemsInfo();
+            await setItemsInfo(itemsInfo);
+        }
+
+        const Authorization = async () => {
+            const auth = await getAuthorization();
+            await setAuthorization(auth);
+        }
+
+        Authorization();
+        Items();
+        
         if (storage.data.username) {
-            const orders = await getAllOrders();
-            setOrders(orders)
+            const Orders = async () => {
+                const orders = await getAllOrders();
+                await setOrders(orders)
+            }
+            Orders();
         }
     }
 

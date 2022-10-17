@@ -4,13 +4,15 @@ import Component from "../Component";
 import MenuItem from "../MenuItem/MenuItem";
 import './MenuBlock.css';
 
-import { setTabReadyContent, storage } from "../storage";
+import { storage } from "../storage";
+import { setTabReadyContent } from "../storage";
 import { setSelectedModalTab } from "../storage";
 import { setModalContent } from "../storage";
 import { setModalWindowAddShow } from "../storage";
 import { setCountersValue } from "../storage";
 import { setOrderItems } from "../storage";
 import { setTotalPrice } from "../storage";
+import { setModalWindowAuthorizationShow } from "../storage";
 
 class MenuBlock extends Component {
     constructor(props) {
@@ -30,7 +32,7 @@ class MenuBlock extends Component {
 
             const handlePlusClick = () => {
                 let countersValue = storage.data.countersValue;
-                countersValue[i] += 1; 
+                countersValue[i] += 1;
                 setCountersValue(countersValue)
             }
 
@@ -52,41 +54,43 @@ class MenuBlock extends Component {
                 setCountersValue(countersValue);
             }
 
-            const handleButtonClick = async() => {
-                if (storage.data.selectedTab === "sandwiches") {
-                    setSelectedModalTab("sizes");
-                    setModalWindowAddShow(true);
-                    setModalContent({
-                        id: i + 1,
-                        title: storage.data.items[i].name,
-                        amount: storage.data.countersValue[i],
-                        price: storage.data.items[i].price
-                    });
-                    const tabReadyContent = {
-                        sizes: "15 См",
-                        breads: "Белый итальянский",
-                        vegetables: [],
-                        sauces: [],
-                        fillings: []
-                    };
-                    setTabReadyContent(tabReadyContent)
+            const handleButtonClick = async () => {
+                if (storage.data.username) {
+                    if (storage.data.selectedTab === "sandwiches") {
+                        setSelectedModalTab("sizes");
+                        setModalWindowAddShow(true);
+                        setModalContent({
+                            title: storage.data.items[i].name,
+                            amount: storage.data.countersValue[i],
+                            price: storage.data.items[i].price
+                        });
+                        setTabReadyContent({
+                            sizes: "15 См",
+                            breads: "Белый итальянский",
+                            vegetables: [],
+                            sauces: [],
+                            fillings: []
+                        })
+                    } else {
+                        await axios.post('http://localhost:8000/order/createNewOrder', {
+                            // Спросить у Саши, как не включать в базу массивы, если они в схеме(хотя, 
+                            // возможно, для них просто сделать вторую схему и всё, типа sandwichOrderSchema 
+                            // и просто orderSchema)
+                            title: storage.data.items[i].name,
+                            username: storage.data.username,
+                            amount: storage.data.countersValue[i],
+                            price: storage.data.items[i].price
+                        }).then(result => {
+                            let orderItems = result.data;
+
+                            setOrderItems(orderItems);
+                            setTotalPrice(storage.data.totalPrice + (storage.data.items[i].price
+                                * storage.data.countersValue[i]))
+                        })
+                    }
                 } else {
-                    await axios.post('http://localhost:8000/order/createNewOrder', {
-                        // Спросить у Саши, как не включать в базу массивы, если они в схеме(хотя, 
-                        // возможно, для них просто сделать вторую схему и всё, типа sandwichOrderSchema 
-                        // и просто orderSchema)
-                        title: storage.data.items[i].name,
-                        username: storage.data.username,
-                        amount: storage.data.countersValue[i],
-                        price: storage.data.items[i].price
-                    }).then(result => {
-                        console.log(result.data);
-                        let orderItems = result.data;
-                        
-                        setOrderItems(orderItems);
-                        setTotalPrice(storage.data.totalPrice + (storage.data.items[i].price
-                            * storage.data.countersValue[i]))
-                    })
+                    alert("Сначала нужно авторизоваться!")
+                    setModalWindowAuthorizationShow(true)
                 }
             }
 

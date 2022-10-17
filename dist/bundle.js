@@ -3771,10 +3771,8 @@ class MainHeader extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
     }
 
     enable() {
-        console.log(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.isAuthorized);
         if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.isAuthorized === true) {
             const loginButtonClick = () => {
-                console.log(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.isAuthorized);
                 js_cookie__WEBPACK_IMPORTED_MODULE_0__["default"].remove("token");
                 js_cookie__WEBPACK_IMPORTED_MODULE_0__["default"].remove("username");
                 window.location.reload();
@@ -3836,6 +3834,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
     constructor(props) {
         super()
@@ -3854,7 +3854,7 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
 
             const handlePlusClick = () => {
                 let countersValue = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue;
-                countersValue[i] += 1; 
+                countersValue[i] += 1;
                 (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setCountersValue)(countersValue)
             }
 
@@ -3876,41 +3876,43 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
                 (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setCountersValue)(countersValue);
             }
 
-            const handleButtonClick = async() => {
-                if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedTab === "sandwiches") {
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedModalTab)("sizes");
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowAddShow)(true);
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalContent)({
-                        id: i + 1,
-                        title: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].name,
-                        amount: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue[i],
-                        price: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].price
-                    });
-                    const tabReadyContent = {
-                        sizes: "15 См",
-                        breads: "Белый итальянский",
-                        vegetables: [],
-                        sauces: [],
-                        fillings: []
-                    };
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTabReadyContent)(tabReadyContent)
+            const handleButtonClick = async () => {
+                if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.username) {
+                    if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedTab === "sandwiches") {
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedModalTab)("sizes");
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowAddShow)(true);
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalContent)({
+                            title: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].name,
+                            amount: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue[i],
+                            price: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].price
+                        });
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTabReadyContent)({
+                            sizes: "15 См",
+                            breads: "Белый итальянский",
+                            vegetables: [],
+                            sauces: [],
+                            fillings: []
+                        })
+                    } else {
+                        await axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://localhost:8000/order/createNewOrder', {
+                            // Спросить у Саши, как не включать в базу массивы, если они в схеме(хотя, 
+                            // возможно, для них просто сделать вторую схему и всё, типа sandwichOrderSchema 
+                            // и просто orderSchema)
+                            title: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].name,
+                            username: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.username,
+                            amount: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue[i],
+                            price: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].price
+                        }).then(result => {
+                            let orderItems = result.data;
+
+                            (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setOrderItems)(orderItems);
+                            (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.totalPrice + (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].price
+                                * _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue[i]))
+                        })
+                    }
                 } else {
-                    await axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://localhost:8000/order/createNewOrder', {
-                        // 3. Спросить у Саши, как не включать в базу массивы, если они в схеме(хотя, 
-                        // возможно, для них просто сделать вторую схему и всё, типа sandwichOrderSchema 
-                        // и просто orderSchema)
-                        title: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].name,
-                        username: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.username,
-                        amount: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue[i],
-                        price: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].price
-                    }).then(result => {
-                        console.log(result.data);
-                        let orderItems = result.data;
-                        
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setOrderItems)(orderItems);
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.totalPrice + (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].price
-                            * _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue[i]))
-                    })
+                    alert("Сначала нужно авторизоваться!")
+                    ;(0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowAuthorizationShow)(true)
                 }
             }
 
@@ -4164,12 +4166,11 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_2__["
                         username: this.inputsContent.logUsername.toLowerCase(),
                         password: this.inputsContent.logPassword
                     }).then(res => {
-                        console.log(res.data.token);;
                         if (res.data.success === true) {
 
                             (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowAuthorizationShow)(false)
                             js_cookie__WEBPACK_IMPORTED_MODULE_1__["default"].set('token', res.data.token);
-                            js_cookie__WEBPACK_IMPORTED_MODULE_1__["default"].set('username', this.inputsContent.logUsername);
+                            js_cookie__WEBPACK_IMPORTED_MODULE_1__["default"].set('username', this.inputsContent.logUsername.toLowerCase());
                             for (let i in this.inputsContent) {
                                 this.inputsContent[i] = '';
                             }
@@ -4355,7 +4356,6 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_1__["defau
         }
 
         const closeIconClick = () => {
-            // По какой то причине при sandwiches меняется сразу после нажатия на итемы. Исправить
             ;(0,_storage__WEBPACK_IMPORTED_MODULE_4__.setPreviousValues)({
                 sizes: 0,
                 breads: 0
@@ -4464,13 +4464,11 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_1__["defau
                         sandwiches = result.data.filter(item => item.breads);
                         orderItems = result.data;
 
-                        console.log(orderItems);
-                        console.log(result.data);
-
                         (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setOrderItems)(orderItems);
                         (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSandwiches)(sandwiches);
     
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.totalPrice + (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.price * _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount));
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.totalPrice + (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.price *
+                             _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount));
                         (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTabReadyContent)({
                             sizes: "15 См",
                             breads: "Белый итальянский",
@@ -4482,10 +4480,11 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_1__["defau
                 }
                 if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalWindowEditShow) {
                     (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowEditShow)(false);
+                    // Теперь сделать post запрос и заблокировать добавление незарегестрированным
+                    // пользователям и всё
 
-                    sandwiches[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.changeableOrderItem.sandwichId] = {
-                        id: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.id,
-                        title: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.title,
+                    await axios__WEBPACK_IMPORTED_MODULE_0___default().patch('http://localhost:8000/order/changeOrderInfo', {
+                        orderId: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.changeableOrderItem.orderId,
                         amount: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount,
                         price: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.price,
                         sizes: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.sizes,
@@ -4493,25 +4492,38 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_1__["defau
                         vegetables: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.vegetables,
                         sauces: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.sauces,
                         fillings: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.fillings
-                    };
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSandwiches)(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches);
-
-                    let previousPrice = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.orderItems[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.changeableOrderItem.orderId].price;
-
-                    orderItems[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.changeableOrderItem.orderId].amount = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount;
-                    orderItems[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.changeableOrderItem.orderId].price =
-                        _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.price * _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount;
-
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setOrderItems)(orderItems);
-
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.totalPrice + (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.price *
-                        _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount) - previousPrice);
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTabReadyContent)({
-                        sizes: "15 См",
-                        breads: "Белый итальянский",
-                        vegetables: [],
-                        sauces: [],
-                        fillings: []
+                    }).then(result => {
+                        sandwiches[_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.changeableOrderItem.orderId] = {
+                            title: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.title,
+                            amount: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount,
+                            price: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.price,
+                            sizes: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.sizes,
+                            breads: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.breads,
+                            vegetables: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.vegetables,
+                            sauces: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.sauces,
+                            fillings: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.tabReadyContent.fillings
+                        };
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSandwiches)(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches);
+    
+                        let item = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.orderItems.find(item => item.orderId === 
+                            _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.changeableOrderItem.orderId);
+                        let previousPrice = item.price * item.amount;
+    
+                        orderItems.find(item => item.orderId === _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.changeableOrderItem.orderId).amount = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount;
+                        orderItems.find(item => item.orderId === _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.changeableOrderItem.orderId).price =
+                            _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.price;
+    
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setOrderItems)(orderItems);
+    
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.totalPrice + (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.price *
+                            _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalContent.amount) - previousPrice);
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTabReadyContent)({
+                            sizes: "15 См",
+                            breads: "Белый итальянский",
+                            vegetables: [],
+                            sauces: [],
+                            fillings: []
+                        })
                     })
                 }
             }
@@ -4680,7 +4692,7 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
                 id="${item.breads ? "sandwich-" + parseInt(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches.findIndex(arr =>
                 arr.orderId === item.orderId) + 1) : []}">${item.title}</p>
                     <p class="order-amount">${item.amount}</p>
-                    <p class="order-price">${item.price} руб.</p>
+                    <p class="order-price">${item.price * item.amount} руб.</p>
                     <img class="delete-icon" id="delete-${i + 1}" src="i/trash.svg"/>
                 </div>
             `
@@ -4696,7 +4708,8 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
                     `http://localhost:8000/order/deleteorder?orderId=${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems[i].orderId}`)
                     .then(res => {
 
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.totalPrice - _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems[i].price);
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.totalPrice - (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems[i].price * 
+                            _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems[i].amount));
 
                         const deletedSandwich = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches.find(arr => arr.orderId ===
                             _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems[i].orderId);
@@ -4706,11 +4719,8 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
                             _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches.splice(n, 1);
                         }
                         _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems.splice(i, 1);
-
-                        _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems.map((item, i) => {
-                            item.id = i + 1;
-                        })
-                        ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSandwiches)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches);
+                        
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSandwiches)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches);
                         (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setOrderItems)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems);
                     }).catch(error => console.log(error));
 
@@ -4722,7 +4732,7 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
             for (let i = 0; i < _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches.length; i++) {
                 const handleOrderClick = () => {
                     let changeableOrderItem = {};
-                    changeableOrderItem = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems[i];
+                    changeableOrderItem = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches[i];
                     (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setChangeableOrderItem)(changeableOrderItem)
                     ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedModalTab)("sizes");
                     (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowEditShow)(true);
@@ -4840,7 +4850,6 @@ async function getAuthorization() {
 
 async function getAllOrders() {
     let data = {};
-    console.log(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.username);
     await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`http://localhost:8000/order/getAllOrders?username=${_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.username}`)
         .then(res => { data = res.data });
 
@@ -4900,7 +4909,7 @@ class Storage {
         item[key] = value;
         if (this.subscribers[key]) {
             for (let callback in this.subscribers[key]) {
-                console.log(key, this.subscribers[key][callback]);
+                //console.log(key, this.subscribers[key][callback]);
                 this.subscribers[key][callback]()
             }
         }
@@ -4931,10 +4940,7 @@ const storage = new Storage({
         sauces: [],
         fillings: []
     },
-    changeableOrderItem: {
-        orderId: 0,
-        sandwichId: 0
-    },
+    changeableOrderItem: {},
     previousValues: {
         sizes: 0,
         breads: 0
@@ -5014,16 +5020,14 @@ function setItemsInfo(data) {
 function setAuthorization(data) {
     storage.data.isAuthorized = data.success;
     storage.data.username = data.user.username;
-   // console.log(data);
 }
 
 function setOrders(data) {
-    //console.log(data);
     storage.data.orderItems = data;
     storage.data.sandwiches = data.filter(item => item.breads)
     let totalPrice = 0;
     data.map((item) => {
-        totalPrice += item.price;
+        totalPrice += item.price * item.amount;
     })
     setTotalPrice(totalPrice)
 }
@@ -5314,7 +5318,7 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         })
     }
 
-    async enable() {
+    enable() {
         this.mainHeader.enable();
         this.menuCategories.enable();
 
@@ -5326,13 +5330,27 @@ class App extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
         if (this.data.modalWindowAuthorizationShow) {
             this.modalWindowAuthorization.enable();
         }
-        const auth = await (0,_api__WEBPACK_IMPORTED_MODULE_9__.getAuthorization)();
-        const itemsInfo = await (0,_api__WEBPACK_IMPORTED_MODULE_9__.getItemsInfo)();
-        (0,_storage__WEBPACK_IMPORTED_MODULE_7__.setItemsInfo)(itemsInfo);
-        (0,_storage__WEBPACK_IMPORTED_MODULE_7__.setAuthorization)(auth)
+        // Сделать так, чтобы функции выполнялись не по порядку, а по мере прихода данных
+        // Может это надо сделать не через async await, а обернуть в Promise?
+        const Items = async () => {
+            const itemsInfo = await (0,_api__WEBPACK_IMPORTED_MODULE_9__.getItemsInfo)();
+            await (0,_storage__WEBPACK_IMPORTED_MODULE_7__.setItemsInfo)(itemsInfo);
+        }
+
+        const Authorization = async () => {
+            const auth = await (0,_api__WEBPACK_IMPORTED_MODULE_9__.getAuthorization)();
+            await (0,_storage__WEBPACK_IMPORTED_MODULE_7__.setAuthorization)(auth);
+        }
+
+        Authorization();
+        Items();
+        
         if (_storage__WEBPACK_IMPORTED_MODULE_7__.storage.data.username) {
-            const orders = await (0,_api__WEBPACK_IMPORTED_MODULE_9__.getAllOrders)();
-            (0,_storage__WEBPACK_IMPORTED_MODULE_7__.setOrders)(orders)
+            const Orders = async () => {
+                const orders = await (0,_api__WEBPACK_IMPORTED_MODULE_9__.getAllOrders)();
+                await (0,_storage__WEBPACK_IMPORTED_MODULE_7__.setOrders)(orders)
+            }
+            Orders();
         }
     }
 

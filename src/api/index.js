@@ -35,7 +35,6 @@ export async function getAuthorization() {
 
 export async function getAllOrders() {
     let data = {};
-    console.log(storage.data.username);
     await axios.get(`http://localhost:8000/order/getAllOrders?username=${storage.data.username}`)
         .then(res => { data = res.data });
 

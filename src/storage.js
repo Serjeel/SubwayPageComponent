@@ -20,7 +20,7 @@ class Storage {
         item[key] = value;
         if (this.subscribers[key]) {
             for (let callback in this.subscribers[key]) {
-                console.log(key, this.subscribers[key][callback]);
+                //console.log(key, this.subscribers[key][callback]);
                 this.subscribers[key][callback]()
             }
         }
@@ -51,10 +51,7 @@ export const storage = new Storage({
         sauces: [],
         fillings: []
     },
-    changeableOrderItem: {
-        orderId: 0,
-        sandwichId: 0
-    },
+    changeableOrderItem: {},
     previousValues: {
         sizes: 0,
         breads: 0
@@ -134,16 +131,14 @@ export function setItemsInfo(data) {
 export function setAuthorization(data) {
     storage.data.isAuthorized = data.success;
     storage.data.username = data.user.username;
-   // console.log(data);
 }
 
 export function setOrders(data) {
-    //console.log(data);
     storage.data.orderItems = data;
     storage.data.sandwiches = data.filter(item => item.breads)
     let totalPrice = 0;
     data.map((item) => {
-        totalPrice += item.price;
+        totalPrice += item.price * item.amount;
     })
     setTotalPrice(totalPrice)
 }
