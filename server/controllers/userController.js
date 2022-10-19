@@ -76,14 +76,9 @@ module.exports.login = async (req, res, next) => {
 };
 
 module.exports.protected = async (req, res, next) => {
-    const token = JSON.parse(Buffer.from(req.headers.authorization.split('.')[1], 'base64').toString());
     // Теперь добавить токен в куки
     // На фронте добавлять его http заголовком с запросом на сервер
     return res.status(200).send({
         success: true,
-        user: {
-            id: token.id,
-            username: token.username,
-        }
     })
 };

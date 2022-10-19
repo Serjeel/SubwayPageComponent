@@ -39,48 +39,63 @@ module.exports.ingredientAvailability = (body, products) => {
     // хорошо. А если есть хотя бы одна false, то ошибка. Возможно стоит указать, какой именно
     // ингредиент остутствует и выдаёт false
     let sizesAvailability = false;
-    let bredsAvailability = false;
+    let breadsAvailability = false;
     let vegetablesAvailability = [];
-    for (let i in body.vegetables) {
-        vegetablesAvailability.push(false)
-    }
     let saucesAvailability = [];
-    for (let i in body.sauces) {
-        saucesAvailability.push(false)
-    }
     let fillingsAvailability = [];
-    for (let i in body.fillings) {
-        fillingsAvailability.push(false)
+
+
+    for (let i in products[0].sizes) {
+        if (products[0].sizes[i].name === body.sizes) {
+            sizesAvailability = true;
+        }
     }
 
-    for (let i in products[0].vegetables) {
-        for (let j in body.vegetables) {
+    for (let i in products[0].breads) {
+        if (products[0].breads[i].name === body.breads) {
+            breadsAvailability = true;
+        }
+    }
+
+    for (let j in body.vegetables) {
+        for (let i in products[0].vegetables) {
             if (products[0].vegetables[i].name === body.vegetables[j]) {
                 vegetablesAvailability[j] = true;
+                break;
+            } else {
+                vegetablesAvailability[j] = false;
             }
         }
     }
 
-    for (let i in products[0].sauces) {
-        for (let j in body.sauces) {
-            console.log(products[0].sauces[i].name, body.sauces[j])
+    for (let j in body.sauces) {
+        for (let i in products[0].sauces) {
             if (products[0].sauces[i].name === body.sauces[j]) {
                 saucesAvailability[j] = true;
+                break;
+            } else {
+                saucesAvailability[j] = false;
             }
         }
     }
 
-    for (let i in products[0].fillings) {
-        for (let j in body.fillings) {
+    for (let j in body.fillings) {
+        for (let i in products[0].fillings) {
             if (products[0].fillings[i].name === body.fillings[j]) {
                 fillingsAvailability[j] = true;
+                break;
+            } else {
+                fillingsAvailability[j] = false;
             }
         }
     }
 
-    console.log("vegetables", vegetablesAvailability);
-    console.log("sauces", saucesAvailability);
-    console.log("fillings", fillingsAvailability);
+    if (sizesAvailability && breadsAvailability && !vegetablesAvailability.includes(false) &&
+        !saucesAvailability.includes(false) && !fillingsAvailability.includes(false)) {
+        return true
+    } else {
+        return false
+    }
 }
 
 module.exports.calculatePrice = (body, products) => {
@@ -111,7 +126,6 @@ module.exports.calculatePrice = (body, products) => {
 
     for (let i in products[0].sauces) {
         for (let j in body.sauces) {
-            console.log(products[0].sauces[i].name, body.sauces[j])
             if (products[0].sauces[i].name === body.sauces[j]) {
                 saucesPrice += products[0].sauces[i].price
             }

@@ -21,7 +21,6 @@ class MainHeader extends Component {
         if (storage.data.isAuthorized === true) {
             const loginButtonClick = () => {
                 Cookies.remove("token");
-                Cookies.remove("username");
                 window.location.reload();
             }
             document.getElementsByClassName("login_and_register-button")[0].addEventListener("click", loginButtonClick)

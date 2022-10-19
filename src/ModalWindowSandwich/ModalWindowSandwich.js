@@ -192,8 +192,6 @@ class ModalWindowSandwich extends Component {
                 }
                 if (storage.data.modalWindowEditShow) {
                     setModalWindowEditShow(false);
-                    // Теперь сделать post запрос и заблокировать добавление незарегестрированным
-                    // пользователям и всё
 
                     await axios.patch('http://localhost:8000/order/changeOrderInfo', {
                         orderId: storage.data.changeableOrderItem.orderId,

@@ -2849,6 +2849,24 @@ module.exports = function (item) {
 
 /***/ }),
 
+/***/ "./node_modules/jwt-decode/build/jwt-decode.esm.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/jwt-decode/build/jwt-decode.esm.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "InvalidTokenError": () => (/* binding */ n),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function e(e){this.message=e}e.prototype=new Error,e.prototype.name="InvalidCharacterError";var r="undefined"!=typeof window&&window.atob&&window.atob.bind(window)||function(r){var t=String(r).replace(/=+$/,"");if(t.length%4==1)throw new e("'atob' failed: The string to be decoded is not correctly encoded.");for(var n,o,a=0,i=0,c="";o=t.charAt(i++);~o&&(n=a%4?64*n+o:o,a++%4)?c+=String.fromCharCode(255&n>>(-2*a&6)):0)o="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=".indexOf(o);return c};function t(e){var t=e.replace(/-/g,"+").replace(/_/g,"/");switch(t.length%4){case 0:break;case 2:t+="==";break;case 3:t+="=";break;default:throw"Illegal base64url string!"}try{return function(e){return decodeURIComponent(r(e).replace(/(.)/g,(function(e,r){var t=r.charCodeAt(0).toString(16).toUpperCase();return t.length<2&&(t="0"+t),"%"+t})))}(t)}catch(e){return r(t)}}function n(e){this.message=e}function o(e,r){if("string"!=typeof e)throw new n("Invalid token specified");var o=!0===(r=r||{}).header?0:1;try{return JSON.parse(t(e.split(".")[o]))}catch(e){throw new n("Invalid token specified: "+e.message)}}n.prototype=new Error,n.prototype.name="InvalidTokenError";/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o);
+//# sourceMappingURL=jwt-decode.esm.js.map
+
+
+/***/ }),
+
 /***/ "./src/App.css":
 /*!*********************!*\
   !*** ./src/App.css ***!
@@ -3774,7 +3792,6 @@ class MainHeader extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
         if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.isAuthorized === true) {
             const loginButtonClick = () => {
                 js_cookie__WEBPACK_IMPORTED_MODULE_0__["default"].remove("token");
-                js_cookie__WEBPACK_IMPORTED_MODULE_0__["default"].remove("username");
                 window.location.reload();
             }
             document.getElementsByClassName("login_and_register-button")[0].addEventListener("click", loginButtonClick)
@@ -4170,7 +4187,6 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_2__["
 
                             (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowAuthorizationShow)(false)
                             js_cookie__WEBPACK_IMPORTED_MODULE_1__["default"].set('token', res.data.token);
-                            js_cookie__WEBPACK_IMPORTED_MODULE_1__["default"].set('username', this.inputsContent.logUsername.toLowerCase());
                             for (let i in this.inputsContent) {
                                 this.inputsContent[i] = '';
                             }
@@ -4480,8 +4496,6 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_1__["defau
                 }
                 if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.modalWindowEditShow) {
                     (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowEditShow)(false);
-                    // Теперь сделать post запрос и заблокировать добавление незарегестрированным
-                    // пользователям и всё
 
                     await axios__WEBPACK_IMPORTED_MODULE_0___default().patch('http://localhost:8000/order/changeOrderInfo', {
                         orderId: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.changeableOrderItem.orderId,
@@ -4887,6 +4901,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "storage": () => (/* binding */ storage)
 /* harmony export */ });
 /* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/dist/js.cookie.mjs");
+/* harmony import */ var jwt_decode__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jwt-decode */ "./node_modules/jwt-decode/build/jwt-decode.esm.js");
+
 
 
 class Storage {
@@ -4918,7 +4934,7 @@ class Storage {
 }
 
 const storage = new Storage({
-    username: js_cookie__WEBPACK_IMPORTED_MODULE_0__["default"].get('username'),
+    username: js_cookie__WEBPACK_IMPORTED_MODULE_0__["default"].get('token') ? (0,jwt_decode__WEBPACK_IMPORTED_MODULE_1__["default"])(js_cookie__WEBPACK_IMPORTED_MODULE_0__["default"].get('token')).username : "",
     isAuthorized: false,
     selectedTab: "sandwiches",
     selectedModalTab: "sizes",
@@ -5018,8 +5034,11 @@ function setItemsInfo(data) {
 }
 
 function setAuthorization(data) {
-    storage.data.isAuthorized = data.success;
-    storage.data.username = data.user.username;
+    if (data.success) {
+        storage.data.isAuthorized = data.success;
+    } else {
+        js_cookie__WEBPACK_IMPORTED_MODULE_0__["default"].remove("token");
+    }
 }
 
 function setOrders(data) {

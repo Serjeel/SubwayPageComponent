@@ -20,9 +20,10 @@ module.exports.getAllOrders = async (req, res, next) => {
 module.exports.createNewOrder = async (req, res, next) => {
   const body = req.body;
   //const price = products[0].menu.find(item => item.name === body.title).price
-  ingredientAvailability(body, products)
-  
-  if (validateCreate(body) && productAvailability(body, products)) {
+  console.log(ingredientAvailability(body, products))
+
+  if (validateCreate(body) && productAvailability(body, products) &&
+    ingredientAvailability(body, products)) {
     const order = new Order({
       title: body.title,
       orderId: uuidv4(),
@@ -37,7 +38,8 @@ module.exports.createNewOrder = async (req, res, next) => {
     });
     await order.save().then(result => Order.find({ username: body.username }))
       .then(result => { res.send(result) });
-  } else if (validateCreate(body) && productAvailability(body, products)) {
+  } else if (validateCreate(body) && productAvailability(body, products)
+    && ingredientAvailability(body, products)) {
     const order = new Order({
       title: body.title,
       orderId: uuidv4(),

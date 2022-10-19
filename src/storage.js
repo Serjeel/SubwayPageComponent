@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import Decode from "jwt-decode"
 
 class Storage {
     constructor(data) {
@@ -29,7 +30,7 @@ class Storage {
 }
 
 export const storage = new Storage({
-    username: Cookies.get('username'),
+    username: Cookies.get('token') ? Decode(Cookies.get('token')).username : "",
     isAuthorized: false,
     selectedTab: "sandwiches",
     selectedModalTab: "sizes",
@@ -129,8 +130,11 @@ export function setItemsInfo(data) {
 }
 
 export function setAuthorization(data) {
-    storage.data.isAuthorized = data.success;
-    storage.data.username = data.user.username;
+    if (data.success) {
+        storage.data.isAuthorized = data.success;
+    } else {
+        Cookies.remove("token");
+    }
 }
 
 export function setOrders(data) {
