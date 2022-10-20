@@ -20,15 +20,14 @@ module.exports.getAllOrders = async (req, res, next) => {
 module.exports.createNewOrder = async (req, res, next) => {
   const body = req.body;
   //const price = products[0].menu.find(item => item.name === body.title).price
-  console.log(ingredientAvailability(body, products))
 
-  if (validateCreate(body) && productAvailability(body, products) &&
+  if (validateCreate(body) && productAvailability(body.title, products) &&
     ingredientAvailability(body, products)) {
     const order = new Order({
       title: body.title,
       orderId: uuidv4(),
       amount: body.amount,
-      price: calculatePrice(body, products),
+      price: calculatePrice(body, body.title, products),
       username: body.username,
       sizes: body.sizes,
       breads: body.breads,
@@ -44,7 +43,7 @@ module.exports.createNewOrder = async (req, res, next) => {
       title: body.title,
       orderId: uuidv4(),
       amount: body.amount,
-      price: products[0].menu.find(item => item.name === body.title).price,
+      price: calculatePrice(body, body.title, products),
       username: body.username
     });
     await order.save().then(result => Order.find({ username: body.username }))
@@ -54,19 +53,25 @@ module.exports.createNewOrder = async (req, res, next) => {
   }
 }
 
-module.exports.changeOrderInfo = (req, res, next) => {
+module.exports.changeOrderInfo = async (req, res, next) => {
   const body = req.body;
-  if (validateChange(body)) {
+  let title = "";
+  await Order.find({ orderId: body.orderId }).then(result => {
+    title = result[0].title
+  })
+  if (validateChange(body) && productAvailability(title, products)
+    && ingredientAvailability(body, products)) {
     Order.updateOne({ orderId: req.body.orderId }, {
+      title: Order.find({ orderId: body.orderId }).title,
       amount: body.amount,
-      price: body.price,
+      price: calculatePrice(body, title, products),
       sizes: body.sizes,
       breads: body.breads,
       vegetables: body.vegetables,
       sauces: body.sauces,
       fillings: body.fillings
     }).then(result => {
-      Order.find({ username: body.username }).then(result => {
+      Order.find({ orderId: body.orderId }).then(result => {
         res.send(result);
       });
     })

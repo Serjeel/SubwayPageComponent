@@ -21,7 +21,7 @@ class Storage {
         item[key] = value;
         if (this.subscribers[key]) {
             for (let callback in this.subscribers[key]) {
-                //console.log(key, this.subscribers[key][callback]);
+                console.log(key, this.subscribers[key][callback]);
                 this.subscribers[key][callback]()
             }
         }

@@ -1,7 +1,6 @@
 module.exports.validateChange = (body) => {
     if (body.hasOwnProperty('orderId')
         && (body.hasOwnProperty('amount')
-            || body.hasOwnProperty('price')
             || body.hasOwnProperty('sizes')
             || body.hasOwnProperty('breads')
             || body.hasOwnProperty('vegetables')
@@ -26,8 +25,8 @@ module.exports.validateCreate = (body) => {
     }
 }
 
-module.exports.productAvailability = (body, products) => {
-    if (products[0].menu.find(item => item.name === body.title)) {
+module.exports.productAvailability = (title, products) => {
+    if (products[0].menu.find(item => item.name === title)) {
         return true
     } else {
         return false
@@ -98,7 +97,7 @@ module.exports.ingredientAvailability = (body, products) => {
     }
 }
 
-module.exports.calculatePrice = (body, products) => {
+module.exports.calculatePrice = (body, title, products) => {
     let sizePrice = 0;
     let breadPrice = 0;
     let vegetablesPrice = 0;
@@ -140,6 +139,6 @@ module.exports.calculatePrice = (body, products) => {
         }
     }
 
-    return products[0].menu.find(item => item.name === body.title).price +
+    return products[0].menu.find(item => item.name === title).price +
         sizePrice + breadPrice + vegetablesPrice + saucesPrice + fillingsPrice
 }
