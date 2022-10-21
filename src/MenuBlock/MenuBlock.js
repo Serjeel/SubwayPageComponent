@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import Component from "../Component";
 import MenuItem from "../MenuItem/MenuItem";
 import './MenuBlock.css';
@@ -10,9 +8,9 @@ import { setSelectedModalTab } from "../storage";
 import { setModalContent } from "../storage";
 import { setModalWindowAddShow } from "../storage";
 import { setCountersValue } from "../storage";
-import { setOrderItems } from "../storage";
-import { setTotalPrice } from "../storage";
 import { setModalWindowAuthorizationShow } from "../storage";
+import { getCreateNewOrder } from "../api";
+import { setCreateNewOrder } from "../storage";
 
 class MenuBlock extends Component {
     constructor(props) {
@@ -72,21 +70,12 @@ class MenuBlock extends Component {
                             fillings: []
                         })
                     } else {
-                        await axios.post('http://localhost:8000/order/createNewOrder', {
-                            // Спросить у Саши, как не включать в базу массивы, если они в схеме(хотя, 
-                            // возможно, для них просто сделать вторую схему и всё, типа sandwichOrderSchema 
-                            // и просто orderSchema)
-                            title: storage.data.items[i].name,
-                            username: storage.data.username,
-                            amount: storage.data.countersValue[i],
-                            price: storage.data.items[i].price
-                        }).then(result => {
-                            let orderItems = result.data;
-
-                            setOrderItems(orderItems);
-                            setTotalPrice(storage.data.totalPrice + (storage.data.items[i].price
-                                * storage.data.countersValue[i]))
-                        })
+                        const CreateOrder = async () => {
+                            const order = await getCreateNewOrder(i);
+                            await setCreateNewOrder(order, i);
+                        }
+    
+                        CreateOrder();
                     }
                 } else {
                     alert("Сначала нужно авторизоваться!")

@@ -21,7 +21,7 @@ class Storage {
         item[key] = value;
         if (this.subscribers[key]) {
             for (let callback in this.subscribers[key]) {
-                console.log(key, this.subscribers[key][callback]);
+                //console.log(key, this.subscribers[key][callback]);
                 this.subscribers[key][callback]()
             }
         }
@@ -115,6 +115,7 @@ export function setPreviousValues(previousValues) {
     storage.data.previousValues = previousValues;
 }
 
+
 export function setItemsInfo(data) {
     data.menu.map(() => {
         storage.data.countersValue.push(1)
@@ -137,6 +138,26 @@ export function setAuthorization(data) {
     }
 }
 
+export function setAuthentification(data) {
+    if (data.success === true) {
+        setModalWindowAuthorizationShow(false)
+        Cookies.set('token', data.token);
+        window.location.reload();
+    } else {
+        alert(data.message)
+    }
+}
+
+export function setRegistration(data) {
+    if (data.success === true) {
+
+        setSelectedAuthorizationTab("login");
+        alert('Вы успешно зарегистрировались!');
+    } else {
+        alert(res.data.message)
+    }
+}
+
 export function setOrders(data) {
     storage.data.orderItems = data;
     storage.data.sandwiches = data.filter(item => item.breads)
@@ -145,4 +166,84 @@ export function setOrders(data) {
         totalPrice += item.price * item.amount;
     })
     setTotalPrice(totalPrice)
+}
+
+export function setCreateNewOrder(data, i) {
+    let orderItems = data;
+
+    setOrderItems(orderItems);
+    setTotalPrice(storage.data.totalPrice + (storage.data.items[i].price
+        * storage.data.countersValue[i]))
+}
+
+export function setCreateNewSandwichOrder(data) {
+
+    let sandwiches = data.filter(item => item.breads);
+    let orderItems = data;
+
+    setOrderItems(orderItems);
+    setSandwiches(sandwiches);
+
+    setTotalPrice(storage.data.totalPrice + (storage.data.modalContent.price *
+        storage.data.modalContent.amount));
+    setTabReadyContent({
+        sizes: "15 См",
+        breads: "Белый итальянский",
+        vegetables: [],
+        sauces: [],
+        fillings: []
+    })
+}
+
+export function setChangeOrderInfo(data) {
+    let sandwiches = storage.data.sandwiches;
+    let orderItems = storage.data.orderItems;
+    sandwiches[storage.data.changeableOrderItem.orderId] = {
+        title: storage.data.modalContent.title,
+        amount: storage.data.modalContent.amount,
+        price: storage.data.modalContent.price,
+        sizes: storage.data.tabReadyContent.sizes,
+        breads: storage.data.tabReadyContent.breads,
+        vegetables: storage.data.tabReadyContent.vegetables,
+        sauces: storage.data.tabReadyContent.sauces,
+        fillings: storage.data.tabReadyContent.fillings
+    };
+    setSandwiches(storage.data.sandwiches);
+
+    let item = storage.data.orderItems.find(item => item.orderId ===
+        storage.data.changeableOrderItem.orderId);
+    let previousPrice = item.price * item.amount;
+
+    orderItems.find(item => item.orderId === storage.data.changeableOrderItem.orderId).amount = storage.data.modalContent.amount;
+    orderItems.find(item => item.orderId === storage.data.changeableOrderItem.orderId).price =
+        storage.data.modalContent.price;
+
+    setOrderItems(orderItems);
+
+    setTotalPrice(storage.data.totalPrice + (storage.data.modalContent.price *
+        storage.data.modalContent.amount) - previousPrice);
+    setTabReadyContent({
+        sizes: "15 См",
+        breads: "Белый итальянский",
+        vegetables: [],
+        sauces: [],
+        fillings: []
+    })
+}
+
+export function setDeleteOrder(i) {
+    setTotalPrice(storage.data.totalPrice - (storage.data.orderItems[i].price * 
+        storage.data.orderItems[i].amount));
+
+    const deletedSandwich = storage.data.sandwiches.find(arr => arr.orderId ===
+        storage.data.orderItems[i].orderId);
+    if (deletedSandwich) {
+        const n = storage.data.sandwiches.findIndex(arr => arr.orderId ===
+            deletedSandwich.orderId)
+        storage.data.sandwiches.splice(n, 1);
+    }
+    storage.data.orderItems.splice(i, 1);
+    
+    setSandwiches(storage.data.sandwiches);
+    setOrderItems(storage.data.orderItems);
 }

@@ -76,8 +76,6 @@ module.exports.login = async (req, res, next) => {
 };
 
 module.exports.protected = async (req, res, next) => {
-    // Теперь добавить токен в куки
-    // На фронте добавлять его http заголовком с запросом на сервер
     return res.status(200).send({
         success: true,
     })

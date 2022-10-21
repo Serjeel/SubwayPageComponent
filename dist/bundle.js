@@ -3831,12 +3831,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
-/* harmony import */ var _MenuItem_MenuItem__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../MenuItem/MenuItem */ "./src/MenuItem/MenuItem.js");
-/* harmony import */ var _MenuBlock_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MenuBlock.css */ "./src/MenuBlock/MenuBlock.css");
-/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
+/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
+/* harmony import */ var _MenuItem_MenuItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../MenuItem/MenuItem */ "./src/MenuItem/MenuItem.js");
+/* harmony import */ var _MenuBlock_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MenuBlock.css */ "./src/MenuBlock/MenuBlock.css");
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../api */ "./src/api/index.js");
 
 
 
@@ -3851,59 +3850,57 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
+class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(props) {
         super()
 
         this.subscribers = ["countersValue", "items", "selectedTab"];
         for (let i in this.subscribers) {
-            _storage__WEBPACK_IMPORTED_MODULE_4__.storage.addSubscriber(this.subscribers[i], props.rerender);
+            _storage__WEBPACK_IMPORTED_MODULE_3__.storage.addSubscriber(this.subscribers[i], props.rerender);
         }
     }
 
     enable() {
-        for (let i = 0; i < _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items.length; i++) {
-            if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i] && _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].category !== _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedTab) {
+        for (let i = 0; i < _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items.length; i++) {
+            if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items[i] && _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items[i].category !== _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedTab) {
                 continue;
             }
 
             const handlePlusClick = () => {
-                let countersValue = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue;
+                let countersValue = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue;
                 countersValue[i] += 1;
-                (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setCountersValue)(countersValue)
+                (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setCountersValue)(countersValue)
             }
 
             const handleMinusClick = () => {
-                if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue[i] > 1) {
-                    let countersValue = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue;
+                if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue[i] > 1) {
+                    let countersValue = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue;
                     countersValue[i] -= 1;
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setCountersValue)(countersValue)
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setCountersValue)(countersValue)
                 }
             }
 
             const handleInputChange = () => {
-                let countersValue = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue;
+                let countersValue = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue;
                 if (document.getElementById("counter-" + (i + 1)).value > 0) {
                     countersValue[i] = parseInt(document.getElementById("counter-" + (i + 1)).value);
                 } else {
                     countersValue[i] = 1;
                 }
-                (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setCountersValue)(countersValue);
+                (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setCountersValue)(countersValue);
             }
 
             const handleButtonClick = async () => {
-                if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.username) {
-                    if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedTab === "sandwiches") {
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedModalTab)("sizes");
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowAddShow)(true);
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalContent)({
-                            title: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].name,
-                            amount: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue[i],
-                            price: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].price
+                if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.username) {
+                    if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedTab === "sandwiches") {
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedModalTab)("sizes");
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowAddShow)(true);
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)({
+                            title: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items[i].name,
+                            amount: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue[i],
+                            price: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items[i].price
                         });
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTabReadyContent)({
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)({
                             sizes: "15 См",
                             breads: "Белый итальянский",
                             vegetables: [],
@@ -3911,25 +3908,16 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
                             fillings: []
                         })
                     } else {
-                        await axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://localhost:8000/order/createNewOrder', {
-                            // Спросить у Саши, как не включать в базу массивы, если они в схеме(хотя, 
-                            // возможно, для них просто сделать вторую схему и всё, типа sandwichOrderSchema 
-                            // и просто orderSchema)
-                            title: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].name,
-                            username: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.username,
-                            amount: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue[i],
-                            price: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].price
-                        }).then(result => {
-                            let orderItems = result.data;
-
-                            (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setOrderItems)(orderItems);
-                            (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.totalPrice + (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].price
-                                * _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue[i]))
-                        })
+                        const CreateOrder = async () => {
+                            const order = await (0,_api__WEBPACK_IMPORTED_MODULE_4__.getCreateNewOrder)(i);
+                            await (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setCreateNewOrder)(order, i);
+                        }
+    
+                        CreateOrder();
                     }
                 } else {
                     alert("Сначала нужно авторизоваться!")
-                    ;(0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowAuthorizationShow)(true)
+                    ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowAuthorizationShow)(true)
                 }
             }
 
@@ -3941,23 +3929,23 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
     }
 
     loadMenu() {
-        const menuItem = new _MenuItem_MenuItem__WEBPACK_IMPORTED_MODULE_2__["default"]();
+        const menuItem = new _MenuItem_MenuItem__WEBPACK_IMPORTED_MODULE_1__["default"]();
         let items = "";
         let logo = "";
-        for (let i in _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items) {
-            if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].category !== _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedTab) {
+        for (let i in _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items) {
+            if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items[i].category !== _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedTab) {
                 continue;
             }
 
-            if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].market === "sfc") {
+            if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items[i].market === "sfc") {
                 logo = "i/South_fried_chicken_logo.png";
-            } else if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i].market === "doner") {
+            } else if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items[i].market === "doner") {
                 logo = "i/Doner_logo.png";
             } else {
                 logo = "i/Subway_logo.png";
             }
-            items += menuItem.render(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.items[i], parseInt(i) + 1, logo,
-                _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.countersValue);
+            items += menuItem.render(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items[i], parseInt(i) + 1, logo,
+                _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue);
         }
 
         return items;
@@ -4100,12 +4088,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/dist/js.cookie.mjs");
-/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
-/* harmony import */ var _ModalWindowAuthorization_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ModalWindowAuthorization.css */ "./src/ModalWindowAuthorization/ModalWindowAuthorization.css");
-/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
+/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
+/* harmony import */ var _ModalWindowAuthorization_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ModalWindowAuthorization.css */ "./src/ModalWindowAuthorization/ModalWindowAuthorization.css");
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../api */ "./src/api/index.js");
 
 
 
@@ -4115,8 +4101,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_2__["default"] {
+class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(props) {
         super();
 
@@ -4130,22 +4115,22 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_2__["
 
         this.subscribers = ["modalWindowAuthorizationShow", "selectedAuthorizationTab"];
         for (let i in this.subscribers) {
-            _storage__WEBPACK_IMPORTED_MODULE_4__.storage.addSubscriber(this.subscribers[i], props.rerender);
+            _storage__WEBPACK_IMPORTED_MODULE_2__.storage.addSubscriber(this.subscribers[i], props.rerender);
         }
     }
 
     enable() {
         const loginTabClick = () => {
-            (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedAuthorizationTab)("login")
+            (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setSelectedAuthorizationTab)("login")
         }
 
         const registrationTabClick = () => {
-            ;(0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedAuthorizationTab)("registration")
+            ;(0,_storage__WEBPACK_IMPORTED_MODULE_2__.setSelectedAuthorizationTab)("registration")
         }
 
         const closeIconClick = () => {
-            ;(0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowAuthorizationShow)(false);
-            (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedAuthorizationTab)("login")
+            ;(0,_storage__WEBPACK_IMPORTED_MODULE_2__.setModalWindowAuthorizationShow)(false);
+            (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setSelectedAuthorizationTab)("login")
             for (let i in this.inputsContent) {
                 this.inputsContent[i] = '';
             }
@@ -4179,22 +4164,16 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_2__["
         const logButtonClick = async () => {
             try {
                 if (this.inputsContent.logUsername !== '' && this.inputsContent.logPassword !== '') {
-                    await axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://localhost:8000/user/login', {
-                        username: this.inputsContent.logUsername.toLowerCase(),
-                        password: this.inputsContent.logPassword
-                    }).then(res => {
-                        if (res.data.success === true) {
+                    const Authentification = async () => {
+                        const auth = await (0,_api__WEBPACK_IMPORTED_MODULE_3__.getAuthentification)(this.inputsContent);
+                        await (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setAuthentification)(auth);
+                    }
 
-                            (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowAuthorizationShow)(false)
-                            js_cookie__WEBPACK_IMPORTED_MODULE_1__["default"].set('token', res.data.token);
-                            for (let i in this.inputsContent) {
-                                this.inputsContent[i] = '';
-                            }
-                            window.location.reload();
-                        } else {
-                            alert(res.data.message)
-                        }
-                    });
+                    Authentification();
+
+                    for (let i in this.inputsContent) {
+                        this.inputsContent[i] = '';
+                    }
                 } else {
                     alert('Введены не все значения!');
                 }
@@ -4206,22 +4185,16 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_2__["
         const regButtonClick = async () => {
             if (this.inputsContent.regUsername !== '' && this.inputsContent.regPassword !== '') {
                 if (this.inputsContent.regPassword === this.inputsContent.regRepPassword) {
-                    await axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://localhost:8000/user/register', {
-                        username: this.inputsContent.regUsername.toLowerCase(),
-                        password: this.inputsContent.regPassword
-                    }).then(res => {
-                        if (res.data.success === true) {
+                    const Registration = async () => {
+                        const reg = await (0,_api__WEBPACK_IMPORTED_MODULE_3__.getRegistration)(this.inputsContent);
+                        await (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setRegistration)(reg);
+                    }
 
-                            for (let i in this.inputsContent) {
-                                this.inputsContent[i] = '';
-                            }
+                    Registration();
 
-                            (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedAuthorizationTab)("login");
-                            alert('Вы успешно зарегистрировались!');
-                        } else {
-                            alert(res.data.message)
-                        }
-                    });
+                    for (let i in this.inputsContent) {
+                        this.inputsContent[i] = '';
+                    }
                 } else {
                     alert('Пароли не совпадают!')
                 }
@@ -4229,12 +4202,12 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_2__["
                 alert('Введены не все значения!');
             }
         }
-        if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab === "login") {
+        if (_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.selectedAuthorizationTab === "login") {
             document.getElementById("username").addEventListener("change", logUserOnChange)
             document.getElementById("password").addEventListener("change", logPasswordOnChange)
             document.getElementsByClassName("authorization-button")[0].addEventListener("click", logButtonClick)
         }
-        if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab === "registration") {
+        if (_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.selectedAuthorizationTab === "registration") {
             document.getElementById("username").addEventListener("change", regUserOnChange)
             document.getElementById("password").addEventListener("change", regPasswordOnChange)
             document.getElementById("repPassword").addEventListener("change", regRepPasswordOnChange)
@@ -4250,7 +4223,7 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_2__["
         let modalTabs = ``;
 
         for (let i in tabs) {
-            modalTabs += `<p class="${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab === i ? "tab-active" : "tab"}"
+            modalTabs += `<p class="${_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.selectedAuthorizationTab === i ? "tab-active" : "tab"}"
                 id="${i}">${tabs[i]}</p>`
         }
 
@@ -4271,14 +4244,14 @@ class ModalWindowAuthorization extends _Component__WEBPACK_IMPORTED_MODULE_2__["
                 </div>
                 <div class="input-block">
                     <input class="authorization-input" id="username" type="text" placeholder=
-                    "Имя пользователя" value=${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab === "login"
+                    "Имя пользователя" value=${_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.selectedAuthorizationTab === "login"
                 ? this.inputsContent.logUsername : this.inputsContent.regUsername}>
                     <input class="authorization-input" type="password" id="password" placeholder=
-                    "Пароль" value=${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab === "login"
+                    "Пароль" value=${_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.selectedAuthorizationTab === "login"
                 ? this.inputsContent.logPassword : this.inputsContent.regPassword} >
-                    ${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab === "registration" ? repeatPasswordInput : ""}
+                    ${_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.selectedAuthorizationTab === "registration" ? repeatPasswordInput : ""}
                 </div>
-                <button class="authorization-button">${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.selectedAuthorizationTab ===
+                <button class="authorization-button">${_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.selectedAuthorizationTab ===
                 "login" ? "Войти" : "Зарегистрироваться"}</button>
             </div>
         </div>
@@ -4301,13 +4274,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/dist/js.cookie.mjs");
-/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
-/* harmony import */ var _Ingredient_Ingredient__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Ingredient/Ingredient */ "./src/Ingredient/Ingredient.js");
-/* harmony import */ var _ModalWindowSandwich_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ModalWindowSandwich.css */ "./src/ModalWindowSandwich/ModalWindowSandwich.css");
-/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
+/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
+/* harmony import */ var _Ingredient_Ingredient__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Ingredient/Ingredient */ "./src/Ingredient/Ingredient.js");
+/* harmony import */ var _ModalWindowSandwich_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ModalWindowSandwich.css */ "./src/ModalWindowSandwich/ModalWindowSandwich.css");
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../api */ "./src/api/index.js");
 
 
 
@@ -4325,16 +4296,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_2__["default"] {
+class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(props) {
         super();
 
         this.subscribers = ["selectedModalTab", "modalContent", "tabReadyContent",
             "countersValue", "modalWindowAddShow", "modalWindowEditShow", "changeableOrderItem"];
         for (let i in this.subscribers) {
-            _storage__WEBPACK_IMPORTED_MODULE_5__.storage.addSubscriber(this.subscribers[i], props.rerender);
+            _storage__WEBPACK_IMPORTED_MODULE_3__.storage.addSubscriber(this.subscribers[i], props.rerender);
         }
 
         this.tabs = {
@@ -4348,40 +4317,38 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_2__["defau
     }
 
     enable() {
-        let tabReadyContent = _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent;
-        let modalContent = _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent;
-        let previousValues = _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.previousValues;
-        let sandwiches = _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.sandwiches;
-        let orderItems = _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.orderItems;
+        let tabReadyContent = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent;
+        let modalContent = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent;
+        let previousValues = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.previousValues;
 
         const sizesTabClick = () => {
-            (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setSelectedModalTab)("sizes")
+            (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedModalTab)("sizes")
         }
         const breadsTabClick = () => {
-            ;(0,_storage__WEBPACK_IMPORTED_MODULE_5__.setSelectedModalTab)("breads")
+            ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedModalTab)("breads")
         }
         const vegetablesTabClick = () => {
-            ;(0,_storage__WEBPACK_IMPORTED_MODULE_5__.setSelectedModalTab)("vegetables")
+            ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedModalTab)("vegetables")
         }
         const saucesTabClick = () => {
-            ;(0,_storage__WEBPACK_IMPORTED_MODULE_5__.setSelectedModalTab)("sauces")
+            ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedModalTab)("sauces")
         }
         const fillingsTabClick = () => {
-            ;(0,_storage__WEBPACK_IMPORTED_MODULE_5__.setSelectedModalTab)("fillings")
+            ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedModalTab)("fillings")
         }
         const readyTabClick = () => {
-            ;(0,_storage__WEBPACK_IMPORTED_MODULE_5__.setSelectedModalTab)("ready")
+            ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedModalTab)("ready")
         }
 
         const closeIconClick = () => {
-            ;(0,_storage__WEBPACK_IMPORTED_MODULE_5__.setPreviousValues)({
+            ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setPreviousValues)({
                 sizes: 0,
                 breads: 0
             })
-            if (_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalWindowAddShow) {
-                (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setModalWindowAddShow)(false);
+            if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalWindowAddShow) {
+                (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowAddShow)(false);
             } else {
-                (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setModalWindowEditShow)(false);
+                (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowEditShow)(false);
             }
         }
 
@@ -4394,37 +4361,37 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_2__["defau
 
         document.getElementsByClassName("close-icon")[0].addEventListener("click", closeIconClick)
 
-        for (let key in _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab]) {
+        for (let key in _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab]) {
             const modalItemClick = () => {
                 const scrollPosition = document.getElementsByClassName("tab-content-block")[0].scrollTop
-                if (_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab === "sizes" || _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab === "breads") {
+                if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab === "sizes" || _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab === "breads") {
 
-                    tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab] = _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab][key].name;
+                    tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab] = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].name;
 
-                    modalContent.price += _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab][key].price;
-                    modalContent.price -= _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.previousValues[_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab];
+                    modalContent.price += _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].price;
+                    modalContent.price -= _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.previousValues[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab];
 
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setModalContent)(modalContent);
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(modalContent);
 
-                    previousValues[_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab] = _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab][key].price;
+                    previousValues[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab] = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].price;
 
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setPreviousValues)(previousValues);
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setTabReadyContent)(tabReadyContent);
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setPreviousValues)(previousValues);
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)(tabReadyContent);
                 } else {
-                    if (_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab].includes(_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab][key].name)) {
-                        let n = _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab].indexOf(_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab][key].name);
-                        modalContent.price -= _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab][key].price;
+                    if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].includes(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].name)) {
+                        let n = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].indexOf(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].name);
+                        modalContent.price -= _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].price;
 
-                        tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab].splice(n, 1);
+                        tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].splice(n, 1);
 
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setModalContent)(modalContent);
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setTabReadyContent)(tabReadyContent);
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(modalContent);
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)(tabReadyContent);
                     } else {
-                        tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab].push(_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab][key].name);
+                        tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab].push(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].name);
 
-                        modalContent.price += _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab][key].price;
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setModalContent)(modalContent);
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setTabReadyContent)(tabReadyContent);
+                        modalContent.price += _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].price;
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(modalContent);
+                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)(tabReadyContent);
                     }
                 }
                 document.getElementsByClassName("tab-content-block")[0].scrollTo(0, scrollPosition)
@@ -4432,125 +4399,58 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_2__["defau
             document.getElementById("item-" + key).addEventListener("click", modalItemClick)
         }
 
-        if (_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab === "ready") {
-            let countersValue = _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.countersValue;
+        if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab === "ready") {
+            let countersValue = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue;
             const handleModalPlusClick = () => {
                 modalContent.amount += 1;
-                (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent);
-                countersValue[_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent.id - 1] += 1;
-                (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setCountersValue)(_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.countersValue);
+                (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent);
+                countersValue[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.id - 1] += 1;
+                (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setCountersValue)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue);
             }
             const handleModalMinusClick = () => {
-                if (_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent.amount > 1) {
+                if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount > 1) {
                     modalContent.amount -= 1;
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent);
-                    countersValue[_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent.id - 1] -= 1;
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setCountersValue)(_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.countersValue);
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent);
+                    countersValue[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.id - 1] -= 1;
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setCountersValue)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue);
                 }
             }
             const handleInputChange = () => {
                 if (document.getElementById("counter-modal").value > 0) {
                     modalContent.amount = parseInt(document.getElementById("counter-modal").value);
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent);
-                    countersValue[_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent.id - 1] = parseInt(document.
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent);
+                    countersValue[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.id - 1] = parseInt(document.
                         getElementById("counter-modal").value);
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setCountersValue)(_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.countersValue);
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setCountersValue)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue);
                 } else {
                     modalContent.amount = 1;
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent);
-                    countersValue[_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent.id - 1] = 1;
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setCountersValue)(_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.countersValue);
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent);
+                    countersValue[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.id - 1] = 1;
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setCountersValue)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.countersValue);
                 }
             }
 
             const handleButtonModalClick = async () => {
-                ;(0,_storage__WEBPACK_IMPORTED_MODULE_5__.setSelectedModalTab)("sizes");
-                if (_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalWindowAddShow) {
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setModalWindowAddShow)(false);
+                ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedModalTab)("sizes");
+                if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalWindowAddShow) {
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowAddShow)(false);
 
-                    console.log(js_cookie__WEBPACK_IMPORTED_MODULE_1__["default"].get("token"));
+                    const CreateOrder = async () => {
+                        const order = await (0,_api__WEBPACK_IMPORTED_MODULE_4__.getCreateNewSandwichOrder)();
+                        await (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setCreateNewSandwichOrder)(order);
+                    }
 
-                    await axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://localhost:8000/order/createNewOrder', {
-                        title: _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent.title,
-                        username: _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.username,
-                        amount: _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent.amount,
-                        sizes: _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent.sizes,
-                        breads: _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent.breads,
-                        vegetables: _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent.vegetables,
-                        sauces: _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent.sauces,
-                        fillings: _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent.fillings
-                    }, {
-                        headers: {
-                            Authorization: js_cookie__WEBPACK_IMPORTED_MODULE_1__["default"].get("token")
-                        }
-                    }).then(result => {
-                        console.log(result.data);
-                        sandwiches = result.data.filter(item => item.breads);
-                        orderItems = result.data;
-
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setOrderItems)(orderItems);
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setSandwiches)(sandwiches);
-
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.totalPrice + (_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent.price *
-                            _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent.amount));
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setTabReadyContent)({
-                            sizes: "15 См",
-                            breads: "Белый итальянский",
-                            vegetables: [],
-                            sauces: [],
-                            fillings: []
-                        })
-                    })
+                    CreateOrder();
                 }
-                if (_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalWindowEditShow) {
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setModalWindowEditShow)(false);
+                if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalWindowEditShow) {
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowEditShow)(false);
 
-                     await axios__WEBPACK_IMPORTED_MODULE_0___default().patch('http://localhost:8000/order/changeOrderInfo', {
-                         orderId: _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.changeableOrderItem.orderId,
-                         amount: _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent.amount,
-                         sizes: _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent.sizes,
-                         breads: _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent.breads,
-                         vegetables: _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent.vegetables,
-                         sauces: _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent.sauces,
-                         fillings: _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent.fillings
-                     }, {
-                        headers: {
-                            Authorization: js_cookie__WEBPACK_IMPORTED_MODULE_1__["default"].get("token")
-                        }
-                    }).then(result => {
-                         console.log(result.data);
-                         sandwiches[_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.changeableOrderItem.orderId] = {
-                             title: _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent.title,
-                             amount: _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent.amount,
-                             price: _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent.price,
-                             sizes: _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent.sizes,
-                             breads: _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent.breads,
-                             vegetables: _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent.vegetables,
-                             sauces: _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent.sauces,
-                             fillings: _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent.fillings
-                         };
-                         (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setSandwiches)(_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.sandwiches);
-     
-                         let item = _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.orderItems.find(item => item.orderId === 
-                             _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.changeableOrderItem.orderId);
-                         let previousPrice = item.price * item.amount;
-     
-                         orderItems.find(item => item.orderId === _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.changeableOrderItem.orderId).amount = _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent.amount;
-                         orderItems.find(item => item.orderId === _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.changeableOrderItem.orderId).price =
-                             _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent.price;
-     
-                         (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setOrderItems)(orderItems);
-     
-                         (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.totalPrice + (_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent.price *
-                             _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent.amount) - previousPrice);
-                         (0,_storage__WEBPACK_IMPORTED_MODULE_5__.setTabReadyContent)({
-                             sizes: "15 См",
-                             breads: "Белый итальянский",
-                             vegetables: [],
-                             sauces: [],
-                             fillings: []
-                         })
-                     })
+                    const ChangeOrder = async () => {
+                        const order = await (0,_api__WEBPACK_IMPORTED_MODULE_4__.getChangeOrderInfo)();
+                        await (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setChangeOrderInfo)(order);
+                    }
+
+                    ChangeOrder();
                 }
             }
             document.getElementById("plus-modal").addEventListener("click", handleModalPlusClick)
@@ -4561,13 +4461,13 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_2__["defau
     }
 
     loadIngredients() {
-        const ingredient = new _Ingredient_Ingredient__WEBPACK_IMPORTED_MODULE_3__["default"]({
-            tabReadyContent: _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent
+        const ingredient = new _Ingredient_Ingredient__WEBPACK_IMPORTED_MODULE_1__["default"]({
+            tabReadyContent: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent
         });
         let items = "";
 
-        for (let key in _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab]) {
-            items += ingredient.render(_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab][key], key);
+        for (let key in _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab]) {
+            items += ingredient.render(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key], key);
         }
 
         return items;
@@ -4582,28 +4482,28 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_2__["defau
             <p class="final-order-ready">Ваш сендвич готов!</p>
         <div class="final-order-size">
             <p class="final-order-size-text">Размер:</p>
-            <p class="final-order-size-value">${_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent.sizes}</p>
+            <p class="final-order-size-value">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.sizes}</p>
         </div>
         <div class="final-order-bread">
             <p class="final-order-bread-text">Хлеб:</p>
-            <p class="final-order-bread-value">${_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent.breads}</p>
+            <p class="final-order-bread-value">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.breads}</p>
         </div>
         <div class="final-order-vegetables">
             <p class="final-order-vegetables-text">Овощи:</p>
-            <p class="final-order-vegetables-value">${_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent.vegetables.length === 0
-                ? "Нет" : _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent.vegetables}</p>
+            <p class="final-order-vegetables-value">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.vegetables.length === 0
+                ? "Нет" : _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.vegetables}</p>
         </div>
         <div class="final-order-sauces">
             <p class="final-order-sauces-text">Соусы:</p>
-            <p class="final-order-sauces-value">${_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent.sauces.length === 0
-                ? "Нет" : _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent.sauces}</p>
+            <p class="final-order-sauces-value">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.sauces.length === 0
+                ? "Нет" : _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.sauces}</p>
         </div>
         <div class="final-order-filling">
             <p class="final-order-filling-text">Начинка:</p>
-            <p class="final-order-filling-value">${_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent.fillings.length === 0
-                ? "Нет" : _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.tabReadyContent.fillings}</p>
+            <p class="final-order-filling-value">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.fillings.length === 0
+                ? "Нет" : _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.fillings}</p>
         </div>
-            <p class="final-order-title" id="item-name-modal">${_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent.title}</p>
+            <p class="final-order-title" id="item-name-modal">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.title}</p>
         </div>
         `
         return content
@@ -4614,18 +4514,18 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_2__["defau
         <p class="item-amount">Количество</p>
         <div class="amount-block">
             <img class="minus-icon" id="minus-modal" src="i/minus.svg">
-            <input class="item-counter" type="text" id="counter-modal" value=${_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent.amount}>
+            <input class="item-counter" type="text" id="counter-modal" value=${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount}>
             <img class="plus-icon" id="plus-modal" src="i/plus.svg">
         </div>
-        <button class="item-button" id="button-modal">${_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalWindowAddShow ?
-                "В КОРЗИНУ" : (_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalWindowEditShow ? "ИЗМЕНИТЬ" : [])}</button>
+        <button class="item-button" id="button-modal">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalWindowAddShow ?
+                "В КОРЗИНУ" : (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalWindowEditShow ? "ИЗМЕНИТЬ" : [])}</button>
         `)
     }
 
     render() {
         let modalTabs = ``;
         for (let i in this.tabs) {
-            modalTabs += `<p class="${_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab === i ? "tab-active" : "tab"}"
+            modalTabs += `<p class="${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab === i ? "tab-active" : "tab"}"
                 id="${i}">${this.tabs[i]}</p>`
         }
         return (/*html*/`
@@ -4643,17 +4543,17 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_2__["defau
                 <div class="arrows-block">
                 </div>
                 <div class="tab-content-block">
-                ${_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab === "ready" ? this.loadReadyPage() : this.loadIngredients()}
+                ${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab === "ready" ? this.loadReadyPage() : this.loadIngredients()}
                 </div>
                 <div class="modal-footer">
                     <div class="item-price-block">
                         <p class="price-text">Цена:</p>
-                        <p class="price-value" id="price-modal">${_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab === "ready" ?
-                _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent.price * _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent.amount : _storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.modalContent.price}</p>
+                        <p class="price-value" id="price-modal">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab === "ready" ?
+                _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.price * _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.amount : _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalContent.price}</p>
                         <p class="price-currency">руб.</p>
                     </div>
                     <div class="modal-order-block">
-                    ${_storage__WEBPACK_IMPORTED_MODULE_5__.storage.data.selectedModalTab === "ready" ? this.loadModalOrder() : []}
+                    ${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab === "ready" ? this.loadModalOrder() : []}
                     </div>
                 </div>
             </div>
@@ -4679,9 +4579,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
-/* harmony import */ var _Order_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Order.css */ "./src/Order/Order.css");
-/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
+/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/dist/js.cookie.mjs");
+/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
+/* harmony import */ var _Order_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Order.css */ "./src/Order/Order.css");
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../api */ "./src/api/index.js");
 
 
 
@@ -4699,23 +4601,25 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class Order extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
+
+
+class Order extends _Component__WEBPACK_IMPORTED_MODULE_2__["default"] {
     constructor(props) {
         super()
 
         this.subscribers = ["orderItems", "totalPrice", "sandwiches"];
         for (let i in this.subscribers) {
-            _storage__WEBPACK_IMPORTED_MODULE_3__.storage.addSubscriber(this.subscribers[i], props.rerender);
+            _storage__WEBPACK_IMPORTED_MODULE_4__.storage.addSubscriber(this.subscribers[i], props.rerender);
         }
     }
 
     basketRender() {
         let items = ""
-        _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems.map((item, i) => {
+        _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.orderItems.map((item, i) => {
             items += /*html*/`
                 <div class="order-items" id="order-${i + 1}">
                 <p class="${item.breads ? "sandwich-title" : "order-title"}" 
-                id="${item.breads ? "sandwich-" + parseInt(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches.findIndex(arr =>
+                id="${item.breads ? "sandwich-" + parseInt(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches.findIndex(arr =>
                 arr.orderId === item.orderId) + 1) : []}">${item.title}</p>
                     <p class="order-amount">${item.amount}</p>
                     <p class="order-price">${item.price * item.amount} руб.</p>
@@ -4727,62 +4631,47 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
     }
 
     enable() {
-        for (let i = 0; i < _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems.length; i++) {
+        for (let i = 0; i < _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.orderItems.length; i++) {
             const handleChangeDeleteIconClick = async () => {
 
-                await axios__WEBPACK_IMPORTED_MODULE_0___default()["delete"](
-                    `http://localhost:8000/order/deleteorder?orderId=${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems[i].orderId}`)
-                    .then(res => {
+                const DeleteOrder = async () => {
+                    const order = await (0,_api__WEBPACK_IMPORTED_MODULE_5__.getDeleteOrder)(i);
+                    await (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setDeleteOrder)(i);
+                }
 
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTotalPrice)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.totalPrice - (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems[i].price * 
-                            _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems[i].amount));
-
-                        const deletedSandwich = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches.find(arr => arr.orderId ===
-                            _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems[i].orderId);
-                        if (deletedSandwich) {
-                            const n = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches.findIndex(arr => arr.orderId ===
-                                deletedSandwich.orderId)
-                            _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches.splice(n, 1);
-                        }
-                        _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems.splice(i, 1);
-                        
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSandwiches)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches);
-                        (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setOrderItems)(_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.orderItems);
-                    }).catch(error => console.log(error));
-
-
+                DeleteOrder();
             }
             document.getElementById("delete-" + (i + 1)).addEventListener('click', handleChangeDeleteIconClick);
         }
-        if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches.length > 0) {
-            for (let i = 0; i < _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches.length; i++) {
+        if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches.length > 0) {
+            for (let i = 0; i < _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches.length; i++) {
                 const handleOrderClick = () => {
                     let changeableOrderItem = {};
-                    changeableOrderItem = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches[i];
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setChangeableOrderItem)(changeableOrderItem)
-                    ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedModalTab)("sizes");
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowEditShow)(true);
+                    changeableOrderItem = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i];
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setChangeableOrderItem)(changeableOrderItem)
+                    ;(0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedModalTab)("sizes");
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowEditShow)(true);
 
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)({
-                        breads: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches[i].breads,
-                        fillings: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches[i].fillings.slice(0),
-                        sauces: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches[i].sauces.slice(0),
-                        sizes: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches[i].sizes,
-                        vegetables: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches[i].vegetables.slice(0),
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTabReadyContent)({
+                        breads: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].breads,
+                        fillings: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].fillings.slice(0),
+                        sauces: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].sauces.slice(0),
+                        sizes: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].sizes,
+                        vegetables: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].vegetables.slice(0),
                     });
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalContent)({
-                        amount: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches[i].amount,
-                        id: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches[i].id,
-                        price: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches[i].price,
-                        title: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches[i].title
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalContent)({
+                        amount: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].amount,
+                        id: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].id,
+                        price: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].price,
+                        title: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].title
                     });
                     let n = 0;
-                    for (let j in _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients.sizes) {
-                        if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.sandwiches[i].sizes === _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients.sizes[j].name) {
-                            n = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients.sizes[j].price;
+                    for (let j in _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.ingredients.sizes) {
+                        if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].sizes === _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.ingredients.sizes[j].name) {
+                            n = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.ingredients.sizes[j].price;
                         }
                     }
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setPreviousValues)({
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setPreviousValues)({
                         sizes: n,
                         breads: 0
                     })
@@ -4809,7 +4698,7 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
         <div>
             <div class="sum">
                 <p class="sum-text">Цена: </p>
-                <p class="sum-value" id="sum">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.totalPrice}</p>
+                <p class="sum-value" id="sum">${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.totalPrice}</p>
                 <p class="sum-currency">руб.</p>
             </div>
         </div>
@@ -4832,8 +4721,14 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_1__["default"] {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "getAllOrders": () => (/* binding */ getAllOrders),
+/* harmony export */   "getAuthentification": () => (/* binding */ getAuthentification),
 /* harmony export */   "getAuthorization": () => (/* binding */ getAuthorization),
-/* harmony export */   "getItemsInfo": () => (/* binding */ getItemsInfo)
+/* harmony export */   "getChangeOrderInfo": () => (/* binding */ getChangeOrderInfo),
+/* harmony export */   "getCreateNewOrder": () => (/* binding */ getCreateNewOrder),
+/* harmony export */   "getCreateNewSandwichOrder": () => (/* binding */ getCreateNewSandwichOrder),
+/* harmony export */   "getDeleteOrder": () => (/* binding */ getDeleteOrder),
+/* harmony export */   "getItemsInfo": () => (/* binding */ getItemsInfo),
+/* harmony export */   "getRegistration": () => (/* binding */ getRegistration)
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
@@ -4848,6 +4743,16 @@ async function getItemsInfo() {
     let data = {};
     await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`http://localhost:8000/food/getAllFood`)
         .then(res => { data = res.data[0] });
+
+    return data;
+}
+
+async function getAuthentification(inputsContent) {
+    let data = {}
+    await axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://localhost:8000/user/login', {
+        username: inputsContent.logUsername.toLowerCase(),
+        password: inputsContent.logPassword
+    }).then(res => { data = res.data });
 
     return data;
 }
@@ -4874,10 +4779,86 @@ async function getAuthorization() {
     return data;
 }
 
+async function getRegistration(inputsContent) {
+    let data = {};
+    await axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://localhost:8000/user/register', {
+        username: inputsContent.regUsername.toLowerCase(),
+        password: inputsContent.regPassword
+    }).then(res => { data = res.data });
+
+    return data;
+}
+
 async function getAllOrders() {
     let data = {};
     await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`http://localhost:8000/order/getAllOrders?username=${_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.username}`)
         .then(res => { data = res.data });
+
+    return data;
+}
+
+async function getCreateNewOrder(i) {
+    let data = {};
+    await axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://localhost:8000/order/createNewOrder', {
+        title: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.items[i].name,
+        username: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.username,
+        amount: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.countersValue[i]
+    }, {
+        headers: {
+            Authorization: js_cookie__WEBPACK_IMPORTED_MODULE_1__["default"].get("token")
+        }
+    }).then(res => { data = res.data });
+
+    return data;
+}
+
+async function getCreateNewSandwichOrder() {
+    let data = {};
+    await axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://localhost:8000/order/createNewOrder', {
+        title: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.modalContent.title,
+        username: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.username,
+        amount: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.modalContent.amount,
+        sizes: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent.sizes,
+        breads: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent.breads,
+        vegetables: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent.vegetables,
+        sauces: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent.sauces,
+        fillings: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent.fillings
+    }, {
+        headers: {
+            Authorization: js_cookie__WEBPACK_IMPORTED_MODULE_1__["default"].get("token")
+        }
+    }).then(res => { data = res.data });
+
+    return data;
+}
+
+async function getChangeOrderInfo() {
+    let data = {};
+    await axios__WEBPACK_IMPORTED_MODULE_0___default().patch('http://localhost:8000/order/changeOrderInfo', {
+        orderId: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.changeableOrderItem.orderId,
+        amount: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.modalContent.amount,
+        sizes: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent.sizes,
+        breads: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent.breads,
+        vegetables: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent.vegetables,
+        sauces: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent.sauces,
+        fillings: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent.fillings
+    }, {
+        headers: {
+            Authorization: js_cookie__WEBPACK_IMPORTED_MODULE_1__["default"].get("token")
+        }
+    }).then(res => { data = res.data });
+
+    return data;
+}
+
+async function getDeleteOrder(i) {
+    let data = {};
+    await axios__WEBPACK_IMPORTED_MODULE_0___default()["delete"](
+        `http://localhost:8000/order/deleteOrder?orderId=${_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.orderItems[i].orderId}`, {
+        headers: {
+            Authorization: js_cookie__WEBPACK_IMPORTED_MODULE_1__["default"].get("token")
+        }
+    }).then(res => { data = res.data });
 
     return data;
 }
@@ -4893,9 +4874,14 @@ async function getAllOrders() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "setAuthentification": () => (/* binding */ setAuthentification),
 /* harmony export */   "setAuthorization": () => (/* binding */ setAuthorization),
+/* harmony export */   "setChangeOrderInfo": () => (/* binding */ setChangeOrderInfo),
 /* harmony export */   "setChangeableOrderItem": () => (/* binding */ setChangeableOrderItem),
 /* harmony export */   "setCountersValue": () => (/* binding */ setCountersValue),
+/* harmony export */   "setCreateNewOrder": () => (/* binding */ setCreateNewOrder),
+/* harmony export */   "setCreateNewSandwichOrder": () => (/* binding */ setCreateNewSandwichOrder),
+/* harmony export */   "setDeleteOrder": () => (/* binding */ setDeleteOrder),
 /* harmony export */   "setItemsInfo": () => (/* binding */ setItemsInfo),
 /* harmony export */   "setModalContent": () => (/* binding */ setModalContent),
 /* harmony export */   "setModalWindowAddShow": () => (/* binding */ setModalWindowAddShow),
@@ -4904,6 +4890,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "setOrderItems": () => (/* binding */ setOrderItems),
 /* harmony export */   "setOrders": () => (/* binding */ setOrders),
 /* harmony export */   "setPreviousValues": () => (/* binding */ setPreviousValues),
+/* harmony export */   "setRegistration": () => (/* binding */ setRegistration),
 /* harmony export */   "setSandwiches": () => (/* binding */ setSandwiches),
 /* harmony export */   "setSelectedAuthorizationTab": () => (/* binding */ setSelectedAuthorizationTab),
 /* harmony export */   "setSelectedModalTab": () => (/* binding */ setSelectedModalTab),
@@ -4937,7 +4924,7 @@ class Storage {
         item[key] = value;
         if (this.subscribers[key]) {
             for (let callback in this.subscribers[key]) {
-                console.log(key, this.subscribers[key][callback]);
+                //console.log(key, this.subscribers[key][callback]);
                 this.subscribers[key][callback]()
             }
         }
@@ -5031,6 +5018,7 @@ function setPreviousValues(previousValues) {
     storage.data.previousValues = previousValues;
 }
 
+
 function setItemsInfo(data) {
     data.menu.map(() => {
         storage.data.countersValue.push(1)
@@ -5053,6 +5041,26 @@ function setAuthorization(data) {
     }
 }
 
+function setAuthentification(data) {
+    if (data.success === true) {
+        setModalWindowAuthorizationShow(false)
+        js_cookie__WEBPACK_IMPORTED_MODULE_0__["default"].set('token', data.token);
+        window.location.reload();
+    } else {
+        alert(data.message)
+    }
+}
+
+function setRegistration(data) {
+    if (data.success === true) {
+
+        setSelectedAuthorizationTab("login");
+        alert('Вы успешно зарегистрировались!');
+    } else {
+        alert(res.data.message)
+    }
+}
+
 function setOrders(data) {
     storage.data.orderItems = data;
     storage.data.sandwiches = data.filter(item => item.breads)
@@ -5061,6 +5069,86 @@ function setOrders(data) {
         totalPrice += item.price * item.amount;
     })
     setTotalPrice(totalPrice)
+}
+
+function setCreateNewOrder(data, i) {
+    let orderItems = data;
+
+    setOrderItems(orderItems);
+    setTotalPrice(storage.data.totalPrice + (storage.data.items[i].price
+        * storage.data.countersValue[i]))
+}
+
+function setCreateNewSandwichOrder(data) {
+
+    let sandwiches = data.filter(item => item.breads);
+    let orderItems = data;
+
+    setOrderItems(orderItems);
+    setSandwiches(sandwiches);
+
+    setTotalPrice(storage.data.totalPrice + (storage.data.modalContent.price *
+        storage.data.modalContent.amount));
+    setTabReadyContent({
+        sizes: "15 См",
+        breads: "Белый итальянский",
+        vegetables: [],
+        sauces: [],
+        fillings: []
+    })
+}
+
+function setChangeOrderInfo(data) {
+    let sandwiches = storage.data.sandwiches;
+    let orderItems = storage.data.orderItems;
+    sandwiches[storage.data.changeableOrderItem.orderId] = {
+        title: storage.data.modalContent.title,
+        amount: storage.data.modalContent.amount,
+        price: storage.data.modalContent.price,
+        sizes: storage.data.tabReadyContent.sizes,
+        breads: storage.data.tabReadyContent.breads,
+        vegetables: storage.data.tabReadyContent.vegetables,
+        sauces: storage.data.tabReadyContent.sauces,
+        fillings: storage.data.tabReadyContent.fillings
+    };
+    setSandwiches(storage.data.sandwiches);
+
+    let item = storage.data.orderItems.find(item => item.orderId ===
+        storage.data.changeableOrderItem.orderId);
+    let previousPrice = item.price * item.amount;
+
+    orderItems.find(item => item.orderId === storage.data.changeableOrderItem.orderId).amount = storage.data.modalContent.amount;
+    orderItems.find(item => item.orderId === storage.data.changeableOrderItem.orderId).price =
+        storage.data.modalContent.price;
+
+    setOrderItems(orderItems);
+
+    setTotalPrice(storage.data.totalPrice + (storage.data.modalContent.price *
+        storage.data.modalContent.amount) - previousPrice);
+    setTabReadyContent({
+        sizes: "15 См",
+        breads: "Белый итальянский",
+        vegetables: [],
+        sauces: [],
+        fillings: []
+    })
+}
+
+function setDeleteOrder(i) {
+    setTotalPrice(storage.data.totalPrice - (storage.data.orderItems[i].price * 
+        storage.data.orderItems[i].amount));
+
+    const deletedSandwich = storage.data.sandwiches.find(arr => arr.orderId ===
+        storage.data.orderItems[i].orderId);
+    if (deletedSandwich) {
+        const n = storage.data.sandwiches.findIndex(arr => arr.orderId ===
+            deletedSandwich.orderId)
+        storage.data.sandwiches.splice(n, 1);
+    }
+    storage.data.orderItems.splice(i, 1);
+    
+    setSandwiches(storage.data.sandwiches);
+    setOrderItems(storage.data.orderItems);
 }
 
 /***/ }),

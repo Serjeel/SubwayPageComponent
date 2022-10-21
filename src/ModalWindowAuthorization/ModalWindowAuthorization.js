@@ -1,11 +1,10 @@
-import axios from 'axios';
-import Cookies from 'js-cookie';
 import Component from "../Component";
 import './ModalWindowAuthorization.css';
 
-import { storage } from "../storage";
+import { setAuthentification, setAuthentificztion, setRegistration, storage } from "../storage";
 import { setModalWindowAuthorizationShow } from "../storage";
 import { setSelectedAuthorizationTab } from "../storage";
+import { getAuthentification, getRegistration } from '../api';
 
 
 class ModalWindowAuthorization extends Component {
@@ -71,22 +70,16 @@ class ModalWindowAuthorization extends Component {
         const logButtonClick = async () => {
             try {
                 if (this.inputsContent.logUsername !== '' && this.inputsContent.logPassword !== '') {
-                    await axios.post('http://localhost:8000/user/login', {
-                        username: this.inputsContent.logUsername.toLowerCase(),
-                        password: this.inputsContent.logPassword
-                    }).then(res => {
-                        if (res.data.success === true) {
+                    const Authentification = async () => {
+                        const auth = await getAuthentification(this.inputsContent);
+                        await setAuthentification(auth);
+                    }
 
-                            setModalWindowAuthorizationShow(false)
-                            Cookies.set('token', res.data.token);
-                            for (let i in this.inputsContent) {
-                                this.inputsContent[i] = '';
-                            }
-                            window.location.reload();
-                        } else {
-                            alert(res.data.message)
-                        }
-                    });
+                    Authentification();
+
+                    for (let i in this.inputsContent) {
+                        this.inputsContent[i] = '';
+                    }
                 } else {
                     alert('Введены не все значения!');
                 }
@@ -98,22 +91,16 @@ class ModalWindowAuthorization extends Component {
         const regButtonClick = async () => {
             if (this.inputsContent.regUsername !== '' && this.inputsContent.regPassword !== '') {
                 if (this.inputsContent.regPassword === this.inputsContent.regRepPassword) {
-                    await axios.post('http://localhost:8000/user/register', {
-                        username: this.inputsContent.regUsername.toLowerCase(),
-                        password: this.inputsContent.regPassword
-                    }).then(res => {
-                        if (res.data.success === true) {
+                    const Registration = async () => {
+                        const reg = await getRegistration(this.inputsContent);
+                        await setRegistration(reg);
+                    }
 
-                            for (let i in this.inputsContent) {
-                                this.inputsContent[i] = '';
-                            }
+                    Registration();
 
-                            setSelectedAuthorizationTab("login");
-                            alert('Вы успешно зарегистрировались!');
-                        } else {
-                            alert(res.data.message)
-                        }
-                    });
+                    for (let i in this.inputsContent) {
+                        this.inputsContent[i] = '';
+                    }
                 } else {
                     alert('Пароли не совпадают!')
                 }

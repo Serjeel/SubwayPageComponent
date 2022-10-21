@@ -1,3 +1,19 @@
+module.exports.validateUserOrderCreation = (body, token) => {
+    if (body.username === token.username) {
+        return true
+    } else {
+        return false
+    }
+}
+
+module.exports.validateUserOrderDeleteChange = (token, selectedOrder) => {
+    if (selectedOrder.username === token.username) {
+        return true
+    } else {
+        return false
+    }
+}
+
 module.exports.validateChange = (body) => {
     if (body.hasOwnProperty('orderId')
         && (body.hasOwnProperty('amount')
@@ -14,11 +30,8 @@ module.exports.validateChange = (body) => {
 
 module.exports.validateCreate = (body) => {
     if (body.hasOwnProperty('title')
-        && body.hasOwnProperty('amount')
         && body.hasOwnProperty('username')
-        && body.hasOwnProperty('vegetables')
-        && body.hasOwnProperty('sauces')
-        && body.hasOwnProperty('fillings')) {
+        && body.hasOwnProperty('amount')) {
         return true
     } else {
         return false
@@ -34,9 +47,6 @@ module.exports.productAvailability = (title, products) => {
 }
 
 module.exports.ingredientAvailability = (body, products) => {
-    // Нужно доделать проверку наличия заказанных ингредиентов. Если в массивах все true, то всё 
-    // хорошо. А если есть хотя бы одна false, то ошибка. Возможно стоит указать, какой именно
-    // ингредиент остутствует и выдаёт false
     let sizesAvailability = false;
     let breadsAvailability = false;
     let vegetablesAvailability = [];

@@ -1,9 +1,10 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 import Component from "../Component";
 import './Order.css';
 
-import { storage } from "../storage";
+import { setDeleteOrder, storage } from "../storage";
 import { setOrderItems } from "../storage";
 import { setChangeableOrderItem } from "../storage";
 import { setTabReadyContent } from "../storage";
@@ -13,6 +14,7 @@ import { setSandwiches } from "../storage";
 import { setTotalPrice } from "../storage";
 import { setSelectedModalTab } from "../storage";
 import { setPreviousValues } from "../storage";
+import { getDeleteOrder } from '../api';
 
 
 class Order extends Component {
@@ -46,27 +48,12 @@ class Order extends Component {
         for (let i = 0; i < storage.data.orderItems.length; i++) {
             const handleChangeDeleteIconClick = async () => {
 
-                await axios.delete(
-                    `http://localhost:8000/order/deleteorder?orderId=${storage.data.orderItems[i].orderId}`)
-                    .then(res => {
+                const DeleteOrder = async () => {
+                    const order = await getDeleteOrder(i);
+                    await setDeleteOrder(i);
+                }
 
-                        setTotalPrice(storage.data.totalPrice - (storage.data.orderItems[i].price * 
-                            storage.data.orderItems[i].amount));
-
-                        const deletedSandwich = storage.data.sandwiches.find(arr => arr.orderId ===
-                            storage.data.orderItems[i].orderId);
-                        if (deletedSandwich) {
-                            const n = storage.data.sandwiches.findIndex(arr => arr.orderId ===
-                                deletedSandwich.orderId)
-                            storage.data.sandwiches.splice(n, 1);
-                        }
-                        storage.data.orderItems.splice(i, 1);
-                        
-                        setSandwiches(storage.data.sandwiches);
-                        setOrderItems(storage.data.orderItems);
-                    }).catch(error => console.log(error));
-
-
+                DeleteOrder();
             }
             document.getElementById("delete-" + (i + 1)).addEventListener('click', handleChangeDeleteIconClick);
         }

@@ -1,21 +1,19 @@
-import axios from 'axios';
-import Cookies from 'js-cookie';
-
 import Component from "../Component";
 import Ingredient from "../Ingredient/Ingredient";
 import './ModalWindowSandwich.css';
 
 import { storage } from "../storage";
-import { setOrderItems } from "../storage";
 import { setTabReadyContent } from "../storage";
 import { setModalContent } from "../storage";
-import { setSandwiches } from "../storage";
-import { setTotalPrice } from "../storage";
 import { setCountersValue } from "../storage";
 import { setPreviousValues } from "../storage";
 import { setModalWindowAddShow } from "../storage";
 import { setModalWindowEditShow } from "../storage";
 import { setSelectedModalTab } from "../storage";
+import { getCreateNewSandwichOrder } from '../api';
+import { setCreateNewSandwichOrder } from '../storage';
+import { getChangeOrderInfo } from "../api";
+import { setChangeOrderInfo } from "../storage";
 
 class ModalWindowSandwich extends Component {
     constructor(props) {
@@ -41,8 +39,6 @@ class ModalWindowSandwich extends Component {
         let tabReadyContent = storage.data.tabReadyContent;
         let modalContent = storage.data.modalContent;
         let previousValues = storage.data.previousValues;
-        let sandwiches = storage.data.sandwiches;
-        let orderItems = storage.data.orderItems;
 
         const sizesTabClick = () => {
             setSelectedModalTab("sizes")
@@ -163,89 +159,22 @@ class ModalWindowSandwich extends Component {
                 if (storage.data.modalWindowAddShow) {
                     setModalWindowAddShow(false);
 
-                    console.log(Cookies.get("token"));
+                    const CreateOrder = async () => {
+                        const order = await getCreateNewSandwichOrder();
+                        await setCreateNewSandwichOrder(order);
+                    }
 
-                    await axios.post('http://localhost:8000/order/createNewOrder', {
-                        title: storage.data.modalContent.title,
-                        username: storage.data.username,
-                        amount: storage.data.modalContent.amount,
-                        sizes: storage.data.tabReadyContent.sizes,
-                        breads: storage.data.tabReadyContent.breads,
-                        vegetables: storage.data.tabReadyContent.vegetables,
-                        sauces: storage.data.tabReadyContent.sauces,
-                        fillings: storage.data.tabReadyContent.fillings
-                    }, {
-                        headers: {
-                            Authorization: Cookies.get("token")
-                        }
-                    }).then(result => {
-                        console.log(result.data);
-                        sandwiches = result.data.filter(item => item.breads);
-                        orderItems = result.data;
-
-                        setOrderItems(orderItems);
-                        setSandwiches(sandwiches);
-
-                        setTotalPrice(storage.data.totalPrice + (storage.data.modalContent.price *
-                            storage.data.modalContent.amount));
-                        setTabReadyContent({
-                            sizes: "15 См",
-                            breads: "Белый итальянский",
-                            vegetables: [],
-                            sauces: [],
-                            fillings: []
-                        })
-                    })
+                    CreateOrder();
                 }
                 if (storage.data.modalWindowEditShow) {
                     setModalWindowEditShow(false);
 
-                     await axios.patch('http://localhost:8000/order/changeOrderInfo', {
-                         orderId: storage.data.changeableOrderItem.orderId,
-                         amount: storage.data.modalContent.amount,
-                         sizes: storage.data.tabReadyContent.sizes,
-                         breads: storage.data.tabReadyContent.breads,
-                         vegetables: storage.data.tabReadyContent.vegetables,
-                         sauces: storage.data.tabReadyContent.sauces,
-                         fillings: storage.data.tabReadyContent.fillings
-                     }, {
-                        headers: {
-                            Authorization: Cookies.get("token")
-                        }
-                    }).then(result => {
-                         console.log(result.data);
-                         sandwiches[storage.data.changeableOrderItem.orderId] = {
-                             title: storage.data.modalContent.title,
-                             amount: storage.data.modalContent.amount,
-                             price: storage.data.modalContent.price,
-                             sizes: storage.data.tabReadyContent.sizes,
-                             breads: storage.data.tabReadyContent.breads,
-                             vegetables: storage.data.tabReadyContent.vegetables,
-                             sauces: storage.data.tabReadyContent.sauces,
-                             fillings: storage.data.tabReadyContent.fillings
-                         };
-                         setSandwiches(storage.data.sandwiches);
-     
-                         let item = storage.data.orderItems.find(item => item.orderId === 
-                             storage.data.changeableOrderItem.orderId);
-                         let previousPrice = item.price * item.amount;
-     
-                         orderItems.find(item => item.orderId === storage.data.changeableOrderItem.orderId).amount = storage.data.modalContent.amount;
-                         orderItems.find(item => item.orderId === storage.data.changeableOrderItem.orderId).price =
-                             storage.data.modalContent.price;
-     
-                         setOrderItems(orderItems);
-     
-                         setTotalPrice(storage.data.totalPrice + (storage.data.modalContent.price *
-                             storage.data.modalContent.amount) - previousPrice);
-                         setTabReadyContent({
-                             sizes: "15 См",
-                             breads: "Белый итальянский",
-                             vegetables: [],
-                             sauces: [],
-                             fillings: []
-                         })
-                     })
+                    const ChangeOrder = async () => {
+                        const order = await getChangeOrderInfo();
+                        await setChangeOrderInfo(order);
+                    }
+
+                    ChangeOrder();
                 }
             }
             document.getElementById("plus-modal").addEventListener("click", handleModalPlusClick)
