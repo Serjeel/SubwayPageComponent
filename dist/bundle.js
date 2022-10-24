@@ -3732,8 +3732,8 @@ class Ingredient extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     }
     render(item, key) {
         return (/*html*/`
-            <div class=${this.tabReadyContent.sizes === item.name ||
-                this.tabReadyContent.breads === item.name ||
+            <div class=${this.tabReadyContent.size === item.name ||
+                this.tabReadyContent.bread === item.name ||
                 this.tabReadyContent.vegetables.includes(item.name) ||
                 this.tabReadyContent.sauces.includes(item.name) ||
                 this.tabReadyContent.fillings.includes(item.name)
@@ -3901,8 +3901,8 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                             price: _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.items[i].price
                         });
                         (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setTabReadyContent)({
-                            sizes: "15 См",
-                            breads: "Белый итальянский",
+                            size: "15 См",
+                            bread: "Белый итальянский",
                             vegetables: [],
                             sauces: [],
                             fillings: []
@@ -4366,7 +4366,7 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_0__["defau
                 const scrollPosition = document.getElementsByClassName("tab-content-block")[0].scrollTop
                 if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab === "sizes" || _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab === "breads") {
 
-                    tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab] = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].name;
+                    tabReadyContent[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab.slice(0, -1)] = _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].name;
 
                     modalContent.price += _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.ingredients[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab][key].price;
                     modalContent.price -= _storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.previousValues[_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedModalTab];
@@ -4482,11 +4482,11 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_0__["defau
             <p class="final-order-ready">Ваш сендвич готов!</p>
         <div class="final-order-size">
             <p class="final-order-size-text">Размер:</p>
-            <p class="final-order-size-value">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.sizes}</p>
+            <p class="final-order-size-value">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.size}</p>
         </div>
         <div class="final-order-bread">
             <p class="final-order-bread-text">Хлеб:</p>
-            <p class="final-order-bread-value">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.breads}</p>
+            <p class="final-order-bread-value">${_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.tabReadyContent.bread}</p>
         </div>
         <div class="final-order-vegetables">
             <p class="final-order-vegetables-text">Овощи:</p>
@@ -4616,10 +4616,11 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_2__["default"] {
     basketRender() {
         let items = ""
         _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.orderItems.map((item, i) => {
+            console.log(item);
             items += /*html*/`
                 <div class="order-items" id="order-${i + 1}">
-                <p class="${item.breads ? "sandwich-title" : "order-title"}" 
-                id="${item.breads ? "sandwich-" + parseInt(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches.findIndex(arr =>
+                <p class="${item.bread ? "sandwich-title" : "order-title"}" 
+                id="${item.bread ? "sandwich-" + parseInt(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches.findIndex(arr =>
                 arr.orderId === item.orderId) + 1) : []}">${item.title}</p>
                     <p class="order-amount">${item.amount}</p>
                     <p class="order-price">${item.price * item.amount} руб.</p>
@@ -4653,10 +4654,10 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_2__["default"] {
                     (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowEditShow)(true);
 
                     (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTabReadyContent)({
-                        breads: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].breads,
+                        bread: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].bread,
                         fillings: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].fillings.slice(0),
                         sauces: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].sauces.slice(0),
-                        sizes: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].sizes,
+                        size: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].size,
                         vegetables: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].vegetables.slice(0),
                     });
                     (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalContent)({
@@ -4667,7 +4668,7 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_2__["default"] {
                     });
                     let n = 0;
                     for (let j in _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.ingredients.sizes) {
-                        if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].sizes === _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.ingredients.sizes[j].name) {
+                        if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].size === _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.ingredients.sizes[j].name) {
                             n = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.ingredients.sizes[j].price;
                         }
                     }
@@ -4818,8 +4819,8 @@ async function getCreateNewSandwichOrder() {
         title: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.modalContent.title,
         username: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.username,
         amount: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.modalContent.amount,
-        sizes: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent.sizes,
-        breads: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent.breads,
+        size: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent.size,
+        bread: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent.bread,
         vegetables: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent.vegetables,
         sauces: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent.sauces,
         fillings: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent.fillings
@@ -4837,8 +4838,8 @@ async function getChangeOrderInfo() {
     await axios__WEBPACK_IMPORTED_MODULE_0___default().patch('http://localhost:8000/order/changeOrderInfo', {
         orderId: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.changeableOrderItem.orderId,
         amount: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.modalContent.amount,
-        sizes: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent.sizes,
-        breads: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent.breads,
+        size: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent.size,
+        bread: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent.bread,
         vegetables: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent.vegetables,
         sauces: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent.sauces,
         fillings: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.tabReadyContent.fillings
@@ -4949,8 +4950,8 @@ const storage = new Storage({
     modalContent: {},
     sandwiches: [],
     tabReadyContent: {
-        sizes: "15 См",
-        breads: "Белый итальянский",
+        size: "15 См",
+        bread: "Белый итальянский",
         vegetables: [],
         sauces: [],
         fillings: []
@@ -5063,7 +5064,7 @@ function setRegistration(data) {
 
 function setOrders(data) {
     storage.data.orderItems = data;
-    storage.data.sandwiches = data.filter(item => item.breads)
+    storage.data.sandwiches = data.filter(item => item.bread)
     let totalPrice = 0;
     data.map((item) => {
         totalPrice += item.price * item.amount;
@@ -5081,7 +5082,7 @@ function setCreateNewOrder(data, i) {
 
 function setCreateNewSandwichOrder(data) {
 
-    let sandwiches = data.filter(item => item.breads);
+    let sandwiches = data.filter(item => item.bread);
     let orderItems = data;
 
     setOrderItems(orderItems);
@@ -5090,8 +5091,8 @@ function setCreateNewSandwichOrder(data) {
     setTotalPrice(storage.data.totalPrice + (storage.data.modalContent.price *
         storage.data.modalContent.amount));
     setTabReadyContent({
-        sizes: "15 См",
-        breads: "Белый итальянский",
+        size: "15 См",
+        bread: "Белый итальянский",
         vegetables: [],
         sauces: [],
         fillings: []
@@ -5105,8 +5106,8 @@ function setChangeOrderInfo(data) {
         title: storage.data.modalContent.title,
         amount: storage.data.modalContent.amount,
         price: storage.data.modalContent.price,
-        sizes: storage.data.tabReadyContent.sizes,
-        breads: storage.data.tabReadyContent.breads,
+        size: storage.data.tabReadyContent.size,
+        bread: storage.data.tabReadyContent.bread,
         vegetables: storage.data.tabReadyContent.vegetables,
         sauces: storage.data.tabReadyContent.sauces,
         fillings: storage.data.tabReadyContent.fillings
@@ -5126,8 +5127,8 @@ function setChangeOrderInfo(data) {
     setTotalPrice(storage.data.totalPrice + (storage.data.modalContent.price *
         storage.data.modalContent.amount) - previousPrice);
     setTabReadyContent({
-        sizes: "15 См",
-        breads: "Белый итальянский",
+        size: "15 См",
+        bread: "Белый итальянский",
         vegetables: [],
         sauces: [],
         fillings: []

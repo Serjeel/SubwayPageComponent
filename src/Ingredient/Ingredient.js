@@ -8,8 +8,8 @@ class Ingredient extends Component {
     }
     render(item, key) {
         return (/*html*/`
-            <div class=${this.tabReadyContent.sizes === item.name ||
-                this.tabReadyContent.breads === item.name ||
+            <div class=${this.tabReadyContent.size === item.name ||
+                this.tabReadyContent.bread === item.name ||
                 this.tabReadyContent.vegetables.includes(item.name) ||
                 this.tabReadyContent.sauces.includes(item.name) ||
                 this.tabReadyContent.fillings.includes(item.name)

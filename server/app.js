@@ -14,9 +14,11 @@ app.use(passport.initialize());
 const foodRoute = require("./routes/foodRoute");
 const userRoute = require("./routes/userRoute");
 const orderRoute = require("./routes/orderRoute");
+const completedOrderRoute = require("./routes/completedOrderRoute")
 
 app.use("/food", foodRoute);
 app.use("/user", userRoute);
 app.use("/order", orderRoute);
+app.use("/completedOrder", completedOrderRoute);
 
 module.exports = app;

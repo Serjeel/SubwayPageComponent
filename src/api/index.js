@@ -82,8 +82,8 @@ export async function getCreateNewSandwichOrder() {
         title: storage.data.modalContent.title,
         username: storage.data.username,
         amount: storage.data.modalContent.amount,
-        sizes: storage.data.tabReadyContent.sizes,
-        breads: storage.data.tabReadyContent.breads,
+        size: storage.data.tabReadyContent.size,
+        bread: storage.data.tabReadyContent.bread,
         vegetables: storage.data.tabReadyContent.vegetables,
         sauces: storage.data.tabReadyContent.sauces,
         fillings: storage.data.tabReadyContent.fillings
@@ -101,8 +101,8 @@ export async function getChangeOrderInfo() {
     await axios.patch('http://localhost:8000/order/changeOrderInfo', {
         orderId: storage.data.changeableOrderItem.orderId,
         amount: storage.data.modalContent.amount,
-        sizes: storage.data.tabReadyContent.sizes,
-        breads: storage.data.tabReadyContent.breads,
+        size: storage.data.tabReadyContent.size,
+        bread: storage.data.tabReadyContent.bread,
         vegetables: storage.data.tabReadyContent.vegetables,
         sauces: storage.data.tabReadyContent.sauces,
         fillings: storage.data.tabReadyContent.fillings

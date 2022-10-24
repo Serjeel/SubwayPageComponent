@@ -30,10 +30,11 @@ class Order extends Component {
     basketRender() {
         let items = ""
         storage.data.orderItems.map((item, i) => {
+            console.log(item);
             items += /*html*/`
                 <div class="order-items" id="order-${i + 1}">
-                <p class="${item.breads ? "sandwich-title" : "order-title"}" 
-                id="${item.breads ? "sandwich-" + parseInt(storage.data.sandwiches.findIndex(arr =>
+                <p class="${item.bread ? "sandwich-title" : "order-title"}" 
+                id="${item.bread ? "sandwich-" + parseInt(storage.data.sandwiches.findIndex(arr =>
                 arr.orderId === item.orderId) + 1) : []}">${item.title}</p>
                     <p class="order-amount">${item.amount}</p>
                     <p class="order-price">${item.price * item.amount} руб.</p>
@@ -67,10 +68,10 @@ class Order extends Component {
                     setModalWindowEditShow(true);
 
                     setTabReadyContent({
-                        breads: storage.data.sandwiches[i].breads,
+                        bread: storage.data.sandwiches[i].bread,
                         fillings: storage.data.sandwiches[i].fillings.slice(0),
                         sauces: storage.data.sandwiches[i].sauces.slice(0),
-                        sizes: storage.data.sandwiches[i].sizes,
+                        size: storage.data.sandwiches[i].size,
                         vegetables: storage.data.sandwiches[i].vegetables.slice(0),
                     });
                     setModalContent({
@@ -81,7 +82,7 @@ class Order extends Component {
                     });
                     let n = 0;
                     for (let j in storage.data.ingredients.sizes) {
-                        if (storage.data.sandwiches[i].sizes === storage.data.ingredients.sizes[j].name) {
+                        if (storage.data.sandwiches[i].size === storage.data.ingredients.sizes[j].name) {
                             n = storage.data.ingredients.sizes[j].price;
                         }
                     }

@@ -1,6 +1,7 @@
 const { validateChange, validateCreate, productAvailability,
   calculatePrice, ingredientAvailability, validateUserOrderCreation,
-  validateUserOrderDeleteChange } = require("../validation/validation")
+  validateUserOrderDeleteChange,
+  arrayOfIngredients } = require("../validation/validation")
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -22,38 +23,35 @@ module.exports.createNewOrder = async (req, res, next) => {
   const token = JSON.parse(Buffer.from(req.headers.authorization.split('.')[1], 'base64').toString());
   const body = req.body;
   //const price = products[0].menu.find(item => item.name === body.title).price
-  if (validateUserOrderCreation(body, token)) {
-    if (validateCreate(body) && productAvailability(body.title, products) &&
-      ingredientAvailability(body, products)) {
-      const order = new Order({
-        title: body.title,
-        orderId: uuidv4(),
-        amount: body.amount,
-        price: calculatePrice(body, body.title, products),
-        username: body.username,
-        sizes: body.sizes,
-        breads: body.breads,
-        vegetables: body.vegetables,
-        sauces: body.sauces,
-        fillings: body.fillings
-      });
-      await order.save().then(result => Order.find({ username: body.username }))
-        .then(result => { res.send(result) });
-    } else if (validateCreate(body) && productAvailability(body.title, products)) {
-      const order = new Order({
-        title: body.title,
-        orderId: uuidv4(),
-        amount: body.amount,
-        price: calculatePrice(body, body.title, products),
-        username: body.username
-      });
-      await order.save().then(result => Order.find({ username: body.username }))
-        .then(result => { res.send(result) });
-    } else {
-      res.status(422).send('Error! Params not correct');
-    }
+  if (validateCreate(body) && productAvailability(body.title, products) &&
+    ingredientAvailability(body, products)) {
+    const order = new Order({
+      title: body.title,
+      orderId: uuidv4(),
+      amount: body.amount,
+      price: calculatePrice(body, body.title, products),
+      username: token.username,
+      size: body.size,
+      bread: body.bread,
+      vegetables: arrayOfIngredients(body, "vegetables", products),
+      sauces: arrayOfIngredients(body, "sauces", products),
+      fillings: arrayOfIngredients(body, "fillings", products)
+    });
+    await order.save().then(result => Order.find())
+      .then(result => { res.send(result.filter(item => item.username === token.username)) });
+  } else if (validateCreate(body) && productAvailability(body.title, products)
+    && body.breads) {
+    const order = new Order({
+      title: body.title,
+      orderId: uuidv4(),
+      amount: body.amount,
+      price: calculatePrice(body, body.title, products),
+      username: body.username
+    });
+    await order.save().then(result => Order.find())
+      .then(result => { res.send(resul.filter(item => item.username === token.username)) });
   } else {
-    res.status(422).send('Error! Incorrect user');
+    res.status(422).send('Error! Params not correct');
   }
 }
 
@@ -67,15 +65,14 @@ module.exports.changeOrderInfo = async (req, res, next) => {
     selectedOrder = result[0];
   })
   if (validateUserOrderDeleteChange(token, selectedOrder)) {
-
     if (validateChange(body) && productAvailability(title, products)
-      && ingredientAvailability(body, products) && selectedOrder.breads) {
+      && ingredientAvailability(body, products) && selectedOrder.bread) {
       Order.updateOne({ orderId: req.body.orderId }, {
         title: Order.find({ orderId: body.orderId }).title,
         amount: body.amount,
         price: calculatePrice(body, title, products),
-        sizes: body.sizes,
-        breads: body.breads,
+        size: body.size,
+        bread: body.bread,
         vegetables: body.vegetables,
         sauces: body.sauces,
         fillings: body.fillings

@@ -1,11 +1,3 @@
-module.exports.validateUserOrderCreation = (body, token) => {
-    if (body.username === token.username) {
-        return true
-    } else {
-        return false
-    }
-}
-
 module.exports.validateUserOrderDeleteChange = (token, selectedOrder) => {
     if (selectedOrder.username === token.username) {
         return true
@@ -17,8 +9,8 @@ module.exports.validateUserOrderDeleteChange = (token, selectedOrder) => {
 module.exports.validateChange = (body) => {
     if (body.hasOwnProperty('orderId')
         && (body.hasOwnProperty('amount')
-            || body.hasOwnProperty('sizes')
-            || body.hasOwnProperty('breads')
+            || body.hasOwnProperty('size')
+            || body.hasOwnProperty('bread')
             || body.hasOwnProperty('vegetables')
             || body.hasOwnProperty('sauces')
             || body.hasOwnProperty('fillings'))) {
@@ -30,7 +22,6 @@ module.exports.validateChange = (body) => {
 
 module.exports.validateCreate = (body) => {
     if (body.hasOwnProperty('title')
-        && body.hasOwnProperty('username')
         && body.hasOwnProperty('amount')) {
         return true
     } else {
@@ -47,22 +38,22 @@ module.exports.productAvailability = (title, products) => {
 }
 
 module.exports.ingredientAvailability = (body, products) => {
-    let sizesAvailability = false;
-    let breadsAvailability = false;
+    let sizeAvailability = false;
+    let breadAvailability = false;
     let vegetablesAvailability = [];
     let saucesAvailability = [];
     let fillingsAvailability = [];
 
 
     for (let i in products[0].sizes) {
-        if (products[0].sizes[i].name === body.sizes) {
-            sizesAvailability = true;
+        if (products[0].sizes[i].name === body.size) {
+            sizeAvailability = true;
         }
     }
 
     for (let i in products[0].breads) {
-        if (products[0].breads[i].name === body.breads) {
-            breadsAvailability = true;
+        if (products[0].breads[i].name === body.bread) {
+            breadAvailability = true;
         }
     }
 
@@ -99,7 +90,7 @@ module.exports.ingredientAvailability = (body, products) => {
         }
     }
 
-    if (sizesAvailability && breadsAvailability && !vegetablesAvailability.includes(false) &&
+    if (sizeAvailability && breadAvailability && !vegetablesAvailability.includes(false) &&
         !saucesAvailability.includes(false) && !fillingsAvailability.includes(false)) {
         return true
     } else {
@@ -151,4 +142,32 @@ module.exports.calculatePrice = (body, title, products) => {
 
     return products[0].menu.find(item => item.name === title).price +
         sizePrice + breadPrice + vegetablesPrice + saucesPrice + fillingsPrice
+}
+
+module.exports.arrayOfIngredients = (body, key, products) => {
+    let res = [];
+
+    for (let i in products[0][key]) {
+        for (let j in body[key]) {
+            if (products[0][key][i].name === body[key][j]) {
+                res.push({
+                    name: body[key][j],
+                    price: products[0][key][i].price
+                })
+            }
+        }
+    }
+
+    return res
+}
+
+
+module.exports.calculateCompletedPrice = (orderItems) => {
+    let price = 0;
+    orderItems.map(item => {
+        price += item.price * item.amount
+    })
+
+    console.log(price);
+    return price
 }

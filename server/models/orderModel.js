@@ -6,8 +6,8 @@ const orderSchema = new mongoose.Schema({
   orderId: { type: String },
   amount: { type: Number },
   price: { type: Number },
-  sizes: { type: String },
-  breads: { type: String },
+  size: { type: String },
+  bread: { type: String },
   vegetables: { type: Array },
   sauces: { type: Array },
   fillings: { type: Array }

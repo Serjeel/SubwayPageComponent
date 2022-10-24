@@ -63,8 +63,8 @@ class MenuBlock extends Component {
                             price: storage.data.items[i].price
                         });
                         setTabReadyContent({
-                            sizes: "15 См",
-                            breads: "Белый итальянский",
+                            size: "15 См",
+                            bread: "Белый итальянский",
                             vegetables: [],
                             sauces: [],
                             fillings: []

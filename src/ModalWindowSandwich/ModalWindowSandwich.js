@@ -85,7 +85,7 @@ class ModalWindowSandwich extends Component {
                 const scrollPosition = document.getElementsByClassName("tab-content-block")[0].scrollTop
                 if (storage.data.selectedModalTab === "sizes" || storage.data.selectedModalTab === "breads") {
 
-                    tabReadyContent[storage.data.selectedModalTab] = storage.data.
+                    tabReadyContent[storage.data.selectedModalTab.slice(0, -1)] = storage.data.
                         ingredients[storage.data.selectedModalTab][key].name;
 
                     modalContent.price += storage.data.ingredients[storage.data.selectedModalTab][key].price;
@@ -206,11 +206,11 @@ class ModalWindowSandwich extends Component {
             <p class="final-order-ready">Ваш сендвич готов!</p>
         <div class="final-order-size">
             <p class="final-order-size-text">Размер:</p>
-            <p class="final-order-size-value">${storage.data.tabReadyContent.sizes}</p>
+            <p class="final-order-size-value">${storage.data.tabReadyContent.size}</p>
         </div>
         <div class="final-order-bread">
             <p class="final-order-bread-text">Хлеб:</p>
-            <p class="final-order-bread-value">${storage.data.tabReadyContent.breads}</p>
+            <p class="final-order-bread-value">${storage.data.tabReadyContent.bread}</p>
         </div>
         <div class="final-order-vegetables">
             <p class="final-order-vegetables-text">Овощи:</p>

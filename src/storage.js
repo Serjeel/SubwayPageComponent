@@ -46,8 +46,8 @@ export const storage = new Storage({
     modalContent: {},
     sandwiches: [],
     tabReadyContent: {
-        sizes: "15 См",
-        breads: "Белый итальянский",
+        size: "15 См",
+        bread: "Белый итальянский",
         vegetables: [],
         sauces: [],
         fillings: []
@@ -160,7 +160,7 @@ export function setRegistration(data) {
 
 export function setOrders(data) {
     storage.data.orderItems = data;
-    storage.data.sandwiches = data.filter(item => item.breads)
+    storage.data.sandwiches = data.filter(item => item.bread)
     let totalPrice = 0;
     data.map((item) => {
         totalPrice += item.price * item.amount;
@@ -178,7 +178,7 @@ export function setCreateNewOrder(data, i) {
 
 export function setCreateNewSandwichOrder(data) {
 
-    let sandwiches = data.filter(item => item.breads);
+    let sandwiches = data.filter(item => item.bread);
     let orderItems = data;
 
     setOrderItems(orderItems);
@@ -187,8 +187,8 @@ export function setCreateNewSandwichOrder(data) {
     setTotalPrice(storage.data.totalPrice + (storage.data.modalContent.price *
         storage.data.modalContent.amount));
     setTabReadyContent({
-        sizes: "15 См",
-        breads: "Белый итальянский",
+        size: "15 См",
+        bread: "Белый итальянский",
         vegetables: [],
         sauces: [],
         fillings: []
@@ -202,8 +202,8 @@ export function setChangeOrderInfo(data) {
         title: storage.data.modalContent.title,
         amount: storage.data.modalContent.amount,
         price: storage.data.modalContent.price,
-        sizes: storage.data.tabReadyContent.sizes,
-        breads: storage.data.tabReadyContent.breads,
+        size: storage.data.tabReadyContent.size,
+        bread: storage.data.tabReadyContent.bread,
         vegetables: storage.data.tabReadyContent.vegetables,
         sauces: storage.data.tabReadyContent.sauces,
         fillings: storage.data.tabReadyContent.fillings
@@ -223,8 +223,8 @@ export function setChangeOrderInfo(data) {
     setTotalPrice(storage.data.totalPrice + (storage.data.modalContent.price *
         storage.data.modalContent.amount) - previousPrice);
     setTabReadyContent({
-        sizes: "15 См",
-        breads: "Белый итальянский",
+        size: "15 См",
+        bread: "Белый итальянский",
         vegetables: [],
         sauces: [],
         fillings: []
