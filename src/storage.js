@@ -159,8 +159,39 @@ export function setRegistration(data) {
 }
 
 export function setOrders(data) {
-    storage.data.orderItems = data;
-    storage.data.sandwiches = data.filter(item => item.bread)
+    let orderItems = data;
+   // let sandwiches = data[0].filter(item => item.bread)
+
+   let vegetables = [];
+   let sauces = [];
+   let fillings = [];
+
+    for(let i in orderItems) {
+        vegetables = []
+        for(let j in orderItems[i].vegetables) {
+            if(orderItems[i].vegetables[j].name) {
+            vegetables.push(orderItems[i].vegetables[j].name);
+            }
+        }
+        orderItems[i].vegetables = vegetables;
+        sauces = [];
+        for(let j in orderItems[i].sauces) {
+            if(orderItems[i].sauces[j].name) {
+            sauces.push(orderItems[i].sauces[j].name);
+            }
+        }
+        orderItems[i].sauces = sauces;
+        fillings = [];
+        for(let j in orderItems[i].fillings) {
+            if(orderItems[i].fillings[j].name) {
+                fillings.push(orderItems[i].fillings[j].name);
+            }
+        }
+        orderItems[i].fillings = fillings;
+    }
+    setOrderItems(orderItems)
+    setSandwiches(orderItems.filter(item => item.bread))
+
     let totalPrice = 0;
     data.map((item) => {
         totalPrice += item.price * item.amount;
@@ -169,7 +200,10 @@ export function setOrders(data) {
 }
 
 export function setCreateNewOrder(data, i) {
-    let orderItems = data;
+    let orderItems = storage.data.orderItems;
+    let item = data[0];
+
+    orderItems.push(item);
 
     setOrderItems(orderItems);
     setTotalPrice(storage.data.totalPrice + (storage.data.items[i].price
@@ -177,15 +211,36 @@ export function setCreateNewOrder(data, i) {
 }
 
 export function setCreateNewSandwichOrder(data) {
+    let orderItems = storage.data.orderItems;
+    let item = data[0];
 
-    let sandwiches = data.filter(item => item.bread);
-    let orderItems = data;
+    let vegetables = [];
+    let sauces = [];
+    let fillings = [];
+
+    for (let i in item.vegetables) {
+        vegetables.push(item.vegetables[i].name)
+    }
+
+    for (let i in item.sauces) {
+        sauces.push(item.sauces[i].name)
+    }
+
+    for (let i in item.fillings) {
+        fillings.push(item.fillings[i].name)
+    }
+
+    item.vegetables = vegetables;
+    item.sauces = sauces;
+    item.fillings = fillings;
+
+    orderItems.push(item)
 
     setOrderItems(orderItems);
-    setSandwiches(sandwiches);
+    setSandwiches(orderItems.filter(item => item.bread));
 
-    setTotalPrice(storage.data.totalPrice + (storage.data.modalContent.price *
-        storage.data.modalContent.amount));
+    setTotalPrice(storage.data.totalPrice + (item.price *
+        item.amount));
     setTabReadyContent({
         size: "15 См",
         bread: "Белый итальянский",
@@ -196,29 +251,43 @@ export function setCreateNewSandwichOrder(data) {
 }
 
 export function setChangeOrderInfo(data) {
-    let sandwiches = storage.data.sandwiches;
     let orderItems = storage.data.orderItems;
-    sandwiches[storage.data.changeableOrderItem.orderId] = {
-        title: storage.data.modalContent.title,
-        amount: storage.data.modalContent.amount,
-        price: storage.data.modalContent.price,
-        size: storage.data.tabReadyContent.size,
-        bread: storage.data.tabReadyContent.bread,
-        vegetables: storage.data.tabReadyContent.vegetables,
-        sauces: storage.data.tabReadyContent.sauces,
-        fillings: storage.data.tabReadyContent.fillings
-    };
-    setSandwiches(storage.data.sandwiches);
+    let item = data[0];
 
-    let item = storage.data.orderItems.find(item => item.orderId ===
+    let vegetables = [];
+    let sauces = [];
+    let fillings = [];
+
+    for (let i in item.vegetables) {
+        vegetables.push(item.vegetables[i].name)
+    }
+
+    for (let i in item.sauces) {
+        sauces.push(item.sauces[i].name)
+    }
+
+    for (let i in item.fillings) {
+        fillings.push(item.fillings[i].name)
+    }
+
+    orderItems.find(item => item.orderId === storage.data.changeableOrderItem.orderId);
+
+    let changeableItem = storage.data.orderItems.find(i => i.orderId ===
         storage.data.changeableOrderItem.orderId);
-    let previousPrice = item.price * item.amount;
+    let previousPrice = changeableItem.price * changeableItem.amount;
+
+    orderItems.find(item => item.orderId === storage.data.changeableOrderItem.orderId).size = item.size;
+    orderItems.find(item => item.orderId === storage.data.changeableOrderItem.orderId).bread = item.bread;
+    orderItems.find(item => item.orderId === storage.data.changeableOrderItem.orderId).vegetables = vegetables;
+    orderItems.find(item => item.orderId === storage.data.changeableOrderItem.orderId).sauces = sauces;
+    orderItems.find(item => item.orderId === storage.data.changeableOrderItem.orderId).fillings = fillings;
 
     orderItems.find(item => item.orderId === storage.data.changeableOrderItem.orderId).amount = storage.data.modalContent.amount;
     orderItems.find(item => item.orderId === storage.data.changeableOrderItem.orderId).price =
         storage.data.modalContent.price;
 
     setOrderItems(orderItems);
+    setSandwiches(orderItems.filter(item => item.bread))
 
     setTotalPrice(storage.data.totalPrice + (storage.data.modalContent.price *
         storage.data.modalContent.amount) - previousPrice);
@@ -232,7 +301,7 @@ export function setChangeOrderInfo(data) {
 }
 
 export function setDeleteOrder(i) {
-    setTotalPrice(storage.data.totalPrice - (storage.data.orderItems[i].price * 
+    setTotalPrice(storage.data.totalPrice - (storage.data.orderItems[i].price *
         storage.data.orderItems[i].amount));
 
     const deletedSandwich = storage.data.sandwiches.find(arr => arr.orderId ===
@@ -243,7 +312,14 @@ export function setDeleteOrder(i) {
         storage.data.sandwiches.splice(n, 1);
     }
     storage.data.orderItems.splice(i, 1);
-    
+
     setSandwiches(storage.data.sandwiches);
     setOrderItems(storage.data.orderItems);
+}
+
+export function setCreateNewCompletedOrder(data) {
+    setSandwiches([]);
+    setOrderItems([]);
+    setTotalPrice(0)
+    alert("Заказ оформлен")
 }

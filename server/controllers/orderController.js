@@ -22,12 +22,13 @@ module.exports.getAllOrders = async (req, res, next) => {
 module.exports.createNewOrder = async (req, res, next) => {
   const token = JSON.parse(Buffer.from(req.headers.authorization.split('.')[1], 'base64').toString());
   const body = req.body;
-  //const price = products[0].menu.find(item => item.name === body.title).price
+  const orderId = uuidv4();
+
   if (validateCreate(body) && productAvailability(body.title, products) &&
-    ingredientAvailability(body, products)) {
+    ingredientAvailability(body, products) && body.bread) {
     const order = new Order({
       title: body.title,
-      orderId: uuidv4(),
+      orderId: orderId,
       amount: body.amount,
       price: calculatePrice(body, body.title, products),
       username: token.username,
@@ -37,19 +38,18 @@ module.exports.createNewOrder = async (req, res, next) => {
       sauces: arrayOfIngredients(body, "sauces", products),
       fillings: arrayOfIngredients(body, "fillings", products)
     });
-    await order.save().then(result => Order.find())
+    await order.save().then(result => Order.find({ orderId }))
       .then(result => { res.send(result.filter(item => item.username === token.username)) });
-  } else if (validateCreate(body) && productAvailability(body.title, products)
-    && body.breads) {
+  } else if (validateCreate(body) && productAvailability(body.title, products)) {
     const order = new Order({
       title: body.title,
-      orderId: uuidv4(),
+      orderId: orderId,
       amount: body.amount,
       price: calculatePrice(body, body.title, products),
-      username: body.username
+      username: token.username
     });
-    await order.save().then(result => Order.find())
-      .then(result => { res.send(resul.filter(item => item.username === token.username)) });
+    await order.save().then(result => Order.find({ orderId }))
+      .then(result => { res.send(result) });
   } else {
     res.status(422).send('Error! Params not correct');
   }
@@ -73,11 +73,11 @@ module.exports.changeOrderInfo = async (req, res, next) => {
         price: calculatePrice(body, title, products),
         size: body.size,
         bread: body.bread,
-        vegetables: body.vegetables,
-        sauces: body.sauces,
-        fillings: body.fillings
+        vegetables: arrayOfIngredients(body, "vegetables", products),
+        sauces: arrayOfIngredients(body, "sauces", products),
+        fillings: arrayOfIngredients(body, "fillings", products)
       }).then(result => {
-        Order.find({ orderId: body.orderId }).then(result => {
+        Order.find({ orderId: req.body.orderId }).then(result => {
           res.send(result);
         });
       })

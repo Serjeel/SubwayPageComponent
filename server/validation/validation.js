@@ -105,13 +105,13 @@ module.exports.calculatePrice = (body, title, products) => {
     let saucesPrice = 0;
     let fillingsPrice = 0;
     for (let i in products[0].sizes) {
-        if (products[0].sizes[i].name === body.sizes) {
+        if (products[0].sizes[i].name === body.size) {
             sizePrice = products[0].sizes[i].price
         }
     }
 
     for (let i in products[0].breads) {
-        if (products[0].breads[i].name === body.breads) {
+        if (products[0].breads[i].name === body.bread) {
             breadPrice = products[0].breads[i].price
         }
     }
@@ -167,7 +167,5 @@ module.exports.calculateCompletedPrice = (orderItems) => {
     orderItems.map(item => {
         price += item.price * item.amount
     })
-
-    console.log(price);
     return price
 }

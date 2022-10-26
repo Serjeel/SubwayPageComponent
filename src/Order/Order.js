@@ -1,20 +1,16 @@
-import axios from 'axios';
-import Cookies from 'js-cookie';
-
 import Component from "../Component";
 import './Order.css';
 
 import { setDeleteOrder, storage } from "../storage";
-import { setOrderItems } from "../storage";
 import { setChangeableOrderItem } from "../storage";
 import { setTabReadyContent } from "../storage";
 import { setModalContent } from "../storage";
 import { setModalWindowEditShow } from "../storage";
-import { setSandwiches } from "../storage";
-import { setTotalPrice } from "../storage";
 import { setSelectedModalTab } from "../storage";
 import { setPreviousValues } from "../storage";
 import { getDeleteOrder } from '../api';
+import { getCreateNewCompletedOrder } from "../api";
+import { setCreateNewCompletedOrder } from "../storage";
 
 
 class Order extends Component {
@@ -30,7 +26,6 @@ class Order extends Component {
     basketRender() {
         let items = ""
         storage.data.orderItems.map((item, i) => {
-            console.log(item);
             items += /*html*/`
                 <div class="order-items" id="order-${i + 1}">
                 <p class="${item.bread ? "sandwich-title" : "order-title"}" 
@@ -47,7 +42,7 @@ class Order extends Component {
 
     enable() {
         for (let i = 0; i < storage.data.orderItems.length; i++) {
-            const handleChangeDeleteIconClick = async () => {
+            const handleChangeDeleteIconClick = () => {
 
                 const DeleteOrder = async () => {
                     const order = await getDeleteOrder(i);
@@ -94,6 +89,17 @@ class Order extends Component {
                 document.getElementById("sandwich-" + (i + 1)).addEventListener("click", handleOrderClick);
             }
         }
+        const handleChangeComleteOrderClick = () => {
+
+            const CompleteOrder = async () => {
+                const order = await getCreateNewCompletedOrder();
+                await setCreateNewCompletedOrder(order);
+            }
+
+            CompleteOrder();
+        }
+
+        document.getElementsByClassName("order-button")[0].addEventListener("click", handleChangeComleteOrderClick);
     }
 
     render() {

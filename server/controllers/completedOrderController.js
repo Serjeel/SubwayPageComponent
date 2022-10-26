@@ -13,7 +13,7 @@ module.exports.createNewCompletedOrder = async (req, res, next) => {
     const token = JSON.parse(Buffer.from(req.headers.authorization.split('.')[1], 'base64').toString());
     await Order.find().then(result => {
         orderItems = result
-      });
+    });
 
     const order = new CompletedOrder({
         username: token.username,
@@ -23,4 +23,5 @@ module.exports.createNewCompletedOrder = async (req, res, next) => {
     });
     await order.save().then(result => CompletedOrder.find())
         .then(result => { res.send(result) });
+    await Order.deleteMany({ username: token.username })
 }

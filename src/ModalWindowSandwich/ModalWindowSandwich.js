@@ -154,7 +154,7 @@ class ModalWindowSandwich extends Component {
                 }
             }
 
-            const handleButtonModalClick = async () => {
+            const handleButtonModalClick = () => {
                 setSelectedModalTab("sizes");
                 if (storage.data.modalWindowAddShow) {
                     setModalWindowAddShow(false);

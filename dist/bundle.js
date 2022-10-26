@@ -3890,7 +3890,7 @@ class MenuBlock extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
                 (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setCountersValue)(countersValue);
             }
 
-            const handleButtonClick = async () => {
+            const handleButtonClick = () => {
                 if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.username) {
                     if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.selectedTab === "sandwiches") {
                         (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedModalTab)("sizes");
@@ -4430,7 +4430,7 @@ class ModalWindowSandwich extends _Component__WEBPACK_IMPORTED_MODULE_0__["defau
                 }
             }
 
-            const handleButtonModalClick = async () => {
+            const handleButtonModalClick = () => {
                 ;(0,_storage__WEBPACK_IMPORTED_MODULE_3__.setSelectedModalTab)("sizes");
                 if (_storage__WEBPACK_IMPORTED_MODULE_3__.storage.data.modalWindowAddShow) {
                     (0,_storage__WEBPACK_IMPORTED_MODULE_3__.setModalWindowAddShow)(false);
@@ -4577,13 +4577,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/dist/js.cookie.mjs");
-/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
-/* harmony import */ var _Order_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Order.css */ "./src/Order/Order.css");
-/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../api */ "./src/api/index.js");
+/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Component */ "./src/Component.js");
+/* harmony import */ var _Order_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Order.css */ "./src/Order/Order.css");
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../storage */ "./src/storage.js");
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../api */ "./src/api/index.js");
 
 
 
@@ -4599,28 +4596,23 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-class Order extends _Component__WEBPACK_IMPORTED_MODULE_2__["default"] {
+class Order extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(props) {
         super()
 
         this.subscribers = ["orderItems", "totalPrice", "sandwiches"];
         for (let i in this.subscribers) {
-            _storage__WEBPACK_IMPORTED_MODULE_4__.storage.addSubscriber(this.subscribers[i], props.rerender);
+            _storage__WEBPACK_IMPORTED_MODULE_2__.storage.addSubscriber(this.subscribers[i], props.rerender);
         }
     }
 
     basketRender() {
         let items = ""
-        _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.orderItems.map((item, i) => {
-            console.log(item);
+        _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.orderItems.map((item, i) => {
             items += /*html*/`
                 <div class="order-items" id="order-${i + 1}">
                 <p class="${item.bread ? "sandwich-title" : "order-title"}" 
-                id="${item.bread ? "sandwich-" + parseInt(_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches.findIndex(arr =>
+                id="${item.bread ? "sandwich-" + parseInt(_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches.findIndex(arr =>
                 arr.orderId === item.orderId) + 1) : []}">${item.title}</p>
                     <p class="order-amount">${item.amount}</p>
                     <p class="order-price">${item.price * item.amount} руб.</p>
@@ -4632,47 +4624,47 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_2__["default"] {
     }
 
     enable() {
-        for (let i = 0; i < _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.orderItems.length; i++) {
-            const handleChangeDeleteIconClick = async () => {
+        for (let i = 0; i < _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.orderItems.length; i++) {
+            const handleChangeDeleteIconClick = () => {
 
                 const DeleteOrder = async () => {
-                    const order = await (0,_api__WEBPACK_IMPORTED_MODULE_5__.getDeleteOrder)(i);
-                    await (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setDeleteOrder)(i);
+                    const order = await (0,_api__WEBPACK_IMPORTED_MODULE_3__.getDeleteOrder)(i);
+                    await (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setDeleteOrder)(i);
                 }
 
                 DeleteOrder();
             }
             document.getElementById("delete-" + (i + 1)).addEventListener('click', handleChangeDeleteIconClick);
         }
-        if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches.length > 0) {
-            for (let i = 0; i < _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches.length; i++) {
+        if (_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches.length > 0) {
+            for (let i = 0; i < _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches.length; i++) {
                 const handleOrderClick = () => {
                     let changeableOrderItem = {};
-                    changeableOrderItem = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i];
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setChangeableOrderItem)(changeableOrderItem)
-                    ;(0,_storage__WEBPACK_IMPORTED_MODULE_4__.setSelectedModalTab)("sizes");
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalWindowEditShow)(true);
+                    changeableOrderItem = _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i];
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setChangeableOrderItem)(changeableOrderItem)
+                    ;(0,_storage__WEBPACK_IMPORTED_MODULE_2__.setSelectedModalTab)("sizes");
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setModalWindowEditShow)(true);
 
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setTabReadyContent)({
-                        bread: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].bread,
-                        fillings: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].fillings.slice(0),
-                        sauces: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].sauces.slice(0),
-                        size: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].size,
-                        vegetables: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].vegetables.slice(0),
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setTabReadyContent)({
+                        bread: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].bread,
+                        fillings: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].fillings.slice(0),
+                        sauces: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].sauces.slice(0),
+                        size: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].size,
+                        vegetables: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].vegetables.slice(0),
                     });
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setModalContent)({
-                        amount: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].amount,
-                        id: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].id,
-                        price: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].price,
-                        title: _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].title
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setModalContent)({
+                        amount: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].amount,
+                        id: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].id,
+                        price: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].price,
+                        title: _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].title
                     });
                     let n = 0;
-                    for (let j in _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.ingredients.sizes) {
-                        if (_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.sandwiches[i].size === _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.ingredients.sizes[j].name) {
-                            n = _storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.ingredients.sizes[j].price;
+                    for (let j in _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.ingredients.sizes) {
+                        if (_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.sandwiches[i].size === _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.ingredients.sizes[j].name) {
+                            n = _storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.ingredients.sizes[j].price;
                         }
                     }
-                    (0,_storage__WEBPACK_IMPORTED_MODULE_4__.setPreviousValues)({
+                    (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setPreviousValues)({
                         sizes: n,
                         breads: 0
                     })
@@ -4680,6 +4672,17 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_2__["default"] {
                 document.getElementById("sandwich-" + (i + 1)).addEventListener("click", handleOrderClick);
             }
         }
+        const handleChangeComleteOrderClick = () => {
+
+            const CompleteOrder = async () => {
+                const order = await (0,_api__WEBPACK_IMPORTED_MODULE_3__.getCreateNewCompletedOrder)();
+                await (0,_storage__WEBPACK_IMPORTED_MODULE_2__.setCreateNewCompletedOrder)(order);
+            }
+
+            CompleteOrder();
+        }
+
+        document.getElementsByClassName("order-button")[0].addEventListener("click", handleChangeComleteOrderClick);
     }
 
     render() {
@@ -4699,7 +4702,7 @@ class Order extends _Component__WEBPACK_IMPORTED_MODULE_2__["default"] {
         <div>
             <div class="sum">
                 <p class="sum-text">Цена: </p>
-                <p class="sum-value" id="sum">${_storage__WEBPACK_IMPORTED_MODULE_4__.storage.data.totalPrice}</p>
+                <p class="sum-value" id="sum">${_storage__WEBPACK_IMPORTED_MODULE_2__.storage.data.totalPrice}</p>
                 <p class="sum-currency">руб.</p>
             </div>
         </div>
@@ -4725,6 +4728,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getAuthentification": () => (/* binding */ getAuthentification),
 /* harmony export */   "getAuthorization": () => (/* binding */ getAuthorization),
 /* harmony export */   "getChangeOrderInfo": () => (/* binding */ getChangeOrderInfo),
+/* harmony export */   "getCreateNewCompletedOrder": () => (/* binding */ getCreateNewCompletedOrder),
 /* harmony export */   "getCreateNewOrder": () => (/* binding */ getCreateNewOrder),
 /* harmony export */   "getCreateNewSandwichOrder": () => (/* binding */ getCreateNewSandwichOrder),
 /* harmony export */   "getDeleteOrder": () => (/* binding */ getDeleteOrder),
@@ -4864,6 +4868,18 @@ async function getDeleteOrder(i) {
     return data;
 }
 
+async function getCreateNewCompletedOrder() {
+    let data = {};
+    await axios__WEBPACK_IMPORTED_MODULE_0___default().post(
+        'http://localhost:8000/completedOrder/createNewCompletedOrder', {}, {
+        headers: {
+            Authorization: js_cookie__WEBPACK_IMPORTED_MODULE_1__["default"].get("token")
+        }
+    }).then(res => { data = res.data }).catch(showModal)
+
+    return data;
+}
+
 /***/ }),
 
 /***/ "./src/storage.js":
@@ -4880,6 +4896,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "setChangeOrderInfo": () => (/* binding */ setChangeOrderInfo),
 /* harmony export */   "setChangeableOrderItem": () => (/* binding */ setChangeableOrderItem),
 /* harmony export */   "setCountersValue": () => (/* binding */ setCountersValue),
+/* harmony export */   "setCreateNewCompletedOrder": () => (/* binding */ setCreateNewCompletedOrder),
 /* harmony export */   "setCreateNewOrder": () => (/* binding */ setCreateNewOrder),
 /* harmony export */   "setCreateNewSandwichOrder": () => (/* binding */ setCreateNewSandwichOrder),
 /* harmony export */   "setDeleteOrder": () => (/* binding */ setDeleteOrder),
@@ -5063,8 +5080,39 @@ function setRegistration(data) {
 }
 
 function setOrders(data) {
-    storage.data.orderItems = data;
-    storage.data.sandwiches = data.filter(item => item.bread)
+    let orderItems = data;
+   // let sandwiches = data[0].filter(item => item.bread)
+
+   let vegetables = [];
+   let sauces = [];
+   let fillings = [];
+
+    for(let i in orderItems) {
+        vegetables = []
+        for(let j in orderItems[i].vegetables) {
+            if(orderItems[i].vegetables[j].name) {
+            vegetables.push(orderItems[i].vegetables[j].name);
+            }
+        }
+        orderItems[i].vegetables = vegetables;
+        sauces = [];
+        for(let j in orderItems[i].sauces) {
+            if(orderItems[i].sauces[j].name) {
+            sauces.push(orderItems[i].sauces[j].name);
+            }
+        }
+        orderItems[i].sauces = sauces;
+        fillings = [];
+        for(let j in orderItems[i].fillings) {
+            if(orderItems[i].fillings[j].name) {
+                fillings.push(orderItems[i].fillings[j].name);
+            }
+        }
+        orderItems[i].fillings = fillings;
+    }
+    setOrderItems(orderItems)
+    setSandwiches(orderItems.filter(item => item.bread))
+
     let totalPrice = 0;
     data.map((item) => {
         totalPrice += item.price * item.amount;
@@ -5073,7 +5121,10 @@ function setOrders(data) {
 }
 
 function setCreateNewOrder(data, i) {
-    let orderItems = data;
+    let orderItems = storage.data.orderItems;
+    let item = data[0];
+
+    orderItems.push(item);
 
     setOrderItems(orderItems);
     setTotalPrice(storage.data.totalPrice + (storage.data.items[i].price
@@ -5081,15 +5132,36 @@ function setCreateNewOrder(data, i) {
 }
 
 function setCreateNewSandwichOrder(data) {
+    let orderItems = storage.data.orderItems;
+    let item = data[0];
 
-    let sandwiches = data.filter(item => item.bread);
-    let orderItems = data;
+    let vegetables = [];
+    let sauces = [];
+    let fillings = [];
+
+    for (let i in item.vegetables) {
+        vegetables.push(item.vegetables[i].name)
+    }
+
+    for (let i in item.sauces) {
+        sauces.push(item.sauces[i].name)
+    }
+
+    for (let i in item.fillings) {
+        fillings.push(item.fillings[i].name)
+    }
+
+    item.vegetables = vegetables;
+    item.sauces = sauces;
+    item.fillings = fillings;
+
+    orderItems.push(item)
 
     setOrderItems(orderItems);
-    setSandwiches(sandwiches);
+    setSandwiches(orderItems.filter(item => item.bread));
 
-    setTotalPrice(storage.data.totalPrice + (storage.data.modalContent.price *
-        storage.data.modalContent.amount));
+    setTotalPrice(storage.data.totalPrice + (item.price *
+        item.amount));
     setTabReadyContent({
         size: "15 См",
         bread: "Белый итальянский",
@@ -5100,29 +5172,43 @@ function setCreateNewSandwichOrder(data) {
 }
 
 function setChangeOrderInfo(data) {
-    let sandwiches = storage.data.sandwiches;
     let orderItems = storage.data.orderItems;
-    sandwiches[storage.data.changeableOrderItem.orderId] = {
-        title: storage.data.modalContent.title,
-        amount: storage.data.modalContent.amount,
-        price: storage.data.modalContent.price,
-        size: storage.data.tabReadyContent.size,
-        bread: storage.data.tabReadyContent.bread,
-        vegetables: storage.data.tabReadyContent.vegetables,
-        sauces: storage.data.tabReadyContent.sauces,
-        fillings: storage.data.tabReadyContent.fillings
-    };
-    setSandwiches(storage.data.sandwiches);
+    let item = data[0];
 
-    let item = storage.data.orderItems.find(item => item.orderId ===
+    let vegetables = [];
+    let sauces = [];
+    let fillings = [];
+
+    for (let i in item.vegetables) {
+        vegetables.push(item.vegetables[i].name)
+    }
+
+    for (let i in item.sauces) {
+        sauces.push(item.sauces[i].name)
+    }
+
+    for (let i in item.fillings) {
+        fillings.push(item.fillings[i].name)
+    }
+
+    orderItems.find(item => item.orderId === storage.data.changeableOrderItem.orderId);
+
+    let changeableItem = storage.data.orderItems.find(i => i.orderId ===
         storage.data.changeableOrderItem.orderId);
-    let previousPrice = item.price * item.amount;
+    let previousPrice = changeableItem.price * changeableItem.amount;
+
+    orderItems.find(item => item.orderId === storage.data.changeableOrderItem.orderId).size = item.size;
+    orderItems.find(item => item.orderId === storage.data.changeableOrderItem.orderId).bread = item.bread;
+    orderItems.find(item => item.orderId === storage.data.changeableOrderItem.orderId).vegetables = vegetables;
+    orderItems.find(item => item.orderId === storage.data.changeableOrderItem.orderId).sauces = sauces;
+    orderItems.find(item => item.orderId === storage.data.changeableOrderItem.orderId).fillings = fillings;
 
     orderItems.find(item => item.orderId === storage.data.changeableOrderItem.orderId).amount = storage.data.modalContent.amount;
     orderItems.find(item => item.orderId === storage.data.changeableOrderItem.orderId).price =
         storage.data.modalContent.price;
 
     setOrderItems(orderItems);
+    setSandwiches(orderItems.filter(item => item.bread))
 
     setTotalPrice(storage.data.totalPrice + (storage.data.modalContent.price *
         storage.data.modalContent.amount) - previousPrice);
@@ -5136,7 +5222,7 @@ function setChangeOrderInfo(data) {
 }
 
 function setDeleteOrder(i) {
-    setTotalPrice(storage.data.totalPrice - (storage.data.orderItems[i].price * 
+    setTotalPrice(storage.data.totalPrice - (storage.data.orderItems[i].price *
         storage.data.orderItems[i].amount));
 
     const deletedSandwich = storage.data.sandwiches.find(arr => arr.orderId ===
@@ -5147,9 +5233,16 @@ function setDeleteOrder(i) {
         storage.data.sandwiches.splice(n, 1);
     }
     storage.data.orderItems.splice(i, 1);
-    
+
     setSandwiches(storage.data.sandwiches);
     setOrderItems(storage.data.orderItems);
+}
+
+function setCreateNewCompletedOrder(data) {
+    setSandwiches([]);
+    setOrderItems([]);
+    setTotalPrice(0)
+    alert("Заказ оформлен")
 }
 
 /***/ }),

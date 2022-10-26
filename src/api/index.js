@@ -126,3 +126,15 @@ export async function getDeleteOrder(i) {
 
     return data;
 }
+
+export async function getCreateNewCompletedOrder() {
+    let data = {};
+    await axios.post(
+        'http://localhost:8000/completedOrder/createNewCompletedOrder', {}, {
+        headers: {
+            Authorization: Cookies.get("token")
+        }
+    }).then(res => { data = res.data }).catch(showModal)
+
+    return data;
+}

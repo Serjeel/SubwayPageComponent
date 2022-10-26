@@ -52,7 +52,7 @@ class MenuBlock extends Component {
                 setCountersValue(countersValue);
             }
 
-            const handleButtonClick = async () => {
+            const handleButtonClick = () => {
                 if (storage.data.username) {
                     if (storage.data.selectedTab === "sandwiches") {
                         setSelectedModalTab("sizes");
